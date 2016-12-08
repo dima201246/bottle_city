@@ -9,6 +9,11 @@ using namespace std;
 
 #define GAME_SPEED	900
 
+#define UP_SIDE		0
+#define LEFT_SIDE	2
+#define DOWN_SIDE	4
+#define RIGHT_SIDE	6
+
 int maxX	= 13,
 	maxY	= 13; 
 
@@ -49,11 +54,19 @@ class bullet {
 				first_map[int((rect.top + 3) / 16)][int(rect.left / 16)]	= ' ';
 				dx	= 0;
 			}
+
+			if (first_map[int((rect.top + 3) / 16)][int(rect.left / 16)] == 'a') {
+				dx	= 0;
+			}
 		}
 
 		if (dy != 0) {
 			if (first_map[int(rect.top / 16)][int((rect.left + 3) / 16)] == 'w') {
 				first_map[int(rect.top / 16)][int((rect.left + 3) / 16)]	= ' ';
+				dy	= 0;
+			}
+
+			if (first_map[int(rect.top / 16)][int((rect.left + 3) / 16)] == 'a') {
 				dy	= 0;
 			}
 		}
@@ -68,7 +81,7 @@ public:
 		sound_shot		= new Sound(buffer_shot);
 		buffer_un_shot.loadFromFile("media/sound/un_shot.ogg");
 		sound_un_shot	= new Sound(buffer_un_shot);
-		rect			= FloatRect(320, 72, 8, 8);
+		rect			= FloatRect(0, 0, 8, 8);
 		dx	= dy		= 0.0;
 		status			= false;
 		rect.left		= 0;
@@ -157,6 +170,7 @@ class eminem {
 
 
 public:
+
 	bullet			shell;
 	Sprite			sprite;
 
@@ -173,15 +187,6 @@ public:
 		rect.left		= 144;
 		rect.top		= 200;
 	}
-	
-	/*Side
-	0 - UP
-	2 - LEFT
-	4 - DOWN
-	6 - RIGHT
-	*/
-	
-	// ~player();
 
 	void update(float time) {
 		if ((dx	!= 0) || (dy != 0)) {	// Защита от выхода за границы
@@ -240,8 +245,7 @@ public:
 
 	void move_right() {
 		dx	+= 0.1;
-	} 
-	
+	}
 };
 
 
@@ -261,67 +265,34 @@ class player {
 	bool			god_mode;
 
 	void collision() {
-/*		cout << "*****************************************" << endl;
-		cout << "X: " << rect.top << " Y: " << rect.left << endl;
-		cout << "X: " << int(rect.top / 16) << " Y: " << int(rect.left / 16) << endl;
-		cout << "*****************************************" << endl;
+		char	block_1, block_2;
 
-
-*/
 		if (dx < 0) {
-			if ((first_map[int((rect.top + 13) / 16)][int((rect.left - 1) / 16)] == 'w') || (first_map[((int(rect.top)) / 16)][int((rect.left - 1) / 16)] == 'w'))
-				dx	= 0;
-
-			if ((first_map[int((rect.top + 13) / 16)][int((rect.left - 1) / 16)] == 'v') || (first_map[((int(rect.top)) / 16)][int((rect.left - 1) / 16)] == 'v'))
-				dx	= 0;
-
-			if ((first_map[int((rect.top + 13) / 16)][int((rect.left - 1) / 16)] == 'a') || (first_map[((int(rect.top)) / 16)][int((rect.left - 1) / 16)] == 'a'))
-				dx	= 0;
-
+			block_1	= first_map[(int)((rect.top + 1) / 16)][(int)((rect.left - 1) / 16)];
+			block_2	= first_map[(int)((rect.top + 15) / 16)][(int)((rect.left - 1) / 16)];
 			side	= 2;
-		}
-
-		if (dy < 0) {
-			if ((first_map[int((rect.top - 1) / 16)][int((rect.left + 15) / 16)] == 'w') || (first_map[int((rect.top - 1) / 16)][int((rect.left + 1) / 16)] == 'w'))
-				dy	= 0;
-
-			if ((first_map[int((rect.top - 1) / 16)][int((rect.left + 15) / 16)] == 'v') || (first_map[int((rect.top - 1) / 16)][int((rect.left + 1) / 16)] == 'v'))
-				dy	= 0;
-
-			if ((first_map[int((rect.top - 1) / 16)][int((rect.left + 15) / 16)] == 'a') || (first_map[int((rect.top - 1) / 16)][int((rect.left + 1) / 16)] == 'a'))
-				dy	= 0;
-
-			side	= 0;
-		}
-
-		if (dx > 0) {
-			if ((first_map[int((rect.top + 13) / 16)][int((rect.left + 17) / 16)] == 'w') || (first_map[((int(rect.top)) / 16)][int((rect.left + 17) / 16)] == 'w'))
-				dx	= 0;
-
-			if ((first_map[int((rect.top + 13) / 16)][int((rect.left + 17) / 16)] == 'v') || (first_map[((int(rect.top)) / 16)][int((rect.left + 17) / 16)] == 'v'))
-				dx	= 0;
-
-			if ((first_map[int((rect.top + 13) / 16)][int((rect.left + 17) / 16)] == 'a') || (first_map[((int(rect.top)) / 16)][int((rect.left + 17) / 16)] == 'a'))
-				dx	= 0;
-
+		} else  if (dx > 0) {
+			block_1	= first_map[(int)(rect.top / 16)][(int)((rect.left + 16) / 16)];
+			block_2	= first_map[(int)((rect.top + 15) / 16)][(int)((rect.left + 16) / 16)];
 			side	= 6;
+		} else if (dy < 0) {
+			block_1	= first_map[(int)((rect.top - 1) / 16)][(int)((rect.left + 1) / 16)];
+			block_2	= first_map[(int)((rect.top - 1) / 16)][(int)((rect.left + 15) / 16)];
+			side	= 0;
+		} else if (dy > 0) {
+			block_1	= first_map[(int)((rect.top + 16) / 16)][(int)(rect.left / 16)];
+			block_2	= first_map[(int)((rect.top + 16) / 16)][(int)((rect.left + 15) / 16)];
+			side	= 4;
 		}
 
-		if (dy > 0) {
-			if ((first_map[int((rect.top + 16) / 16)][int((rect.left + 1) / 16)] == 'w') || (first_map[((int(rect.top + 16)) / 16)][int((rect.left + 15) / 16)] == 'w'))
-				dy	= 0;
-
-			if ((first_map[int((rect.top + 16) / 16)][int((rect.left + 1) / 16)] == 'v') || (first_map[((int(rect.top + 16)) / 16)][int((rect.left + 15) / 16)] == 'v'))
-				dy	= 0;
-
-			if ((first_map[int((rect.top + 16) / 16)][int((rect.left + 1) / 16)] == 'a') || (first_map[((int(rect.top + 16)) / 16)][int((rect.left + 15) / 16)] == 'a'))
-				dy	= 0;
-
-			side	= 4;
+		if (((block_1	== 'w') || (block_2 == 'w')) || ((block_1	== 'a') || (block_2 == 'a')) || ((block_1	== 'v') || (block_2 == 'v'))) {
+			dx	= 0;
+			dy	= 0;
 		}
 	}
 
 public:
+
 	bullet			shell;
 	Sprite			sprite;
 
@@ -340,15 +311,6 @@ public:
 		rect.left		= 128;
 		rect.top		= 176;
 	}
-	
-	/*Side
-	0 - UP
-	2 - LEFT
-	4 - DOWN
-	6 - RIGHT
-	*/
-	
-	// ~player();
 
 	void update(float time) {
 		if ((dx	!= 0) || (dy != 0)) {	// Защита от выхода за границы
@@ -362,7 +324,6 @@ public:
 
 		rect.left		+= dx * (time / 2.0);	// Собсно, движение
 		rect.top 		+= dy * (time / 2.0);
-		// sprite.setTextureRect(IntRect(320, 72, 16, 16));
 
 		sprite.setTextureRect(IntRect(0 + (side * 16), 0, 16, 16));
 
@@ -409,15 +370,28 @@ public:
 
 	void move_right() {
 		dx	+= 0.1;
-	} 
+	}
+
+	unsigned char getSide() {
+		return side;
+	}
 };
 
 int main() {
 	Clock			clock;										// Переменная, для слежения за временем
+
 	Texture 		texture;
+
 	RectangleShape	rectangle(Vector2f(32,32));
+
 	Event 			event;
+
 	float			time;
+
+	bool			k_l,
+					k_r,
+					k_u,
+					k_d;
 
 	RenderWindow window( VideoMode(512, 480), "Bottle city");	// Создание окна
 	texture.loadFromFile("media/textures.png");						// Загрузка всех текстур
@@ -440,25 +414,54 @@ int main() {
 				window.close();
 		}
 
-	    if (Keyboard::isKeyPressed(Keyboard::Left)) {
-	    	p1.move_left();
-	    }
+		/*Защита от диагоналей Начало*/
+		k_d	= true;
+		k_u	= true;
+		k_r	= true;
+		k_l	= true;
 
-	    if (Keyboard::isKeyPressed(Keyboard::Right)) {
-	    	p1.move_right();
-	    }
-
-		if (Keyboard::isKeyPressed(Keyboard::Up)) {
-	    	p1.move_up();
+		if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down))) {
+			if (p1.getSide() == LEFT_SIDE)	k_d	= false;
+			else k_l	= false;
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Down)) {
-	    	p1.move_down();
+		if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Up)))	{
+			if (p1.getSide() == LEFT_SIDE)	k_u	= false;
+			else k_l	= false;
+		}
+
+		if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Down))) {
+			if (p1.getSide() == RIGHT_SIDE)	k_d	= false;
+			else k_r	= false;
+		}
+
+		if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Up))) {
+			if (p1.getSide() == RIGHT_SIDE)	k_u	= false;
+			else k_r	= false;
+		}
+		/*Защита от диагоналей Конец*/
+
+		/*Обработка кнопок Начало*/
+		if ((Keyboard::isKeyPressed(Keyboard::Left)) && (k_l)) {
+			p1.move_left();
+		}
+
+		if ((Keyboard::isKeyPressed(Keyboard::Right)) && (k_r)) {
+			p1.move_right();
+		}
+
+		if ((Keyboard::isKeyPressed(Keyboard::Up)) && (k_u)) {
+			p1.move_up();
+		}
+
+		if ((Keyboard::isKeyPressed(Keyboard::Down)) && (k_d)) {
+			p1.move_down();
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Z)) {
-	    	p1.piu_piu();
-	    }
+			p1.piu_piu();
+		}
+		/*Обработка кнопок Конец*/
 
 		p1.update(time);
 		p2.update(time);
