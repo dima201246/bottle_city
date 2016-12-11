@@ -1,0 +1,17 @@
+max_x = 13
+max_y = 13
+next_level = level2.map
+
+# Сама карта, можно в одну линию
+map = "swwwwwswwwwws
+wsswssssswssw
+ssswisssiwsss
+ssswisssiwsss
+ssswisssiwsss
+ssswiswsiwsss
+ssswisssiwsss
+ssswiaaaiwsss
+vvvwgggggwvvv
+sssssssssssss
+ssssswwwsssss
+ssssswewsssss"
