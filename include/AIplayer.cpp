@@ -33,7 +33,7 @@ void AIplayer::update(float time) {
 void AIplayer::activation(unsigned int x, unsigned int y) {
 	active	= true;
 
-	tank::setPosition(x, y);
+	tank::setPosition(x, y, DOWN_SIDE);
 }
 
 

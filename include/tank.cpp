@@ -90,9 +90,10 @@ void tank::draw(RenderWindow &window) {
 	}
 }
 
-void tank::setPosition(unsigned int x, unsigned int y) {
+void tank::setPosition(unsigned int x, unsigned int y, int getted_side) {
 	rect.left		= x * 16;
 	rect.top		= y * 16;
+	side			= getted_side;
 }
 
 bool tank::bulletComparsion(FloatRect &tank_recr) {
@@ -102,7 +103,7 @@ bool tank::bulletComparsion(FloatRect &tank_recr) {
 	return false;
 }
 
-bool tank::tankComparsion(FloatRect &tank_recr) {
+bool tank::tankComparsion(FloatRect tank_recr) {
 	if (rect.intersects(tank_recr))
 		return true;
 
