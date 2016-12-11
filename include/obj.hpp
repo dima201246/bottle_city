@@ -97,8 +97,8 @@
 		void moveLeft();
 		void moveRight();
 		bool bulletComparsion(FloatRect&);
-		bool tankComparsion(FloatRect&);
-		void setPosition(unsigned int, unsigned int);
+		bool tankComparsion(FloatRect);
+		void setPosition(unsigned int, unsigned int, int);
 		int getSide();
 		FloatRect getRect();
 		void draw(RenderWindow&) ;

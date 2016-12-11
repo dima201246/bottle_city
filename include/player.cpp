@@ -15,9 +15,9 @@ void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_
 	AIplayers_num	= g_other_tanks_num;
 
 	if (num_of_player == 1) {
-		tank::setPosition(4, 11);
+		tank::setPosition(4, 11, UP_SIDE);
 	} else {
-		tank::setPosition(8, 11);
+		tank::setPosition(8, 11, UP_SIDE);
 	}
 }
 
@@ -29,9 +29,9 @@ void player::update(float time) {
 			action	= true;
 
 	for (int	i	= 0; i < players_num; i++) {
-		if ((players_tanks[i].getLife() > 0) && (tank::tankComparsion(players_tanks[i].getRect()))) {
-
-	}
+		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tank::tankComparsion(players_tanks[i].getRect()))) {
+			// action	= false;
+		}
 	}
 
 	if ((action) && (num_of_player == 2)) {
