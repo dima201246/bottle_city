@@ -31,8 +31,8 @@ int main() {
 	game_map main_map(texture);									// Загрузка текстур в карту
 	main_map.loadMap("media/maps/level1.map");					// Загрузка карты из файла
 
-	players[0].init(texture, /*eminems*/NULL, /*MAX_EMINEMS*/0, &main_map, 3, 1, 20, 1);
-	players[1].init(texture, /*eminems*/NULL, /*MAX_EMINEMS*/0, &main_map, 3, 1, 20, 2);
+	players[0].init(texture, players, MAX_PLAYERS, /*eminems*/NULL, /*MAX_EMINEMS*/0, &main_map, 3, 1, 20, 1);
+	players[1].init(texture, players, MAX_PLAYERS, /*eminems*/NULL, /*MAX_EMINEMS*/0, &main_map, 3, 1, 20, 2);
 
 	for (int	i = 0; i < MAX_EMINEMS; ++i) {
 		eminems[i].init(texture, /*players*/NULL, /*MAX_PLAYERS*/0, &main_map, false, 1, 1);

@@ -102,6 +102,12 @@ bool tank::bulletComparsion(FloatRect &tank_recr) {
 	return false;
 }
 
+bool tank::tankComparsion(FloatRect &tank_recr) {
+	if (rect.intersects(tank_recr))
+		return true;
+
+	return false;
+}
 
 void tank::collision() {
 	char	block_1, block_2;
@@ -113,7 +119,6 @@ void tank::collision() {
 	} else  if (dx > 0) {
 		block_1	= main_map->getElement((int)(rect.top / 16), (int)((rect.left + 16) / 16));
 		block_2	= main_map->getElement((int)((rect.top + 15) / 16), (int)((rect.left + 16) / 16));
-		// block_2	= ' ';
 		side	= 6;
 	} else if (dy < 0) {
 		block_1	= main_map->getElement((int)((rect.top - 1) / 16), (int)((rect.left + 1) / 16));

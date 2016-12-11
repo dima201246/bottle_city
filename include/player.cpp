@@ -1,12 +1,18 @@
 #include "obj.hpp"
 
-void player::init(Texture &image, tank *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
+void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
 	tank::init(image, l_main_map);
 
 	life			= l_life;
 	level			= l_level;
 	left_tank		= l_left_tank;
 	num_of_player	= l_num_of_player;
+
+	players_tanks	= g_tanks;
+	players_num		= g_tanks_num;
+
+	AIplayers_tanks	= g_other_tanks;
+	AIplayers_num	= g_other_tanks_num;
 
 	if (num_of_player == 1) {
 		tank::setPosition(4, 11);
@@ -16,12 +22,19 @@ void player::init(Texture &image, tank *g_other_tanks, int g_other_tanks_num, ga
 }
 
 void player::update(float time) {
-	bool	k_d	= true,
-			k_u	= true,
-			k_r	= true,
-			k_l	= true;
+	bool	k_d		= true,
+			k_u		= true,
+			k_r		= true,
+			k_l		= true,
+			action	= true;
 
-	if (num_of_player == 2) {
+	for (int	i	= 0; i < players_num; i++) {
+		if ((players_tanks[i].getLife() > 0) && (tank::tankComparsion(players_tanks[i].getRect()))) {
+
+	}
+	}
+
+	if ((action) && (num_of_player == 2)) {
 		/*Защита от диагоналей Начало*/
 		if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down))) {
 			if (tank::getSide() == LEFT_SIDE)	k_d	= false;
@@ -65,7 +78,7 @@ void player::update(float time) {
 			tank::piu_piu();
 		}
 		/*Обработка кнопок Конец*/
-	} else if (num_of_player == 1) {
+	} else if ((action) && (num_of_player == 1)) {
 		/*Защита от диагоналей Начало*/
 		if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::S))) {
 			if (tank::getSide() == LEFT_SIDE)	k_d	= false;
@@ -116,4 +129,12 @@ void player::update(float time) {
 
 void player::draw(RenderWindow &window) {
 	tank::draw(window);
+}
+
+int player::getLife() {
+	return life;
+}
+
+FloatRect player::getRect() {
+	return tank::getRect();
 }

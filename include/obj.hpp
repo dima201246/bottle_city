@@ -34,17 +34,17 @@
 
 	private:
 
-		char	**p_map;	// Вся игровая карта
+		char	**p_map;				// Вся игровая карта
 
 		int		maxX,
 				maxY,
-				grass_num;	// Кол-во травы на карте
+				grass_num;				// Кол-во травы на карте
 
-		unsigned int	**g_map;	// Координаты травы
+		unsigned int	**g_map;		// Координаты травы
 
 		Sprite	sprite;
 
-		std::string	next_level_path;
+		std::string	next_level_path;	// Путь к файлу со следующей картой
 	};
 
 	class bullet {
@@ -63,8 +63,7 @@
 
 	private:
 
-		int				bullet_side,
-						bullet_other_tanks_num;
+		int				bullet_side;	// Сторона в которую летит пуля
 
 		bool			bullet_status;
 
@@ -98,6 +97,7 @@
 		void moveLeft();
 		void moveRight();
 		bool bulletComparsion(FloatRect&);
+		bool tankComparsion(FloatRect&);
 		void setPosition(unsigned int, unsigned int);
 		int getSide();
 		FloatRect getRect();
@@ -132,16 +132,24 @@
 			player():tank(){}
 			~player(){}
 
-			void init(Texture&, tank*, int, game_map*, int, int, int, int);
+			void init(Texture&, player*, int, AIplayer*, int, game_map*, int, int, int, int);
 			void update(float);
 			void draw(RenderWindow&);
+			int getLife();
+			FloatRect getRect();
 
 		private:
 
-			int		life,
-					level,
-					left_tank,
-					num_of_player;
+			player		*players_tanks;
+
+			AIplayer	*AIplayers_tanks;
+
+			int			life,			// Кол-во жизней
+						level,			// Уровень
+						left_tank,		// Сколько танков осталось
+						num_of_player,	// Номер игрока
+						players_num,	// Общее кол-во игроков
+						AIplayers_num;	// Общее кол-во врагов
 	};
 
 	class AIplayer : protected tank {
@@ -150,17 +158,23 @@
 			AIplayer():tank(){}
 			~AIplayer(){}
 
-			void init(Texture&, tank*, int, game_map*, bool, int, int);
+			void init(Texture&, player*, int, game_map*, bool, int, int);
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
+			// FloatRect getRect();
 
 		private:
 
-			bool	active,
-					dead;
+			player	*players_tanks;
 
-			int		life,
-					type;
+			AIplayer	*AIplayers_tanks;
+
+			bool	active;			// Активирован ли танк
+
+			int		life,			// Кол-во жизней
+					type,			// Тип танка
+					players_num,	// Общее кол-во игроков
+					AIplayers_num;	// Общее кол-во врагов
 	};
 #endif
