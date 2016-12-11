@@ -8,10 +8,24 @@ void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num
 	active			= l_active;
 	players_tanks	= g_other_tanks;
 	players_num		= g_other_tanks_num;
+	//unsigned char current_side    = 0;
 }
 
 void AIplayer::update(float time) {
-	/*Место для ИИ*/
+	if(tank::getRect().left == 0){ // совпадает с коорд игрока
+		tank::moveDown();
+		tank::piu_piu();
+		tank::update(time);
+		return;
+	}
+	if(tank::getRect().top == 0){ // совпадает с коорд игрока
+		tank::moveRight();
+		tank::piu_piu();
+		tank::update(time);
+		return;
+	}
+
+
 
 	tank::update(time);
 }
