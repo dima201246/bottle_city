@@ -17,10 +17,8 @@ bullet::~bullet() {
 	delete sound_un_shot;
 }
 
-void bullet::init(Texture &image, tank *g_other_tanks, int g_other_tanks_num, game_map *l_main_map) {
+void bullet::init(Texture &image, game_map *l_main_map) {
 	bullet_sprite.setTexture(image);
-	bullet_other_tanks		= g_other_tanks;
-	bullet_other_tanks_num	= g_other_tanks_num;
 	bullet_main_map			= l_main_map;
 }
 
@@ -81,6 +79,13 @@ bool bullet::active() {
 	return bullet_status;
 }
 
+bool bullet::rectComparison(FloatRect &tank_recr) {
+	if ((bullet_status) && (bullet_rect.intersects(tank_recr)))
+		return true;
+
+	return false;
+}
+
 void bullet::collision() {
 	if (bullet_dx != 0) {
 		if (bullet_main_map->getElement(int((bullet_rect.top + 3) / 16), int(bullet_rect.left / 16)) == 'w') {
@@ -104,11 +109,11 @@ void bullet::collision() {
 		}
 	}
 
-	if (bullet_dx != bullet_dy) {
+/*	if (bullet_dx != bullet_dy) {
 		for (int	i	= 0; i < bullet_other_tanks_num; ++i) {
 			if (bullet_rect.intersects(bullet_other_tanks[i].getRect())) {	// Проверка, попала ли пуля в кого-нибудь
 
 			}
 		}
-	}
+	}*/
 }

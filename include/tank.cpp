@@ -1,11 +1,9 @@
 #include "obj.hpp"
 
-void tank::init(Texture &image, tank *g_other_tanks, int g_other_tanks_num, game_map *l_main_map) {
-	bullet::init(image, g_other_tanks, g_other_tanks_num, l_main_map);
+void tank::init(Texture &image, game_map *l_main_map) {
+	bullet::init(image, l_main_map);
 	t_sprite.setTexture(image);
 	side			= 0;
-	other_tanks		= g_other_tanks;
-	other_tanks_num	= g_other_tanks_num;
 	rect			= FloatRect(0, 0, 16, 16);
 	god_mode		= false;
 	currentFrame	= 0;
@@ -14,7 +12,7 @@ void tank::init(Texture &image, tank *g_other_tanks, int g_other_tanks_num, game
 }
 
 void tank::update(float time) {
-	l_time	=time;
+	l_time	= time;
 
 	if ((dx	!= 0) || (dy != 0)) {	// Защита от выхода за границы
 		if ((dx > 0) && (((rect.left + rect.width) / 16) > main_map->getMaxX())) dx	= 0;
@@ -96,6 +94,14 @@ void tank::setPosition(unsigned int x, unsigned int y) {
 	rect.left		= x * 16;
 	rect.top		= y * 16;
 }
+
+bool tank::bulletComparsion(FloatRect &tank_recr) {
+	if ((bullet::active()) && (rectComparison(tank_recr)))
+		return true;
+
+	return false;
+}
+
 
 void tank::collision() {
 	char	block_1, block_2;

@@ -55,9 +55,10 @@
 		bullet();
 		~bullet();
 
-		void init(Texture&, tank*, int, game_map*);
+		void init(Texture&, game_map*);
 		void update(float);
 		void shot(int, int, int);
+		bool rectComparison(FloatRect&);
 		bool active();
 
 	private:
@@ -69,8 +70,6 @@
 
 		float			bullet_dx,
 						bullet_dy;
-
-		tank			*bullet_other_tanks;
 
 		FloatRect		bullet_rect;
 
@@ -91,13 +90,14 @@
 		tank():bullet(){}
 		~tank(){}
 
-		void init(Texture&, tank*, int, game_map*);
+		void init(Texture&, game_map*);
 		void update(float);
 		void piu_piu();
 		void moveUp();
 		void moveDown();
 		void moveLeft();
 		void moveRight();
+		bool bulletComparsion(FloatRect&);
 		void setPosition(unsigned int, unsigned int);
 		int getSide();
 		FloatRect getRect();
