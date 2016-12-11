@@ -22,5 +22,4 @@ clean:
 .PHONY: clean-all
 clean-all:
 	rm -rf *.o
-	rm -rf lib/$(OUT_LIB)
 	rm $(OutPut)
