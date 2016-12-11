@@ -1,25 +1,15 @@
 #include "obj.hpp"
 
-void tank::init(Texture &image, int num, int g_life, tank *g_other_tanks, int g_other_tanks_num, game_map *l_main_map) {
-	bullet_sprite.setTexture(image);
-	bullet_other_tanks		= g_other_tanks;
-	bullet_other_tanks_num	= g_other_tanks_num;
-	bullet_main_map			= l_main_map;
-
+void tank::init(Texture &image, tank *g_other_tanks, int g_other_tanks_num, game_map *l_main_map) {
+	bullet::init(image, g_other_tanks, g_other_tanks_num, l_main_map);
 	t_sprite.setTexture(image);
 	side			= 0;
-	life			= g_life;
-	level			= 1;
 	other_tanks		= g_other_tanks;
 	other_tanks_num	= g_other_tanks_num;
-	num_of_player	= num;
 	rect			= FloatRect(0, 0, 16, 16);
 	god_mode		= false;
-	left_tank		= 16;
 	currentFrame	= 0;
 	dx	= dy		= 0.0;
-	rect.left		= 128;
-	rect.top		= 176;
 	main_map		= l_main_map;
 }
 
@@ -69,19 +59,19 @@ void tank::piu_piu() {
 	}
 }
 
-void tank::move_up() {
+void tank::moveUp() {
 	dy	-= 0.1;
 }
 
-void tank::move_down() {
+void tank::moveDown() {
 	dy	+= 0.1;
 }
 
-void tank::move_left() {
+void tank::moveLeft() {
 	dx	-= 0.1;
 }
 
-void tank::move_right() {
+void tank::moveRight() {
 	dx	+= 0.1;
 }
 
@@ -93,24 +83,18 @@ FloatRect tank::getRect() {
 	return rect;
 }
 
-int tank::getLeft_tank() {
-	return left_tank;
-}
-
-int tank::getLife() {
-	return life;
-}
-
 void tank::draw(RenderWindow &window) {
-	if (life == 0)
-		return;
-
 	window.draw(t_sprite);
 
 	if (bullet::active()) {
 		bullet::update(l_time);
 		window.draw(bullet_sprite);
 	}
+}
+
+void tank::setPosition(unsigned int x, unsigned int y) {
+	rect.left		= x * 16;
+	rect.top		= y * 16;
 }
 
 void tank::collision() {

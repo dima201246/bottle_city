@@ -6,8 +6,15 @@
 	#include <SFML/Graphics.hpp>
 	#include <SFML/Audio.hpp>
 
+	#define UP_SIDE		0
+	#define LEFT_SIDE	2
+	#define DOWN_SIDE	4
+	#define RIGHT_SIDE	6
+
 	using namespace sf;
 
+	class AIplayer;
+	class player;
 	class tank;
 	class bullet;
 
@@ -53,7 +60,7 @@
 		void shot(int, int, int);
 		bool active();
 
-	protected:
+	private:
 
 		int				bullet_side,
 						bullet_other_tanks_num;
@@ -84,26 +91,21 @@
 		tank():bullet(){}
 		~tank(){}
 
-		void init(Texture&, int, int, tank*, int, game_map*);
+		void init(Texture&, tank*, int, game_map*);
 		void update(float);
 		void piu_piu();
-		void move_up();
-		void move_down();
-		void move_left();
-		void move_right();
+		void moveUp();
+		void moveDown();
+		void moveLeft();
+		void moveRight();
+		void setPosition(unsigned int, unsigned int);
 		int getSide();
 		FloatRect getRect();
-		int getLeft_tank();
-		int getLife();
-		void draw(RenderWindow &) ;
+		void draw(RenderWindow&) ;
 
 	private:
 
-		int				life,
-						level,
-						left_tank,
-						currentFrame,
-						num_of_player,
+		int				currentFrame,
 						side,
 						other_tanks_num;
 
@@ -122,5 +124,43 @@
 		game_map		*main_map;
 
 		void collision();
+	};
+
+	class player : protected tank {
+		public:
+
+			player():tank(){}
+			~player(){}
+
+			void init(Texture&, tank*, int, game_map*, int, int, int, int);
+			void update(float);
+			void draw(RenderWindow&);
+
+		private:
+
+			int		life,
+					level,
+					left_tank,
+					num_of_player;
+	};
+
+	class AIplayer : protected tank {
+		public:
+
+			AIplayer():tank(){}
+			~AIplayer(){}
+
+			void init(Texture&, tank*, int, game_map*, bool, int, int);
+			void update(float);
+			void draw(RenderWindow&);
+			void activation(unsigned int, unsigned int);
+
+		private:
+
+			bool	active,
+					dead;
+
+			int		life,
+					type;
 	};
 #endif
