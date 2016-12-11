@@ -111,8 +111,6 @@ int main() {
 			players[i].update(time);
 
 		/*Отрисовка объектов Начало*/
-		window.clear(Color(0,0,0));
-
 		main_map.draw(window);
 
 		for (int	i	= 0; i < MAX_PLAYERS; ++i)			// Отрисовка игроков

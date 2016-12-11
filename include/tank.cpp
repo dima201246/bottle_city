@@ -1,11 +1,12 @@
 #include "obj.hpp"
 
-tank::tank(){}
-tank::~tank(){}
-
 void tank::init(Texture &image, int num, int g_life, tank *g_other_tanks, int g_other_tanks_num, game_map *l_main_map) {
+	bullet_sprite.setTexture(image);
+	bullet_other_tanks		= g_other_tanks;
+	bullet_other_tanks_num	= g_other_tanks_num;
+	bullet_main_map			= l_main_map;
+
 	t_sprite.setTexture(image);
-	shell.init(image, g_other_tanks, g_other_tanks_num, l_main_map);
 	side			= 0;
 	life			= g_life;
 	level			= 1;
@@ -63,8 +64,8 @@ void tank::update(float time) {
 }
 
 void tank::piu_piu() {
-	if (!shell.active()) {
-		shell.shot(rect.left, rect.top, side);
+	if (!bullet::active()) {
+		bullet::shot(rect.left, rect.top, side);
 	}
 }
 
@@ -106,9 +107,9 @@ void tank::draw(RenderWindow &window) {
 
 	window.draw(t_sprite);
 
-	if (shell.active()) {
-		shell.update(l_time);
-		window.draw(shell.sprite);
+	if (bullet::active()) {
+		bullet::update(l_time);
+		window.draw(bullet_sprite);
 	}
 }
 

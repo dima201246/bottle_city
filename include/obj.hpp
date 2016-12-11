@@ -43,7 +43,7 @@
 	class bullet {
 	public:
 
-		Sprite			sprite;
+		Sprite			bullet_sprite;
 
 		bullet();
 		~bullet();
@@ -53,19 +53,19 @@
 		void shot(int, int, int);
 		bool active();
 
-	private:
+	protected:
 
-		int				side,
-						other_tanks_num;
+		int				bullet_side,
+						bullet_other_tanks_num;
 
-		bool			status;
+		bool			bullet_status;
 
-		float			dx,
-						dy;
+		float			bullet_dx,
+						bullet_dy;
 
-		tank			*other_tanks;
+		tank			*bullet_other_tanks;
 
-		FloatRect		rect;
+		FloatRect		bullet_rect;
 
 		SoundBuffer		buffer_shot,
 						buffer_un_shot;
@@ -73,16 +73,16 @@
 		Sound 			*sound_shot,
 						*sound_un_shot;
 
-		game_map		*main_map;
+		game_map		*bullet_main_map;
 
 		void collision();
 	};
 
-	class tank {
+	class tank : private bullet {
 	public:
 
-		tank();
-		~tank();
+		tank():bullet(){}
+		~tank(){}
 
 		void init(Texture&, int, int, tank*, int, game_map*);
 		void update(float);
@@ -118,8 +118,6 @@
 		bool			god_mode;
 
 		Sprite			t_sprite;
-
-		bullet			shell;
 
 		game_map		*main_map;
 
