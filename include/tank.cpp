@@ -56,21 +56,40 @@ void tank::piu_piu() {
 		bullet::shot(rect.left, rect.top, side);
 	}
 }
-
-void tank::moveUp() {
+bool tank::move(int i) {
+	switch(i) {
+		case 0:
+			return tank::moveDown();
+			break;
+		case 1:
+			return tank::moveUp();			
+			break;
+		case 2:
+			return tank::moveLeft();
+			break;
+		case 3:
+			return tank::moveRight();
+			break;
+	}
+}
+bool tank::moveUp() {
 	dy	-= 0.1;
+	return tank::collision();
 }
 
-void tank::moveDown() {
+bool tank::moveDown() {
 	dy	+= 0.1;
+	return tank::collision();
 }
 
-void tank::moveLeft() {
+bool tank::moveLeft() {
 	dx	-= 0.1;
+	return tank::collision();
 }
 
-void tank::moveRight() {
+bool tank::moveRight() {
 	dx	+= 0.1;
+	return tank::collision();
 }
 
 int tank::getSide() {
@@ -110,7 +129,7 @@ bool tank::tankComparsion(FloatRect tank_recr) {
 	return false;
 }
 
-void tank::collision() {
+bool tank::collision() {
 	char	block_1, block_2;
 
 	if (dx < 0) {
@@ -134,5 +153,7 @@ void tank::collision() {
 	if (((block_1	== 'w') || (block_2 == 'w')) || ((block_1	== 'a') || (block_2 == 'a')) || ((block_1	== 'v') || (block_2 == 'v'))) {
 		dx	= 0;
 		dy	= 0;
+		return false;
 	}
+	return true;
 }

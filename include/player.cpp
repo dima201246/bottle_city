@@ -28,19 +28,13 @@ void player::update(float time) {
 			k_l		= true,
 			action	= true;
 
-<<<<<<< HEAD
-    //for (int	i	= 0; i < players_num; i++) {
-	//	if ((players_tanks[i].getLife() > 0) && (tank::tankComparsion(players_tanks[i].getRect()))) {
 
-	//}
-	//}
-=======
 	for (int	i	= 0; i < players_num; i++) {
 		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tank::tankComparsion(players_tanks[i].getRect()))) {
 			// action	= false;
 		}
 	}
->>>>>>> 3ff989f99dfe1fc3f235c38922915e96a2612ead
+
 
 	if ((action) && (num_of_player == 2)) {
 		/*Защита от диагоналей Начало*/
