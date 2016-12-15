@@ -118,6 +118,7 @@
 
 		FloatRect		rect;
 
+
 		bool			god_mode;
 
 		Sprite			t_sprite;
@@ -165,6 +166,7 @@
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
+			//FloatRect getRect();
 			// FloatRect getRect();
 
 		private:
@@ -172,9 +174,9 @@
 			player	*players_tanks;
 
 			AIplayer	*AIplayers_tanks;
-
+			FloatRect	startPosition; // Респаун конкретного танка
 			bool	active;			// Активирован ли танк
-			bool	trueSide[4];	// Можно ли поехать в сторону
+
 			int		life,			// Кол-во жизней
 					type,			// Тип танка
 					players_num,	// Общее кол-во игроков
