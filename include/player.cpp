@@ -21,6 +21,23 @@ void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_
 	}
 }
 
+bool player::frend_collision(int side) {
+	FloatRect	tempRect	= tank::getRect();
+
+	switch (side) {
+		case LEFT_SIDE:		tempRect.left--;	break;
+		case RIGHT_SIDE:	tempRect.left++;	break;
+		case UP_SIDE:		tempRect.top--;		break;
+		case DOWN_SIDE:		tempRect.top++;		break;
+	}
+
+	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений с другом
+		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tempRect.intersects(players_tanks[i].getRect())))
+			return false;
+
+	return true;
+}
+
 void player::update(float time) {
 	bool	k_d		= true,
 			k_u		= true,
@@ -29,11 +46,11 @@ void player::update(float time) {
 			action	= true;
 
 
-	for (int	i	= 0; i < players_num; i++) {
+	/*for (int	i	= 0; i < players_num; i++) {	// Обработка столкновений с другом
 		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tank::tankComparsion(players_tanks[i].getRect()))) {
 			action	= false;
 		}
-	}
+	}*/
 
 
 	if ((action) && (num_of_player == 2)) {
@@ -61,19 +78,23 @@ void player::update(float time) {
 
 		/*Обработка кнопок Начало*/
 		if ((Keyboard::isKeyPressed(Keyboard::Left)) && (k_l)) {
-			tank::moveLeft();
+			if (frend_collision(LEFT_SIDE))
+				tank::moveLeft();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::Right)) && (k_r)) {
-			tank::moveRight();
+			if (frend_collision(RIGHT_SIDE))
+				tank::moveRight();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::Up)) && (k_u)) {
-			tank::moveUp();
+			if (frend_collision(UP_SIDE))
+				tank::moveUp();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::Down)) && (k_d)) {
-			tank::moveDown();
+			if (frend_collision(DOWN_SIDE))
+				tank::moveDown();
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Period)) {
@@ -105,19 +126,23 @@ void player::update(float time) {
 
 		/*Обработка кнопок Начало*/
 		if ((Keyboard::isKeyPressed(Keyboard::A)) && (k_l)) {
-			tank::moveLeft();
+			if (frend_collision(LEFT_SIDE))
+				tank::moveLeft();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::D)) && (k_r)) {
-			tank::moveRight();
+			if (frend_collision(RIGHT_SIDE))
+				tank::moveRight();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::W)) && (k_u)) {
-			tank::moveUp();
+			if (frend_collision(UP_SIDE))
+				tank::moveUp();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::S)) && (k_d)) {
-			tank::moveDown();
+			if (frend_collision(DOWN_SIDE))
+				tank::moveDown();
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Z)) {

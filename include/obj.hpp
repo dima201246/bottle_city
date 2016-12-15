@@ -151,6 +151,8 @@
 						num_of_player,	// Номер игрока
 						players_num,	// Общее кол-во игроков
 						AIplayers_num;	// Общее кол-во врагов
+
+			bool frend_collision(int);
 	};
 
 	class AIplayer : protected tank {
