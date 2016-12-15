@@ -50,11 +50,16 @@ void AIplayer::update(float time) {
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
 	active	= true;
-	//startPosition.left = x;
-	//startPosition.top = y;
 	tank::setPosition(x, y, DOWN_SIDE);
 }
 
+FloatRect AIplayer::getRect() {
+	return tank::getRect();
+}
+
+int AIplayer::getLife() {
+	return life;
+}
 
 void AIplayer::draw(RenderWindow &window) {
 	if (active) {
