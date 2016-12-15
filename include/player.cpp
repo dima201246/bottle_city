@@ -31,7 +31,7 @@ void player::update(float time) {
 
 	for (int	i	= 0; i < players_num; i++) {
 		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tank::tankComparsion(players_tanks[i].getRect()))) {
-			// action	= false;
+			action	= false;
 		}
 	}
 
