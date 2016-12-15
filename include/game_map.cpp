@@ -22,8 +22,8 @@ bool game_map::loadMap(std::string path) {
 
 	unsigned int	count		= 0;
 
-	maxX			= atoi(configurator(path, "max_x", "", false).c_str()) - 1;
-	maxY			= atoi(configurator(path, "max_y", "", false).c_str()) - 1;
+	maxX			= atoi(configurator(path, "max_x", "", false).c_str());
+	maxY			= atoi(configurator(path, "max_y", "", false).c_str());
 	next_level_path	= configurator(path, "next_level", "", false);
 	temp_map		= configurator(path, "map", "", false);
 
@@ -31,8 +31,11 @@ bool game_map::loadMap(std::string path) {
 		for (unsigned int	i	= 0; i <= maxX; ++i)
 			p_map[i] = new char [maxY + 1];
 
-	for (unsigned int	i	= 0; i <= maxX; ++i)	{			// Загрузка карты в массив
-		for (unsigned int	j	= 0; j <= maxY; ++j) {
+	for (unsigned int	i	= 0; i < maxX; ++i)				// Загрузка карты в массив
+		for (unsigned int	j	= 0; j < maxY; ++j) {
+			while ((temp_map[count] < 'a') || (temp_map[count] > 'z'))	// Чтобы не влезла разная кака на карту
+				count++;
+
 			if (temp_map[count] == 'g')						// Подсчёт кол-ва травы
 				grass_num++;
 
@@ -40,20 +43,15 @@ bool game_map::loadMap(std::string path) {
 			count++;
 		}
 
-		if (temp_map[count] == 13) {
-			count++;
-		}
-	}
-
 	g_map	= new unsigned int* [grass_num + 1];
 		for (unsigned int	i	= 0; i <= grass_num; ++i)
 			g_map[i] = new unsigned int [2];
 
 	count	= 0;
 
-	for (unsigned int	j	= 0; j <= maxY; ++j)
-		for (unsigned int	i	= 0; i <= maxX; ++i)
-			if (p_map[i][j] == 'g')	{					// Подсчёт кол-ва травы
+	for (unsigned int	i	= 0; i < maxX; ++i)
+		for (unsigned int	j	= 0; j < maxY; ++j)
+			if (p_map[i][j] == 'g')	{
 				g_map[count][0]	= i;
 				g_map[count][1]	= j;
 				count++;
@@ -69,8 +67,8 @@ char game_map::getElement(unsigned int x, unsigned int y) {
 void game_map::draw(RenderWindow &window) {
 	window.clear(Color(0,0,0));
 
-	for (unsigned int	i	= 0; i < maxX; ++i) {
 		for (unsigned int	j	= 0; j < maxY; ++j) {
+	for (unsigned int	i	= 0; i < maxX; ++i) {
 			if (p_map[i][j] == 'w')							// Кирпичная стена
 				sprite.setTextureRect(IntRect(256, 0, 16, 16));
 			else if (p_map[i][j] == 'a')					// Бронь
