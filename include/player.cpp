@@ -15,9 +15,9 @@ void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_
 	AIplayers_num	= g_other_tanks_num;
 
 	if (num_of_player == 1) {
-		tank::setPosition(4, 11, UP_SIDE);
+		tank::setPosition(4, 12, UP_SIDE);
 	} else {
-		tank::setPosition(8, 11, UP_SIDE);
+		tank::setPosition(8, 12, UP_SIDE);
 	}
 }
 
