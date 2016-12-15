@@ -172,7 +172,7 @@
 			player	*players_tanks;
 
 			AIplayer	*AIplayers_tanks;
-			//FloatRect	startPosition; // Респаун конкретного танка
+			FloatRect	startPosition; // Респаун конкретного танка
 			bool	active;			// Активирован ли танк
 
 			int		life,			// Кол-во жизней

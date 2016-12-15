@@ -39,7 +39,9 @@ void AIplayer::update(float time) {
 			currentSide = rand()%4;
 			tank::piu_piu();
 		} else {
-			currentSide = rand()%4;
+			//while(not tank::move(currentSide)) {
+				currentSide = rand()%4;	
+			//}
 		}
 	}
 
@@ -57,10 +59,10 @@ void AIplayer::activation(unsigned int x, unsigned int y) {
 void AIplayer::draw(RenderWindow &window) {
 	if (active) {
 		tank::draw(window);
-		//if (life == 0)
-		//{
-			//AIplayer::activation(startPosition.left, startPosition.top);
+		if (life == 0)
+		{
+		//	AIplayer::activation(startPosition.left, startPosition.top);
 			//tank::draw(window);
-		//}
+		}
 	}
 }
