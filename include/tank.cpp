@@ -145,11 +145,11 @@ bool tank::checkMove() {
 		block_2	= main_map->getElement((int)((rect.top + 16) / 16), (int)((rect.left + 15) / 16));
 		side	= 4;
 	}
-	if ((dx > 0) && (((rect.left + rect.width) / 16) > main_map->getMaxX())) {
+	if ((dx > 0) && (((rect.left + rect.width) / 16) >= (main_map->getMaxX() - 1))) {
 		dx	= 0;
 		return false;
 	} 
-	if ((dy > 0) && (((rect.top + rect.height) / 16) > (main_map->getMaxY() - 1))) {
+	if ((dy > 0) && (((rect.top + rect.height) / 16) >= (main_map->getMaxY() - 1))) {
 		dy	= 0;
 		return false;
 	}

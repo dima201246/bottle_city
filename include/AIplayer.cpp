@@ -13,21 +13,32 @@ void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num
 
 void AIplayer::update(float time) {
 	bool 	canMove			= false;
-	if(tank::getRect().left == -1){ // совпадает с коорд игрока
-		tank::moveDown();
-		tank::piu_piu();
-		tank::update(time);
-		return;
-	}
-	if(tank::getRect().top == -1){ // совпадает с коорд игрока
-		tank::moveRight();
-		tank::piu_piu();
-		tank::update(time);
-		return;
+	FloatRect	tempRect	= tank::getRect();
+	for (int	i	= 0; i < players_num; i++)	{
+		if(tank::getRect().left > players_tanks[i].getRect().left){ // совпадает с коорд игрока
+			if(tank::getRect().top>players_tanks[i].getRect().top) {
+				tank::move(0);
+			} else {
+				tank::move(1);
+			}
+			tank::piu_piu();
+			tank::update(time);
+			return;
+		}
+		if(tank::getRect().top > players_tanks[i].getRect().top){ // совпадает с коорд игрока
+			if(tank::getRect().left>players_tanks[i].getRect().left) {
+				tank::move(2);
+			} else {
+				tank::move(3);
+			}
+			tank::piu_piu();
+			tank::update(time);
+			return;
+		}
 	}
 	
 
-	
+	/*
 	if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
 	{	
 		for (int i = 0; i < 4; ++i)
@@ -39,19 +50,18 @@ void AIplayer::update(float time) {
 			currentSide = rand()%4;
 			tank::piu_piu();
 		} else {
-			//while(not tank::move(currentSide)) {
-				currentSide = rand()%4;	
-			//}
+			currentSide = rand()%4;	
+			tank::move(currentSide);
 		}
 	}
-
+	*/
 	tank::update(time);
 }
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
 	active	= true;
-	//startPosition.left = x;
-	//startPosition.top = y;
+	startPosition.left = x;
+	startPosition.top = y;
 	tank::setPosition(x, y, DOWN_SIDE);
 }
 
@@ -61,8 +71,7 @@ void AIplayer::draw(RenderWindow &window) {
 		tank::draw(window);
 		if (life == 0)
 		{
-		//	AIplayer::activation(startPosition.left, startPosition.top);
-			//tank::draw(window);
+			AIplayer::activation(startPosition.left, startPosition.top);
 		}
 	}
 }
