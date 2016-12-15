@@ -14,14 +14,7 @@ void tank::init(Texture &image, game_map *l_main_map) {
 void tank::update(float time) {
 	l_time	= time;
 
-	if ((dx	!= 0) || (dy != 0)) {	// Защита от выхода за границы
-		if ((dx > 0) && (((rect.left + rect.width) / 16) > main_map->getMaxX())) dx	= 0;
-		if ((dy > 0) && (((rect.top + rect.height) / 16) > (main_map->getMaxY() - 1))) dy	= 0;
-		if ((dx < 0) && (rect.left <= 1)) dx	= 0;
-		if ((dy < 0) && (rect.top <= 1)) dy	= 0;
-
-		collision();
-	}
+	checkMove();
 
 	rect.left		+= dx * (time / 2.0);	// Собсно, движение
 	rect.top 		+= dy * (time / 2.0);
@@ -70,26 +63,29 @@ bool tank::move(int i) {
 		case 3:
 			return tank::moveRight();
 			break;
+		case 4:
+			return move(rand()%3);
+			break;
 	}
 }
 bool tank::moveUp() {
 	dy	-= 0.1;
-	return tank::collision();
+	return tank::checkMove();
 }
 
 bool tank::moveDown() {
 	dy	+= 0.1;
-	return tank::collision();
+	return tank::checkMove();
 }
 
 bool tank::moveLeft() {
 	dx	-= 0.1;
-	return tank::collision();
+	return tank::checkMove();
 }
 
 bool tank::moveRight() {
 	dx	+= 0.1;
-	return tank::collision();
+	return tank::checkMove();
 }
 
 int tank::getSide() {
@@ -129,7 +125,7 @@ bool tank::tankComparsion(FloatRect tank_recr) {
 	return false;
 }
 
-bool tank::collision() {
+bool tank::checkMove() {
 	char	block_1, block_2;
 
 	if (dx < 0) {
@@ -149,7 +145,22 @@ bool tank::collision() {
 		block_2	= main_map->getElement((int)((rect.top + 16) / 16), (int)((rect.left + 15) / 16));
 		side	= 4;
 	}
-
+	if ((dx > 0) && (((rect.left + rect.width) / 16) > main_map->getMaxX())) {
+		dx	= 0;
+		return false;
+	} 
+	if ((dy > 0) && (((rect.top + rect.height) / 16) > (main_map->getMaxY() - 1))) {
+		dy	= 0;
+		return false;
+	}
+	if ((dx < 0) && (rect.left <= 1)) {
+		dx	= 0;
+		return false;
+	}
+	if ((dy < 0) && (rect.top <= 1)) {
+		dy	= 0;
+		return false;
+	}
 	if (((block_1	== 'w') || (block_2 == 'w')) || ((block_1	== 'a') || (block_2 == 'a')) || ((block_1	== 'v') || (block_2 == 'v'))) {
 		dx	= 0;
 		dy	= 0;

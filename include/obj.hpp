@@ -124,7 +124,7 @@
 
 		game_map		*main_map;
 
-		bool collision();
+		bool checkMove();
 	};
 
 	class player : protected tank {
