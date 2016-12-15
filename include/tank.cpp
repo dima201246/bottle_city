@@ -108,6 +108,7 @@ void tank::draw(RenderWindow &window) {
 void tank::setPosition(unsigned int x, unsigned int y, int getted_side) {
 	rect.left		= x * 16;
 	rect.top		= y * 16;
+	startPosition	= rect;
 	side			= getted_side;
 }
 
