@@ -28,11 +28,13 @@ void player::update(float time) {
 			k_l		= true,
 			action	= true;
 
+
 	for (int	i	= 0; i < players_num; i++) {
 		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tank::tankComparsion(players_tanks[i].getRect()))) {
 			action	= false;
 		}
 	}
+
 
 	if ((action) && (num_of_player == 2)) {
 		/*Защита от диагоналей Начало*/

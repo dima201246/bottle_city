@@ -92,12 +92,13 @@
 		void init(Texture&, game_map*);
 		void update(float);
 		void piu_piu();
-		void moveUp();
-		void moveDown();
-		void moveLeft();
-		void moveRight();
+		bool moveUp();
+		bool moveDown();
+		bool moveLeft();
+		bool moveRight();
 		bool bulletComparsion(FloatRect&);
 		bool tankComparsion(FloatRect);
+		bool move(int);
 		void setPosition(unsigned int, unsigned int, int);
 		int getSide();
 		FloatRect getRect();
@@ -123,7 +124,7 @@
 
 		game_map		*main_map;
 
-		void collision();
+		bool collision();
 	};
 
 	class player : protected tank {
@@ -171,10 +172,11 @@
 			AIplayer	*AIplayers_tanks;
 
 			bool	active;			// Активирован ли танк
-
+			bool	trueSide[4];	// Можно ли поехать в сторону
 			int		life,			// Кол-во жизней
 					type,			// Тип танка
 					players_num,	// Общее кол-во игроков
-					AIplayers_num;	// Общее кол-во врагов
+					AIplayers_num,	// Общее кол-во врагов
+					currentSide;	// Направление движения
 	};
 #endif
