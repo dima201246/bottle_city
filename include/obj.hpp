@@ -153,7 +153,7 @@
 						players_num,	// Общее кол-во игроков
 						AIplayers_num;	// Общее кол-во врагов
 
-			bool frend_collision(int);
+			bool frendCollision(int);
 	};
 
 	class AIplayer : protected tank {
@@ -167,8 +167,8 @@
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
 			//FloatRect getRect();
-			FloatRect getRect();
-			int getLife();
+			FloatRect	getRect();
+			init		getLife();
 
 		private:
 

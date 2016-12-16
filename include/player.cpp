@@ -21,7 +21,7 @@ void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_
 	}
 }
 
-bool player::frend_collision(int side) {
+bool player::frendCollision(int side) {
 	FloatRect	tempRect	= tank::getRect();
 
 	switch (side) {
