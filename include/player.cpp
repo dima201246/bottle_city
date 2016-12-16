@@ -75,22 +75,22 @@ void player::update(float time) {
 
 		/*Обработка кнопок Начало*/
 		if ((Keyboard::isKeyPressed(Keyboard::Left)) && (k_l)) {
-			if (frend_collision(LEFT_SIDE))
+			if (frendCollision(LEFT_SIDE))
 				tank::moveLeft();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::Right)) && (k_r)) {
-			if (frend_collision(RIGHT_SIDE))
+			if (frendCollision(RIGHT_SIDE))
 				tank::moveRight();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::Up)) && (k_u)) {
-			if (frend_collision(UP_SIDE))
+			if (frendCollision(UP_SIDE))
 				tank::moveUp();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::Down)) && (k_d)) {
-			if (frend_collision(DOWN_SIDE))
+			if (frendCollision(DOWN_SIDE))
 				tank::moveDown();
 		}
 
@@ -123,22 +123,22 @@ void player::update(float time) {
 
 		/*Обработка кнопок Начало*/
 		if ((Keyboard::isKeyPressed(Keyboard::A)) && (k_l)) {
-			if (frend_collision(LEFT_SIDE))
+			if (frendCollision(LEFT_SIDE))
 				tank::moveLeft();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::D)) && (k_r)) {
-			if (frend_collision(RIGHT_SIDE))
+			if (frendCollision(RIGHT_SIDE))
 				tank::moveRight();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::W)) && (k_u)) {
-			if (frend_collision(UP_SIDE))
+			if (frendCollision(UP_SIDE))
 				tank::moveUp();
 		}
 
 		if ((Keyboard::isKeyPressed(Keyboard::S)) && (k_d)) {
-			if (frend_collision(DOWN_SIDE))
+			if (frendCollision(DOWN_SIDE))
 				tank::moveDown();
 		}
 
