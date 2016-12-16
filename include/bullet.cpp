@@ -117,3 +117,7 @@ void bullet::collision() {
 		}
 	}*/
 }
+
+void bullet::draw(RenderWindow& window) {
+	window.draw(bullet_sprite);
+}

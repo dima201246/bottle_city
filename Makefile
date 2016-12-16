@@ -3,7 +3,7 @@ FLAGS 			= -c -Wall -g
 OutPut			= bottle_city
 _BTLC_VERSION	= \"0.0.1\"
 
-Modules		= bullet.o tank.o configurator.o game_map.o player.o AIplayer.o
+Modules		= bullet.o tank.o configurator.o game_map.o player.o AIplayer.o body.o
 Main 		= main.o
 
 VPATH = ./include

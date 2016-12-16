@@ -60,6 +60,7 @@
 		void shot(int, int, int);
 		bool rectComparison(FloatRect&);
 		bool active();
+		void draw(RenderWindow&);
 
 	private:
 
@@ -83,20 +84,18 @@
 		void collision();
 	};
 
-	class tank : private bullet {
+	class body {
 	public:
 
-		tank():bullet(){}
-		~tank(){}
+		body(){}
+		~body(){}
 
 		void init(Texture&, game_map*);
 		void update(float);
-		void piu_piu();
 		bool moveUp();
 		bool moveDown();
 		bool moveLeft();
 		bool moveRight();
-		bool bulletComparsion(FloatRect&);
 		bool tankComparsion(FloatRect);
 		bool move(int);
 		void setPosition(unsigned int, unsigned int, int);
@@ -107,14 +106,11 @@
 	private:
 
 		int				currentFrame,
-						side,
-						other_tanks_num;
+						side;
 
 		float			dx,
 						dy,
 						l_time;
-
-		tank			*other_tanks;
 
 		FloatRect		rect;
 
@@ -126,6 +122,30 @@
 		game_map		*main_map;
 
 		bool checkMove();
+	};
+
+	class tank {
+	public:
+
+		void init(Texture&, game_map*);
+		void setPosition(unsigned int, unsigned int, int);
+		void update(float);
+		void piu_piu();
+		bool moveUp();
+		bool moveDown();
+		bool moveLeft();
+		bool moveRight();
+		bool tankComparsion(FloatRect);
+		bool move(int);
+		int getSide();
+		FloatRect getRect();
+		void draw(RenderWindow&);
+
+	private:
+
+		body	t_body;
+
+		bullet	t_bullet;
 	};
 
 	class player : protected tank {
