@@ -166,9 +166,8 @@
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
-			//FloatRect getRect();
 			FloatRect	getRect();
-			init		getLife();
+			int			getLife();
 
 		private:
 
