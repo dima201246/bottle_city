@@ -27,7 +27,7 @@ void bullet::update(float time) {
 		if ((bullet_dx > 0) && (((bullet_rect.left + bullet_rect.width) / 16) > bullet_main_map->getMaxX()))
 			bullet_dx	= 0;
 
-		if ((bullet_dy > 0) && (((bullet_rect.top + bullet_rect.height) / 16) > (bullet_main_map->getMaxX() - 1)))
+		if ((bullet_dy > 0) && (((bullet_rect.top + bullet_rect.height) / 16) > bullet_main_map->getMaxX()))
 			bullet_dy	= 0;
 
 		if ((bullet_dx < 0) && (bullet_rect.left <= 1))
