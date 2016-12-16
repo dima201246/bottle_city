@@ -2,6 +2,7 @@
 #define OBJ_H
 
 	#include <stdlib.h>
+	#include <unistd.h>
 	#include <string>
 	#include <SFML/Graphics.hpp>
 	#include <SFML/Audio.hpp>
@@ -24,6 +25,8 @@
 	class bullet;
 	class body;
 	class game_map;
+	class game;
+	class g_pause;
 
 	class game {
 	public:
@@ -46,6 +49,23 @@
 		Clock		clock;
 
 		float		time;
+	};
+
+	class g_pause {
+	public:
+
+		g_pause(Texture&, game_map*);
+		~g_pause(){}
+
+		void paused(RenderWindow&);
+		bool status();
+
+	private:
+
+		Sprite	p_sprite;
+
+		bool 	status_game;
+
 	};
 
 	class game_map {

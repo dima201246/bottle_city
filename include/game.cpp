@@ -16,6 +16,8 @@ void game::gameStart() {
 	game_map main_map(texture);									// Загрузка текстур в карту
 	main_map.loadMap("media/maps/level1.map");					// Загрузка карты из файла
 
+	g_pause	game_pause(texture, &main_map);
+
 	players[0].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, 3, 1, 20, 1);	// Задача стандартных параметров для игроков
 	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, 3, 1, 20, 2);
 
@@ -42,25 +44,32 @@ void game::gameStart() {
 			}
 		}
 
-		for (int	i	= 0; i < MAX_PLAYERS; ++i)				// Обновление игроков
-			players[i].update(time);
+		if (Keyboard::isKeyPressed(Keyboard::P)) {
+			game_pause.paused(window);
+			usleep(100000);
+		}
 
-		for (int	i	= 0; i < MAX_EMINEMS; ++i)				// Обновление врагов
-			eminems[i].update(time);
+		if (!game_pause.status()) {
+			for (int	i	= 0; i < MAX_PLAYERS; ++i)				// Обновление игроков
+				players[i].update(time);
 
-		/*Отрисовка объектов Начало*/
+			for (int	i	= 0; i < MAX_EMINEMS; ++i)				// Обновление врагов
+				eminems[i].update(time);
 
-		main_map.draw(window);									// Отрисовка карты
+			/*Отрисовка объектов Начало*/
 
-		for (int	i	= 0; i < MAX_PLAYERS; ++i)				// Отрисовка игроков
-			players[i].draw(window);
+			main_map.draw(window);									// Отрисовка карты
 
-		for (int	i	= 0; i < MAX_EMINEMS; ++i)				// Отрисовка врагов
-			eminems[i].draw(window);
+			for (int	i	= 0; i < MAX_PLAYERS; ++i)				// Отрисовка игроков
+				players[i].draw(window);
 
-		main_map.drawGrass(window);								// Отрисовка травы
+			for (int	i	= 0; i < MAX_EMINEMS; ++i)				// Отрисовка врагов
+				eminems[i].draw(window);
 
-        window.display();
-		/*Отрисовка объектов Конец*/
+			main_map.drawGrass(window);								// Отрисовка травы
+
+        	window.display();
+			/*Отрисовка объектов Конец*/
+		}
 	}
 }
