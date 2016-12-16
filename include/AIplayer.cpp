@@ -22,16 +22,47 @@ int abs(int x){
 
 void AIplayer::update(float time) {
 	bool 	canMove			= false;
-	for (int	i	= 0; i <= players_num; i++)	{
+	bool	wall			= true;
+	char	temp;
+	for (int	i	= 0; i < players_num; i++)	{
 		if(abs(tank::getRect().left - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
 			if(tank::getRect().top>players_tanks[i].getRect().top) {
-				currentSide = UP_SIDE;
-				tank::move(currentSide);
+				for (int i = 0; i < abs(tank::getRect().top-players_tanks[i].getRect().top); ++i)
+				{	
+					//temp = game_map::getElement((players_tanks[i].getRect().top+8), (tank::getRect().top+i));
+					temp = game_map::getElement(8, 8);
+					if (temp == "s"||temp == "i"||temp == "g"||temp == "v")
+					{
+						wall = true and wall;
+					} 
+					else
+					{
+						wall = false;
+					}
+				}
+				if (wall) {
+					currentSide = UP_SIDE;
+				}
 			} else {
-				currentSide = DOWN_SIDE;
-				tank::move(currentSide);
+				for (int i = 0; i < abs(tank::getRect().top-players_tanks[i].getRect().top); ++i)
+				{	
+					temp = game_map::getElement((tank::getRect().top+8), (tank::getRect().top+i));
+					temp = game_map::getElement(8, 8);
+					if (temp == "s"||temp == "i"||temp == "g"||temp == "v")
+					{
+						wall = true and wall;
+					} 
+					else
+					{
+						wall = false;
+					}
+				}
+				if (wall) {
+					currentSide = UP_SIDE;
+				}
 			}
 			if (rand()%players_num == 0) {
+				tank::move(currentSide);
 				tank::piu_piu();
 				tank::update(time);
 				//return;
