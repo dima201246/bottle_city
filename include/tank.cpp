@@ -52,19 +52,19 @@ void tank::piu_piu() {
 bool tank::move(int i) {
 	switch(i) {
 		case 0:
-			return tank::moveDown();
-			break;
-		case 1:
-			return tank::moveUp();			
+			return tank::moveUp();
 			break;
 		case 2:
-			return tank::moveLeft();
-			break;
-		case 3:
-			return tank::moveRight();
+			return tank::moveLeft();			
 			break;
 		case 4:
-			return move(rand()%4);
+			return tank::moveDown();
+			break;
+		case 6:
+			return tank::moveRight();
+			break;
+		case 8:
+			return move(2*(rand()%4));
 			break;
 	}
 }

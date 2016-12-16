@@ -8,7 +8,7 @@ void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num
 	active			= l_active;
 	players_tanks	= g_other_tanks;
 	players_num		= g_other_tanks_num;
-	currentSide		= 4; // 0 - низ, 1 верх, 2 лево, 3 право, 4- не определено
+	currentSide		= 8; // стандартные 0,2,4,6 и 8 - рандомное направление
 }
 
 int abs(int x){
@@ -22,26 +22,34 @@ int abs(int x){
 
 void AIplayer::update(float time) {
 	bool 	canMove			= false;
-	for (int	i	= 0; i < players_num; i++)	{
+	for (int	i	= 0; i <= players_num; i++)	{
 		if(abs(tank::getRect().left - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
 			if(tank::getRect().top>players_tanks[i].getRect().top) {
-				tank::move(1);
+				currentSide = UP_SIDE;
+				tank::move(currentSide);
 			} else {
-				tank::move(0);
+				currentSide = DOWN_SIDE;
+				tank::move(currentSide);
 			}
-			tank::piu_piu();
-			tank::update(time);
-			return;
+			if (rand()%players_num == 0) {
+				tank::piu_piu();
+				tank::update(time);
+				//return;
+			}		
 		}
 		if(abs(tank::getRect().top == players_tanks[i].getRect().top)<16){ // совпадает с коорд игрока
 			if(tank::getRect().left>players_tanks[i].getRect().left) {
-				tank::move(2);
+				currentSide = LEFT_SIDE;
+				tank::move(currentSide);
 			} else {
-				tank::move(3);
+				currentSide = RIGHT_SIDE;
+				tank::move(currentSide);
 			}
-			tank::piu_piu();
-			tank::update(time);
-			return;
+			if (rand()%players_num == 0) {
+				tank::piu_piu();
+				tank::update(time);
+				//return;
+			}
 		}
 	}
 	
@@ -56,7 +64,7 @@ void AIplayer::update(float time) {
 		if (not canMove)
 		{
 			currentSide = rand()%4;
-			tank::piu_piu();
+			//tank::piu_piu();
 		} else {
 			currentSide = rand()%4;	
 			tank::move(currentSide);
