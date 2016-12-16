@@ -162,6 +162,8 @@
 
 		private:
 
+			game_map	*main_map;
+
 			player		*players_tanks;
 
 			AIplayer	*AIplayers_tanks;
@@ -193,8 +195,12 @@
 
 			player	*players_tanks;
 
+			game_map	*main_map;
+
 			AIplayer	*AIplayers_tanks;
+
 			FloatRect	startPosition; // Респаун конкретного танка
+
 			bool	active;			// Активирован ли танк
 
 			int		life,			// Кол-во жизней

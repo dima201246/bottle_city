@@ -3,6 +3,8 @@
 void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
 	tank::init(image, l_main_map);
 
+	main_map		= l_main_map;
+
 	life			= l_life;
 	level			= l_level;
 	left_tank		= l_left_tank;

@@ -3,6 +3,8 @@
 void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, bool l_active, int l_life, int l_type) {
 	tank::init(image, l_main_map);
 
+	main_map		= l_main_map;
+
 	life			= l_life;
 	type			= l_type;
 	active			= l_active;
