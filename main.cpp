@@ -1,7 +1,4 @@
 #include "include/obj.hpp"
-#include <string>
-
-using namespace std;
 
 int main() {
 	game	game_now;
