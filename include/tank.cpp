@@ -64,7 +64,7 @@ bool tank::move(int i) {
 			return tank::moveRight();
 			break;
 		case 4:
-			return move(rand()%3);
+			return move(rand()%4);
 			break;
 	}
 }

@@ -25,9 +25,9 @@ void AIplayer::update(float time) {
 	for (int	i	= 0; i < players_num; i++)	{
 		if(abs(tank::getRect().left - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
 			if(tank::getRect().top>players_tanks[i].getRect().top) {
-				tank::move(0);
-			} else {
 				tank::move(1);
+			} else {
+				tank::move(0);
 			}
 			tank::piu_piu();
 			tank::update(time);
