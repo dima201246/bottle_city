@@ -43,42 +43,43 @@ void body::update(float time) {
 	dy=0;
 }
 
+
 bool body::move(int i) {
 	switch(i) {
 		case 0:
-			return body::moveDown();
-			break;
-		case 1:
-			return body::moveUp();			
+			return body::moveUp();
 			break;
 		case 2:
-			return body::moveLeft();
-			break;
-		case 3:
-			return body::moveRight();
+			return body::moveLeft();			
 			break;
 		case 4:
-			return move(rand()%4);
+			return body::moveDown();
+			break;
+		case 6:
+			return body::moveRight();
+			break;
+		case 8:
+			return move(2*(rand()%4));
 			break;
 	}
 }
 bool body::moveUp() {
-	dy	-= 0.1;
+	dy	= -0.1;
 	return body::checkMove();
 }
 
 bool body::moveDown() {
-	dy	+= 0.1;
+	dy	= 0.1;
 	return body::checkMove();
 }
 
 bool body::moveLeft() {
-	dx	-= 0.1;
+	dx	= -0.1;
 	return body::checkMove();
 }
 
 bool body::moveRight() {
-	dx	+= 0.1;
+	dx	= 0.1;
 	return body::checkMove();
 }
 
