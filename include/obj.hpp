@@ -6,6 +6,11 @@
 	#include <SFML/Graphics.hpp>
 	#include <SFML/Audio.hpp>
 
+	#define MAX_PLAYERS	2
+	#define MAX_EMINEMS	20
+
+	#define GAME_SPEED	900
+
 	#define UP_SIDE		0
 	#define LEFT_SIDE	2
 	#define DOWN_SIDE	4
@@ -17,6 +22,31 @@
 	class player;
 	class tank;
 	class bullet;
+	class body;
+	class game_map;
+
+	class game {
+	public:
+
+		game(){}
+		~game();
+
+		void gameStart();
+
+	private:
+
+		player		*players;
+
+		AIplayer	*eminems;
+
+		Event 		event;
+
+		Texture 	texture;
+
+		Clock		clock;
+
+		float		time;
+	};
 
 	class game_map {
 	public:
@@ -162,6 +192,8 @@
 
 		private:
 
+			game_map	*main_map;
+
 			player		*players_tanks;
 
 			AIplayer	*AIplayers_tanks;
@@ -193,8 +225,12 @@
 
 			player	*players_tanks;
 
+			game_map	*main_map;
+
 			AIplayer	*AIplayers_tanks;
+
 			FloatRect	startPosition; // Респаун конкретного танка
+
 			bool	active;			// Активирован ли танк
 
 			int		life,			// Кол-во жизней
