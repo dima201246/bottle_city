@@ -1,4 +1,4 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
 g_pause::g_pause(Texture &image, game_map *main_map) {
 	p_sprite.setTexture(image);

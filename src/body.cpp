@@ -1,4 +1,4 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
 void body::init(Texture &image, game_map *l_main_map) {
 	t_sprite.setTexture(image);

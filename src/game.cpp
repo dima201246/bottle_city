@@ -1,4 +1,4 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
 game::~game() {
 	delete [] players;

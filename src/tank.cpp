@@ -1,4 +1,4 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
 void tank::init(Texture &image, game_map *l_main_map) {
 	t_bullet.init(image, l_main_map);

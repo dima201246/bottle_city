@@ -1,5 +1,5 @@
-#include "configurator.h"
-#include "obj.hpp"
+#include "../include/configurator.h"
+#include "../include/obj.hpp"
 
 game_map::game_map(Texture &image) {
 	sprite.setTexture(image);

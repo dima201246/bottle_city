@@ -1,4 +1,4 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
 bullet::bullet() {
 	buffer_shot.loadFromFile("media/sound/shot.ogg");		// Подгрузка звуков
