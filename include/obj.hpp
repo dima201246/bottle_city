@@ -2,9 +2,15 @@
 #define OBJ_H
 
 	#include <stdlib.h>
+	#include <unistd.h>
 	#include <string>
 	#include <SFML/Graphics.hpp>
 	#include <SFML/Audio.hpp>
+
+	#define MAX_PLAYERS	2
+	#define MAX_EMINEMS	20
+
+	#define GAME_SPEED	900
 
 	#define UP_SIDE		0
 	#define LEFT_SIDE	2
@@ -17,6 +23,50 @@
 	class player;
 	class tank;
 	class bullet;
+	class body;
+	class game_map;
+	class game;
+	class g_pause;
+
+	class game {
+	public:
+
+		game(){}
+		~game();
+
+		void gameStart();
+
+	private:
+
+		player		*players;
+
+		AIplayer	*eminems;
+
+		Event 		event;
+
+		Texture 	texture;
+
+		Clock		clock;
+
+		float		time;
+	};
+
+	class g_pause {
+	public:
+
+		g_pause(Texture&, game_map*);
+		~g_pause(){}
+
+		void paused(RenderWindow&);
+		bool status();
+
+	private:
+
+		Sprite	p_sprite;
+
+		bool 	status_game;
+
+	};
 
 	class game_map {
 	public:
@@ -52,15 +102,16 @@
 
 		Sprite			bullet_sprite;
 
-		bullet();
+		bullet(Texture&, game_map*);
 		~bullet();
 
-		void init(Texture&, game_map*);
 		void update(float);
 		void shot(int, int, int);
-		bool rectComparison(FloatRect&);
+		bool bulletComparsion(FloatRect);
 		bool active();
+		void destroy();
 		void draw(RenderWindow&);
+		FloatRect getRect();
 
 	private:
 
@@ -87,10 +138,9 @@
 	class body {
 	public:
 
-		body(){}
+		body(Texture&, game_map*);
 		~body(){}
 
-		void init(Texture&, game_map*);
 		void update(float);
 		bool moveUp();
 		bool moveDown();
@@ -127,6 +177,9 @@
 	class tank {
 	public:
 
+		tank(){}
+		~tank();
+
 		void init(Texture&, game_map*);
 		void setPosition(unsigned int, unsigned int, int);
 		void update(float);
@@ -136,6 +189,10 @@
 		bool moveLeft();
 		bool moveRight();
 		bool tankComparsion(FloatRect);
+		bool bulletComparsion(FloatRect);
+		void bulletDestroy();
+		FloatRect getBulletRect();
+		bool bulletStatus();
 		bool move(int);
 		int getSide();
 		FloatRect getRect();
@@ -143,9 +200,9 @@
 
 	private:
 
-		body	t_body;
+		body	*t_body;
 
-		bullet	t_bullet;
+		bullet	*t_bullet;
 	};
 
 	class player : protected tank {
@@ -157,6 +214,7 @@
 			void init(Texture&, player*, int, AIplayer*, int, game_map*, int, int, int, int);
 			void update(float);
 			void draw(RenderWindow&);
+			void bax_bax();
 			int getLife();
 			FloatRect getRect();
 
@@ -175,7 +233,8 @@
 						players_num,	// Общее кол-во игроков
 						AIplayers_num;	// Общее кол-во врагов
 
-			bool frendCollision(int);
+			bool tankCollision(int);
+			void bulletCollision();
 	};
 
 	class AIplayer : protected tank {
@@ -188,6 +247,9 @@
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
+			void bulletDestroy();
+			void bax_bax();
+			FloatRect	getBulletRect();
 			FloatRect	getRect();
 			int			getLife();
 

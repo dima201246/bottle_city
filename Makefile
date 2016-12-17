@@ -3,10 +3,10 @@ FLAGS 			= -c -Wall -g
 OutPut			= bottle_city
 _BTLC_VERSION	= \"0.0.1\"
 
-Modules		= bullet.o tank.o configurator.o game_map.o player.o AIplayer.o body.o
+Modules		= bullet.o tank.o configurator.o game_map.o player.o AIplayer.o body.o game.o g_pause.o
 Main 		= main.o
 
-VPATH = ./include
+VPATH = ./src
 
 all: $(Modules) $(Main) 
 		$(CC) $^ -o $(OutPut) -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio

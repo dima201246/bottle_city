@@ -1,4 +1,4 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
 void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, bool l_active, int l_life, int l_type) {
 	tank::init(image, l_main_map);
@@ -142,6 +142,19 @@ FloatRect AIplayer::getRect() {
 
 int AIplayer::getLife() {
 	return life;
+}
+
+void AIplayer::bulletDestroy() {
+	tank::bulletDestroy();
+}
+
+FloatRect AIplayer::getBulletRect() {
+	return tank::getBulletRect();
+}
+
+void AIplayer::bax_bax() {
+	if (life > 0)
+		life--;
 }
 
 void AIplayer::draw(RenderWindow &window) {

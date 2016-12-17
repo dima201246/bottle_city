@@ -1,15 +1,19 @@
-#include "obj.hpp"
+#include "../include/obj.hpp"
 
-bullet::bullet() {
+bullet::bullet(Texture &image, game_map *l_main_map) {
 	buffer_shot.loadFromFile("media/sound/shot.ogg");		// Подгрузка звуков
 	sound_shot			= new Sound(buffer_shot);
+
 	buffer_un_shot.loadFromFile("media/sound/un_shot.ogg");
 	sound_un_shot		= new Sound(buffer_un_shot);
+
 	bullet_rect			= FloatRect(0, 0, 8, 8);
 	bullet_dx	= bullet_dy		= 0.0;
 	bullet_status		= false;
 	bullet_rect.left	= 0;
 	bullet_rect.top		= 0;
+	bullet_sprite.setTexture(image);
+	bullet_main_map			= l_main_map;
 }
 
 bullet::~bullet() {
@@ -17,12 +21,15 @@ bullet::~bullet() {
 	delete sound_un_shot;
 }
 
-void bullet::init(Texture &image, game_map *l_main_map) {
-	bullet_sprite.setTexture(image);
-	bullet_main_map			= l_main_map;
-}
-
 void bullet::update(float time) {
+	if ((bullet_dx != 0) && (bullet_dy != 0)) {
+		bullet_status	= false;
+		sound_un_shot->play();
+		bullet_dx	= 0;
+		bullet_dy	= 0;
+		return;
+	}
+
 	if (bullet_dx	!= bullet_dy) {																					// Защита от выхода за границы
 		if ((bullet_dx > 0) && (((bullet_rect.left + bullet_rect.width) / 16) > bullet_main_map->getMaxX()))
 			bullet_dx	= 0;
@@ -79,8 +86,8 @@ bool bullet::active() {
 	return bullet_status;
 }
 
-bool bullet::rectComparison(FloatRect &tank_recr) {
-	if ((bullet_status) && (bullet_rect.intersects(tank_recr)))
+bool bullet::bulletComparsion(FloatRect other_recr) {
+	if ((bullet_status) && (bullet_rect.intersects(other_recr)))
 		return true;
 
 	return false;
@@ -116,6 +123,15 @@ void bullet::collision() {
 			}
 		}
 	}*/
+}
+
+FloatRect bullet::getRect() {
+	return bullet_rect;
+}
+
+void bullet::destroy() {
+	sound_un_shot->play();
+	bullet_status	= false;
 }
 
 void bullet::draw(RenderWindow& window) {
