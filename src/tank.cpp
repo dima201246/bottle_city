@@ -57,6 +57,23 @@ FloatRect tank::getRect() {
 	return t_body.getRect();
 }
 
+bool tank::bulletComparsion(FloatRect b_rect) {
+	return t_bullet.bulletComparsion(b_rect);
+}
+
+
+FloatRect tank::getBulletRect() {
+	return t_bullet.getRect();
+}
+
+void tank::bulletDestroy() {
+	t_bullet.destroy();
+}
+
+bool tank::bulletStatus() {
+	return t_bullet.active();
+}
+
 void tank::draw(RenderWindow& window) {
 	t_body.draw(window);
 

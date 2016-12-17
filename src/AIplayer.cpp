@@ -83,6 +83,19 @@ int AIplayer::getLife() {
 	return life;
 }
 
+void AIplayer::bulletDestroy() {
+	tank::bulletDestroy();
+}
+
+FloatRect AIplayer::getBulletRect() {
+	return tank::getBulletRect();
+}
+
+void AIplayer::bax_bax() {
+	if (life > 0)
+		life--;
+}
+
 void AIplayer::draw(RenderWindow &window) {
 	if (active) {
 		tank::draw(window);

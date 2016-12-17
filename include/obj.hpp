@@ -108,9 +108,11 @@
 		void init(Texture&, game_map*);
 		void update(float);
 		void shot(int, int, int);
-		bool rectComparison(FloatRect&);
+		bool bulletComparsion(FloatRect);
 		bool active();
+		void destroy();
 		void draw(RenderWindow&);
+		FloatRect getRect();
 
 	private:
 
@@ -186,6 +188,10 @@
 		bool moveLeft();
 		bool moveRight();
 		bool tankComparsion(FloatRect);
+		bool bulletComparsion(FloatRect);
+		void bulletDestroy();
+		FloatRect getBulletRect();
+		bool bulletStatus();
 		bool move(int);
 		int getSide();
 		FloatRect getRect();
@@ -207,6 +213,7 @@
 			void init(Texture&, player*, int, AIplayer*, int, game_map*, int, int, int, int);
 			void update(float);
 			void draw(RenderWindow&);
+			void bax_bax();
 			int getLife();
 			FloatRect getRect();
 
@@ -225,7 +232,8 @@
 						players_num,	// Общее кол-во игроков
 						AIplayers_num;	// Общее кол-во врагов
 
-			bool frendCollision(int);
+			bool tankCollision(int);
+			void bulletCollision();
 	};
 
 	class AIplayer : protected tank {
@@ -238,6 +246,9 @@
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
+			void bulletDestroy();
+			void bax_bax();
+			FloatRect	getBulletRect();
 			FloatRect	getRect();
 			int			getLife();
 
