@@ -118,11 +118,11 @@ void AIplayer::update(float time) {
 		if (not canMove)
 		{
 			currentSide = rand()%4;
-			//tank::piu_piu();
-		} else {
-			currentSide = rand()%4;	
-			tank::move(currentSide);
+			tank::piu_piu();
+		} else {	
+			currentSide = 8;
 		}
+		tank::move(currentSide);
 	}
 	
 	tank::update(time);
