@@ -1,6 +1,6 @@
 #include "../include/obj.hpp"
 
-void body::init(Texture &image, game_map *l_main_map) {
+body::body(Texture &image, game_map *l_main_map) {
 	t_sprite.setTexture(image);
 	side			= 0;
 	rect			= FloatRect(0, 0, 16, 16);

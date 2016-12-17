@@ -102,10 +102,9 @@
 
 		Sprite			bullet_sprite;
 
-		bullet();
+		bullet(Texture&, game_map*);
 		~bullet();
 
-		void init(Texture&, game_map*);
 		void update(float);
 		void shot(int, int, int);
 		bool bulletComparsion(FloatRect);
@@ -139,10 +138,9 @@
 	class body {
 	public:
 
-		body(){}
+		body(Texture&, game_map*);
 		~body(){}
 
-		void init(Texture&, game_map*);
 		void update(float);
 		bool moveUp();
 		bool moveDown();
@@ -179,6 +177,9 @@
 	class tank {
 	public:
 
+		tank(){}
+		~tank();
+
 		void init(Texture&, game_map*);
 		void setPosition(unsigned int, unsigned int, int);
 		void update(float);
@@ -199,9 +200,9 @@
 
 	private:
 
-		body	t_body;
+		body	*t_body;
 
-		bullet	t_bullet;
+		bullet	*t_bullet;
 	};
 
 	class player : protected tank {

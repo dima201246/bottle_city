@@ -1,25 +1,24 @@
 #include "../include/obj.hpp"
 
-bullet::bullet() {
+bullet::bullet(Texture &image, game_map *l_main_map) {
 	buffer_shot.loadFromFile("media/sound/shot.ogg");		// Подгрузка звуков
 	sound_shot			= new Sound(buffer_shot);
+
 	buffer_un_shot.loadFromFile("media/sound/un_shot.ogg");
 	sound_un_shot		= new Sound(buffer_un_shot);
+
 	bullet_rect			= FloatRect(0, 0, 8, 8);
 	bullet_dx	= bullet_dy		= 0.0;
 	bullet_status		= false;
 	bullet_rect.left	= 0;
 	bullet_rect.top		= 0;
+	bullet_sprite.setTexture(image);
+	bullet_main_map			= l_main_map;
 }
 
 bullet::~bullet() {
 	delete sound_shot;
 	delete sound_un_shot;
-}
-
-void bullet::init(Texture &image, game_map *l_main_map) {
-	bullet_sprite.setTexture(image);
-	bullet_main_map			= l_main_map;
 }
 
 void bullet::update(float time) {
