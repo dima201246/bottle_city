@@ -1,8 +1,8 @@
 #include "../include/obj.hpp"
 #include <iostream>
 
-void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
-	tank::init(image, l_main_map);
+void player::init(Texture &image, player *g_tanks, int g_tanks_num, AIplayer *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, right_bar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
+	tank::init(image, l_main_map, l_r_b);
 
 	main_map		= l_main_map;
 
@@ -38,6 +38,8 @@ void player::bulletCollision() {
 	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с врагом
 		if ((AIplayers_tanks[i].getLife() > 0) && (tank::bulletComparsion(AIplayers_tanks[i].getRect()))) {
 			AIplayers_tanks[i].bax_bax();
+			left_tank--;	
+			tank::r_b->setEminems(left_tank);
 		}
 }
 

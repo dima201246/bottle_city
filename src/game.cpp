@@ -6,6 +6,7 @@ game::~game() {
 }
 
 void game::gameStart() {
+	bool first_interapt	= true;
 
 	players		= new player[MAX_PLAYERS];						// Создание игроков
 	eminems		= new AIplayer[MAX_EMINEMS];					// Создание врагов
@@ -19,16 +20,17 @@ void game::gameStart() {
 	right_bar	r_b(texture, main_map.getMaxX(), MAX_EMINEMS, 1, 3, 3);
 	g_pause	game_pause(texture, &main_map);
 
-	players[0].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, 3, 1, 20, 1);	// Задача стандартных параметров для игроков
-	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, 3, 1, 20, 2);
+	players[0].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, 20, 1);	// Задача стандартных параметров для игроков
+	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, 20, 2);
 
 	for (int	i = 0; i < MAX_EMINEMS; ++i) {					// Задача стандартных параметров для врага
-		eminems[i].init(texture, players, MAX_PLAYERS, &main_map, false, 1, 1);
+		eminems[i].init(texture, players, MAX_PLAYERS, &main_map, &r_b, false, 1, 1);
 	}
 
 		eminems[0].activation(0, 0);	/// TEST
 		eminems[1].activation(6, 0);
 		eminems[2].activation(12, 0);
+
 
 	while (window.isOpen()) {
 		time = clock.getElapsedTime().asMicroseconds();			// Получение времени
@@ -75,6 +77,6 @@ void game::gameStart() {
 			/*Отрисовка объектов Конец*/
 		}
 
-		usleep(10000);												// Оптимизация
+		// usleep(10000);												// Оптимизация
 	}
 }

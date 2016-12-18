@@ -1,7 +1,7 @@
 #include "../include/obj.hpp"
 
-void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, bool l_active, int l_life, int l_type) {
-	tank::init(image, l_main_map);
+void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, right_bar *l_r_b, bool l_active, int l_life, int l_type) {
+	tank::init(image, l_main_map, l_r_b);
 
 	main_map		= l_main_map;
 

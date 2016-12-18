@@ -5,9 +5,10 @@ tank::~tank() {
 	delete t_body;
 }
 
-void tank::init(Texture &image, game_map *l_main_map) {
+void tank::init(Texture &image, game_map *l_main_map, right_bar *l_r_b) {
 	t_bullet	= new bullet(image, l_main_map);
 	t_body		= new body(image, l_main_map);
+	r_b			= l_r_b;
 }
 
 void tank::setPosition(unsigned int x, unsigned int y, int getted_side) {

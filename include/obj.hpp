@@ -213,7 +213,7 @@
 		tank(){}
 		~tank();
 
-		void init(Texture&, game_map*);
+		void init(Texture&, game_map*, right_bar*);
 		void setPosition(unsigned int, unsigned int, int);
 		void update(float);
 		void piu_piu();
@@ -231,11 +231,13 @@
 		FloatRect getRect();
 		void draw(RenderWindow&);
 
+		right_bar	*r_b;
+
 	private:
 
-		body	*t_body;
+		body		*t_body;
 
-		bullet	*t_bullet;
+		bullet		*t_bullet;
 	};
 
 	class player : protected tank {
@@ -244,7 +246,7 @@
 			player():tank(){}
 			~player(){}
 
-			void init(Texture&, player*, int, AIplayer*, int, game_map*, int, int, int, int);
+			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, int, int, int, int);
 			void update(float);
 			void draw(RenderWindow&);
 			void bax_bax();
@@ -276,7 +278,7 @@
 			AIplayer():tank(){}
 			~AIplayer(){}
 
-			void init(Texture&, player*, int, game_map*, bool, int, int);
+			void init(Texture&, player*, int, game_map*, right_bar*, bool, int, int);
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
