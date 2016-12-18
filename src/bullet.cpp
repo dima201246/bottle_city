@@ -98,10 +98,12 @@ void bullet::collision() {
 		if (bullet_main_map->getElement(int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16)) == 'w') {
 			bullet_main_map->setElement(' ', int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16));
 			main_point::dx	= 0;
+			bullet_status	= false;
 		}
 
 		if (bullet_main_map->getElement(int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16)) == 'a') {
 			main_point::dx	= 0;
+			bullet_status	= false;
 		}
 	}
 
@@ -109,20 +111,14 @@ void bullet::collision() {
 		if (bullet_main_map->getElement(int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16)) == 'w') {
 			bullet_main_map->setElement(' ', int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16));
 			main_point::dy	= 0;
+			bullet_status	= false;
 		}
 
 		if (bullet_main_map->getElement(int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16)) == 'a') {
 			main_point::dy	= 0;
+			bullet_status	= false;
 		}
 	}
-
-/*	if (main_point::dx != main_point::dy) {
-		for (int	i	= 0; i < bullet_other_tanks_num; ++i) {
-			if (main_point::rect.intersects(bullet_other_tanks[i].getRect())) {	// Проверка, попала ли пуля в кого-нибудь
-
-			}
-		}
-	}*/
 }
 
 void bullet::destroy() {
