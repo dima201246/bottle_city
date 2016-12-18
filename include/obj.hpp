@@ -10,7 +10,7 @@
 	#define MAX_PLAYERS	2
 	#define MAX_EMINEMS	20
 
-	#define GAME_SPEED	6000
+	#define GAME_SPEED	900
 
 	#define UP_SIDE		0
 	#define LEFT_SIDE	2
