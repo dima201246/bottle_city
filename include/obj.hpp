@@ -27,6 +27,8 @@
 	class game_map;
 	class game;
 	class g_pause;
+	class main_point;
+	class right_bar;
 
 	class game {
 	public:
@@ -97,10 +99,51 @@
 		std::string	next_level_path;	// Путь к файлу со следующей картой
 	};
 
-	class bullet {
+	class right_bar {
 	public:
 
-		Sprite			bullet_sprite;
+		right_bar(Texture&, unsigned int, int, int, int, int);
+		~right_bar(){}
+
+		void draw(RenderWindow&);
+		void setEminems(int);
+		int getEminems();
+		void setP1Life(int);
+		int getP1Life();
+		void setP2Life(int);
+		int getP2Life();
+		void setLevel(int);
+		int getLevel();
+
+	private:
+
+		int	eminems_num,
+			level,
+			p1_life,
+			p2_life;
+
+		Sprite	sprite;
+
+		unsigned int	pos;
+	};
+
+	class main_point {
+	public:
+
+		FloatRect getRect() {
+			return rect;
+		}
+
+		float		dx,
+					dy;
+
+		Sprite		sprite;
+
+		FloatRect	rect;
+	};
+
+	class bullet : public main_point {
+	public:
 
 		bullet(Texture&, game_map*);
 		~bullet();
@@ -111,18 +154,12 @@
 		bool active();
 		void destroy();
 		void draw(RenderWindow&);
-		FloatRect getRect();
 
 	private:
 
 		int				bullet_side;	// Сторона в которую летит пуля
 
 		bool			bullet_status;
-
-		float			bullet_dx,
-						bullet_dy;
-
-		FloatRect		bullet_rect;
 
 		SoundBuffer		buffer_shot,
 						buffer_un_shot;
@@ -132,10 +169,12 @@
 
 		game_map		*bullet_main_map;
 
+	protected:
+
 		void collision();
 	};
 
-	class body {
+	class body : public main_point {
 	public:
 
 		body(Texture&, game_map*);
@@ -150,7 +189,6 @@
 		bool move(int);
 		void setPosition(unsigned int, unsigned int, int);
 		int getSide();
-		FloatRect getRect();
 		void draw(RenderWindow&) ;
 
 	private:
@@ -158,18 +196,13 @@
 		int				currentFrame,
 						side;
 
-		float			dx,
-						dy,
-						l_time;
-
-		FloatRect		rect;
-
+		float			l_time;
 
 		bool			god_mode;
 
-		Sprite			t_sprite;
-
 		game_map		*main_map;
+
+	protected:
 
 		bool checkMove();
 	};
