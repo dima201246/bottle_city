@@ -74,5 +74,7 @@ void game::gameStart() {
         	window.display();
 			/*Отрисовка объектов Конец*/
 		}
+
+		usleep(10000);												// Оптимизация
 	}
 }
