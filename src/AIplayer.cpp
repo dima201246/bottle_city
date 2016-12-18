@@ -40,6 +40,7 @@ void AIplayer::update(float time) {
 						} 
 						else
 						{
+							break;
 							wall = false;
 						}
 					}
@@ -59,7 +60,8 @@ void AIplayer::update(float time) {
 							wall = true and wall;
 						} 
 						else
-						{
+						{	
+							break;
 							wall = false;
 						}
 					}
@@ -74,6 +76,7 @@ void AIplayer::update(float time) {
 				return;
 			}		
 		}
+		
 		if(abs(tank::getRect().top - players_tanks[i].getRect().top)<16){ // совпадает с коорд игрока
 			if(tank::getRect().left>players_tanks[i].getRect().left) {
 				if (tank::getRect().left>0 and tank::getRect().left/16<main_map->getMaxY())
@@ -87,6 +90,7 @@ void AIplayer::update(float time) {
 						} 
 						else
 						{
+							break;
 							wall = false;
 						}
 					}
@@ -107,6 +111,7 @@ void AIplayer::update(float time) {
 						} 
 						else
 						{
+							break;
 							wall = false;
 						}
 					}
@@ -127,8 +132,8 @@ void AIplayer::update(float time) {
 	if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
 	{	
 		for (int i = 0; i < 4; ++i)
-		{
-			canMove = tank::move(i) or canMove;
+		{	
+			canMove = tank::move(i*2) or canMove;
 		}
 		if (not canMove)
 		{

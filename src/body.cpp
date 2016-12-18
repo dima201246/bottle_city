@@ -125,12 +125,12 @@ bool body::checkMove() {
 		side	= 4;
 	}
 
-	if ((dx > 0) && (((rect.left + rect.width) / 16) > main_map->getMaxX())) {		// Выход за границу справа
+	if ((dx > 0) && (((rect.left + rect.width) / 16) >= main_map->getMaxX())) {		// Выход за границу справа
 		dx	= 0;
 		return false;
 	} 
 
-	if ((dy > 0) && (((rect.top + rect.height) / 16) > main_map->getMaxY())) {		// Выход за границу снизу
+	if ((dy > 0) && (((rect.top + rect.height) / 16) >= main_map->getMaxY())) {		// Выход за границу снизу
 		dy	= 0;
 		return false;
 	}
