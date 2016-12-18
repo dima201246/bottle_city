@@ -1,7 +1,7 @@
 #include "../include/obj.hpp"
 
 body::body(Texture &image, game_map *l_main_map) {
-	t_sprite.setTexture(image);
+	main_point::sprite.setTexture(image);
 	side			= 0;
 	rect			= FloatRect(0, 0, 16, 16);
 	god_mode		= false;
@@ -18,7 +18,7 @@ void body::update(float time) {
 	rect.left		+= dx * (time / 2.0);	// Собсно, движение
 	rect.top 		+= dy * (time / 2.0);
 
-	t_sprite.setTextureRect(IntRect(0 + (side * 16), 0, 16, 16));
+	main_point::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 16, 16));
 
 	if ((dx	!= 0) || (dy != 0)) {
 		currentFrame	!= currentFrame;
@@ -37,7 +37,7 @@ void body::update(float time) {
 
 	}
 
-	t_sprite.setPosition(rect.left, rect.top);
+	main_point::sprite.setPosition(rect.left, rect.top);
 
 	dx=0;
 	dy=0;
@@ -88,7 +88,7 @@ int body::getSide() {
 }
 
 void body::draw(RenderWindow &window) {
-	window.draw(t_sprite);
+	window.draw(main_point::sprite);
 }
 
 void body::setPosition(unsigned int x, unsigned int y, int getted_side) {

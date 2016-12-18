@@ -27,6 +27,8 @@
 	class game_map;
 	class game;
 	class g_pause;
+	class main_point;
+	class right_bar;
 
 	class game {
 	public:
@@ -97,6 +99,34 @@
 		std::string	next_level_path;	// Путь к файлу со следующей картой
 	};
 
+	class right_bar {
+	public:
+
+		right_bar(Texture&, unsigned int, int, int, int, int);
+		~right_bar(){}
+
+		void draw(RenderWindow&);
+		void setEminems(int);
+		int getEminems();
+		void setP1Life(int);
+		int getP1Life();
+		void setP2Life(int);
+		int getP2Life();
+		void setLevel(int);
+		int getLevel();
+
+	private:
+
+		int	eminems_num,
+			level,
+			p1_life,
+			p2_life;
+
+		Sprite	sprite;
+
+		unsigned int	pos;
+	};
+
 	class main_point {
 	public:
 
@@ -107,13 +137,13 @@
 		float		dx,
 					dy;
 
+		Sprite		sprite;
+
 		FloatRect	rect;
 	};
 
 	class bullet : public main_point {
 	public:
-
-		Sprite			bullet_sprite;
 
 		bullet(Texture&, game_map*);
 		~bullet();
@@ -138,6 +168,8 @@
 						*sound_un_shot;
 
 		game_map		*bullet_main_map;
+
+	protected:
 
 		void collision();
 	};
@@ -168,9 +200,9 @@
 
 		bool			god_mode;
 
-		Sprite			t_sprite;
-
 		game_map		*main_map;
+
+	protected:
 
 		bool checkMove();
 	};

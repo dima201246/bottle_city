@@ -12,7 +12,7 @@ bullet::bullet(Texture &image, game_map *l_main_map) {
 	bullet_status		= false;
 	main_point::rect.left	= 0;
 	main_point::rect.top		= 0;
-	bullet_sprite.setTexture(image);
+	main_point::sprite.setTexture(image);
 	bullet_main_map			= l_main_map;
 }
 
@@ -53,14 +53,14 @@ void bullet::update(float time) {
 		if (bullet_status) {
 			main_point::rect.left	+= main_point::dx * (time * 1.5);
 			main_point::rect.top		+= main_point::dy * (time * 1.5);
-			bullet_sprite.setPosition(main_point::rect.left, main_point::rect.top);
+			main_point::sprite.setPosition(main_point::rect.left, main_point::rect.top);
 		}
 	}
 }
 
 void bullet::shot(int posX, int posY, int bullet_side) {
 	sound_shot->play();										// Воспроизведение звука выстрела
-	bullet_sprite.setTextureRect(IntRect(320 + ((bullet_side / 2) * 8), 100, 8, 8));
+	main_point::sprite.setTextureRect(IntRect(320 + ((bullet_side / 2) * 8), 100, 8, 8));
 	if (bullet_side == 0) {
 		main_point::rect.left	= posX + 3,
 		main_point::rect.top		= posY - 4;
@@ -131,5 +131,5 @@ void bullet::destroy() {
 }
 
 void bullet::draw(RenderWindow& window) {
-	window.draw(bullet_sprite);
+	window.draw(main_point::sprite);
 }

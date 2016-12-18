@@ -86,10 +86,6 @@ void game_map::draw(RenderWindow &window) {
 			window.draw(sprite);
 		}
 	}
-
-	/*sprite.setTextureRect(IntRect(368, 16, 32, 192));
-	sprite.setPosition(208, 0) ;*/
-
 }
 
 void game_map::drawGrass(RenderWindow &window) {
