@@ -10,7 +10,7 @@
 	#define MAX_PLAYERS	2
 	#define MAX_EMINEMS	20
 
-	#define GAME_SPEED	900
+	#define GAME_SPEED	6000
 
 	#define UP_SIDE		0
 	#define LEFT_SIDE	2
@@ -97,7 +97,20 @@
 		std::string	next_level_path;	// Путь к файлу со следующей картой
 	};
 
-	class bullet {
+	class main_point {
+	public:
+
+		FloatRect getRect() {
+			return rect;
+		}
+
+		float		dx,
+					dy;
+
+		FloatRect	rect;
+	};
+
+	class bullet : public main_point {
 	public:
 
 		Sprite			bullet_sprite;
@@ -111,18 +124,12 @@
 		bool active();
 		void destroy();
 		void draw(RenderWindow&);
-		FloatRect getRect();
 
 	private:
 
 		int				bullet_side;	// Сторона в которую летит пуля
 
 		bool			bullet_status;
-
-		float			bullet_dx,
-						bullet_dy;
-
-		FloatRect		bullet_rect;
 
 		SoundBuffer		buffer_shot,
 						buffer_un_shot;
@@ -135,7 +142,7 @@
 		void collision();
 	};
 
-	class body {
+	class body : public main_point {
 	public:
 
 		body(Texture&, game_map*);
@@ -150,7 +157,6 @@
 		bool move(int);
 		void setPosition(unsigned int, unsigned int, int);
 		int getSide();
-		FloatRect getRect();
 		void draw(RenderWindow&) ;
 
 	private:
@@ -158,12 +164,7 @@
 		int				currentFrame,
 						side;
 
-		float			dx,
-						dy,
-						l_time;
-
-		FloatRect		rect;
-
+		float			l_time;
 
 		bool			god_mode;
 

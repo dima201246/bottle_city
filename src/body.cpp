@@ -86,10 +86,6 @@ int body::getSide() {
 	return side;
 }
 
-FloatRect body::getRect() {
-	return rect;
-}
-
 void body::draw(RenderWindow &window) {
 	window.draw(t_sprite);
 }
