@@ -10,7 +10,7 @@ void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num
 	active			= l_active;
 	players_tanks	= g_other_tanks;
 	players_num		= g_other_tanks_num;
-	currentSide		= 4; // 0 - низ, 1 верх, 2 лево, 3 право, 4- не определено
+	currentSide		= 8; 
 }
 
 int abs(int x){
@@ -25,118 +25,124 @@ int abs(int x){
 void AIplayer::update(float time) {
 	bool 	canMove			= false;
 	bool	wall			= true;
+	char	temp;
+	int 	tankTop			= tank::getRect().top;
+	int 	tankLeft		= tank::getRect().left;
+	int 	maxX			= main_map->getMaxX();
+	int 	maxY			= main_map->getMaxY();
 	for (int	i	= 0; i < players_num; i++)	{
-		if(abs(tank::getRect().left - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
-			if(tank::getRect().top<players_tanks[i].getRect().top) {
-				if (tank::getRect().left>0 and tank::getRect().left<main_map->getMaxX())
-				{
-					for (int k = 0; k < abs(tank::getRect().top-players_tanks[i].getRect().top); ++k)
+		if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
+			if(tankTop<players_tanks[i].getRect().top) {
+
+					for (int k = 0; k < maxY-tankTop/16; ++k)
 					{	
-						if (main_map->getElement((tank::getRect().left+8), (tank::getRect().top+k)) == 's')
+						temp = main_map->getElement((tankLeft/16), (tankTop/16+k));
+						if (temp == 's'||temp == 'v'||temp == 'i')
 						{
 							wall = true and wall;
 						} 
 						else
 						{
+							break;
 							wall = false;
 						}
 					}
-				}
+				
 				if (wall) {
 					currentSide = DOWN_SIDE;
+					tank::piu_piu();
 				}
 			} else {
-				if (tank::getRect().left>0 and tank::getRect().left<main_map->getMaxX())
-				{
-					for (int k = 0; k < abs(tank::getRect().top-players_tanks[i].getRect().top); ++k)
+
+					for (int k = 0; k < maxY-players_tanks[i].getRect().top/16; ++k)
 					{	
-						if (main_map->getElement((players_tanks[i].getRect().left+8), (tank::getRect().top+k)) == 's')
+						temp = main_map->getElement((tankLeft/16), (players_tanks[i].getRect().top/16+k));
+						if (temp == 's'||temp == 'v'||temp == 'i')
 						{
 							wall = true and wall;
 						} 
 						else
-						{
+						{	
+							break;
 							wall = false;
 						}
 					}
-				}
+
 				if (wall) {
 					currentSide = UP_SIDE;
+					tank::piu_piu();
 				}
 			}
 			wall = true;
-			tank::move(currentSide);
-			tank::piu_piu();
-			tank::update(time);
 			if (rand()%players_num == 0) {
 				return;
 			}		
 		}
-		if(abs(tank::getRect().top - players_tanks[i].getRect().top)<16){ // совпадает с коорд игрока
-			if(tank::getRect().left>players_tanks[i].getRect().left) {
-				if (tank::getRect().left>0 and tank::getRect().left<main_map->getMaxY())
-				{
-					for (int k = 0; k < abs(tank::getRect().top-players_tanks[i].getRect().top); ++k)
+		
+		if(abs(tankTop - players_tanks[i].getRect().top)<16){ // совпадает с коорд игрока
+			if(tankLeft>players_tanks[i].getRect().left) {
+				
+					for (int k = 0; k < maxX-players_tanks[i].getRect().left/16; ++k)
 					{	
-						if (main_map->getElement((players_tanks[i].getRect().left+k), (tank::getRect().top+8)) == 's')
+						temp = main_map->getElement((players_tanks[i].getRect().left/16+k), (tankTop/16));
+						if (temp == 's'||temp == 'v'||temp == 'i')
 						{
 							wall = true and wall;
 						} 
 						else
 						{
+							break;
 							wall = false;
 						}
 					}
-				}
+				
 				if (wall) {
 					currentSide = LEFT_SIDE;
+					tank::piu_piu();
 				}
 			} else {
-				if (tank::getRect().left>0 and tank::getRect().left<main_map->getMaxY())
-				{
-					for (int k = 0; k < abs(tank::getRect().top-players_tanks[i].getRect().top); ++k)
+				
+					for (int k = 0; k < maxX-tankLeft/16; ++k)
 					{	
-						if (main_map->getElement((tank::getRect().left+k), (tank::getRect().top+8)) == 's')
+						temp = main_map->getElement((tankLeft/16+k), (tankTop/16));
+						if (temp == 's'||temp == 'v'||temp == 'i')
 						{
 							wall = true and wall;
 						} 
 						else
 						{
+							break;
 							wall = false;
 						}
 					}
-				}
+				
 				if (wall) {
 					currentSide = RIGHT_SIDE;
+					tank::piu_piu();
 				}
 			}
 			wall = true;
-			tank::move(currentSide);
-			tank::piu_piu();
-			tank::update(time);
 			if (rand()%players_num == 0) {
 				return;
 			}
 		}
 	}
-
+	
 	
 	if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
 	{	
 		for (int i = 0; i < 4; ++i)
-		{
-			canMove = tank::move(i) or canMove;
+		{	
+			canMove = tank::move(i*2) or canMove;
 		}
 		if (not canMove)
 		{
-			currentSide = rand()%4;
 			tank::piu_piu();
 		} else {	
-			currentSide = 8;
+			currentSide = (rand()%4)*2;
 		}
-		tank::move(currentSide);
 	}
-	
+	tank::move(currentSide);
 	tank::update(time);
 }
 
