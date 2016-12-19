@@ -281,7 +281,7 @@
 			AIplayer():tank(){}
 			~AIplayer(){}
 
-			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, bool, int, int, int);
+			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, int, int, int);
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
@@ -304,7 +304,8 @@
 					players_num,	// Общее кол-во игроков
 					AIplayers_num,	// Общее кол-во врагов
 					currentSide;	// Направление движения
-
+			bool checkWallX(int, int, int);
+			bool checkWallY(int, int, int);
 			void bulletCollision();
 			bool tankCollision(int, int);
 	};

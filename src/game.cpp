@@ -24,7 +24,7 @@ void game::gameStart() {
 	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, MAX_EMINEMS, 2);
 
 	for (int	i = 0; i < MAX_EMINEMS; ++i) {					// Задача стандартных параметров для врага
-		eminems[i].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, false, 1, 1, i + 1);
+		eminems[i].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 1, 1, i + 1);
 	}
 
 		eminems[0].activation(0, 0);	/// TEST

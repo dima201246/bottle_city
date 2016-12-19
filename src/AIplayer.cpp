@@ -1,5 +1,5 @@
 #include "../include/obj.hpp"
-
+#include <stdio.h>
 bool AIplayer::tankCollision(int side, int id) {
 	FloatRect	tempRect	= tank::getRect();
 
@@ -35,6 +35,7 @@ void AIplayer::bulletCollision() {
 	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с врагом
 		if ((players_tanks[i].getLife() > 0) && (tank::bulletComparsion(players_tanks[i].getRect()))) {
 			players_tanks[i].bax_bax();
+			tank::bulletDestroy();
 			if ((i + 1) == 1)
 				tank::r_b->setP1Life(tank::r_b->getP1Life() - 1);
 			else 
@@ -42,14 +43,12 @@ void AIplayer::bulletCollision() {
 		}
 }
 
-void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, AIplayer *l_frends, int l_frend_num, game_map *l_main_map, right_bar *l_r_b, bool l_active, int l_life, int l_type, int l_id) {
+void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, AIplayer *l_frends, int l_frend_num, game_map *l_main_map, right_bar *l_r_b, int l_life, int l_type, int l_id) {
 	tank::init(image, l_main_map, l_r_b);
-	tank::setLife(l_life);
+	tank::setLife(0);
 	tank::setID(l_id);
-
 	main_map		= l_main_map;
 	type			= l_type;
-	active			= l_active;
 	AIplayers_tanks	= l_frends;
 	AIplayers_num	= l_frend_num;
 	players_tanks	= g_other_tanks;
@@ -66,118 +65,125 @@ int abs(int x){
 	}
 }
 
+bool AIplayer::checkWallX(int x, int x2, int y) {
+	bool	noWall			= true;
+	int 	temp;
+	if (x2<x)
+	{	
+		temp = x2;
+		x2 = x;
+		x = temp;
+	} 
+	for (int k = 0; k < x2-x; ++k)
+	{	
+		temp = main_map->getElement(x+k, y);
+		if (temp != 's' and temp != 'v' and temp != 'i')
+		{
+			noWall = false; 
+			break;
+		} 
+	}
+	return noWall;
+
+}
+bool AIplayer::checkWallY(int y, int y2, int x) {
+	bool	noWall			= true;
+	int 	temp;
+	if (y2<y)
+	{	
+		temp = y2;
+		y2 = x;
+		y = temp;
+	} 
+	for (int k = 0; k < y2-y; ++k)
+	{	
+		temp = main_map->getElement(x, y+k);
+		if (temp != 's' and temp != 'v' and temp != 'i')
+		{
+			noWall = false; 
+			break;
+		} 
+	}
+	return noWall;
+
+}
+
 void AIplayer::update(float time) {
 	bool 	canMove			= false;
-	bool	noWall			= true;
+
 	char	temp;
 	int 	tankTop			= tank::getRect().top;
 	int 	tankLeft		= tank::getRect().left;
-	if (currentSide == 8)
+	if (tank::getLife()>0)
 	{
-		currentSide = (rand()%4)*2;
-	}
-	/*for (int	i	= 0; i < players_num; i++)	{
-		if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
-			if(tankTop<players_tanks[i].getRect().top and currentSide == DOWN_SIDE) {
-
-				for (int k = 0; k < abs(tankTop-players_tanks[i].getRect().top)/16; ++k)
-				{	
-					temp = main_map->getElement(((tankLeft+8)/16), (tankTop/16+k/16));
-					if (temp != 's' and temp != 'v' and temp != 'i')
-					{
-						noWall = false; 
-						break;
-					} 
-				}
-				if (noWall) {
-					tank::piu_piu();
-				}
-			} else if (currentSide == UP_SIDE) {
-
-				for (int k = 0; k < abs(tankTop-players_tanks[i].getRect().top)/16; ++k)
-				{	
-					temp = main_map->getElement(((tankLeft+8)/16), (players_tanks[i].getRect().top/16+k/16));
-					if (temp != 's' and temp != 'v' and temp != 'i')
-					{
-						noWall = false; 
-						break;
-					} 
-				}
-
-				if (noWall) {
-					tank::piu_piu();
+		if (currentSide == 8)
+		{
+			currentSide = (rand()%4)*2;
+		}
+		for (int	i	= 0; i < players_num; i++)	{
+			if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // танк на горизонтальной линии с игроком
+				if(AIplayer::checkWallY(tankTop/16, players_tanks[i].getRect().top/16, (tankLeft)/16)){
+					if(tankTop > players_tanks[i].getRect().top and currentSide == UP_SIDE){ //сверху игрок, танк едет туда же, между ними нет стен
+						tank::piu_piu();
+					}
+					if(tankTop < players_tanks[i].getRect().top and currentSide == DOWN_SIDE){//снизу игрок, танк едет туда же, между ними нет стен
+						tank::piu_piu();
+					}
 				}
 			}
-			noWall = true;
+			
+			if(abs(tankTop - players_tanks[i].getRect().top)<16){ // танк на вертикальной линии с игроком
+				if(AIplayer::checkWallY(tankLeft/16, players_tanks[i].getRect().left/16, (tankTop)/16)) { 
+					if(tankLeft > players_tanks[i].getRect().left and currentSide == LEFT_SIDE){ //слева игрок, танк едет туда же, между ними нет стен
+						tank::piu_piu();
+					}
+					if(tankLeft < players_tanks[i].getRect().left and currentSide == RIGHT_SIDE){ //справа игрок, танк едет туда же, между ними нет стен
+						tank::piu_piu();
+					}
+				}
+			}
 		}
 		
-		if(abs(tankTop - players_tanks[i].getRect().top)<16){ // совпадает с коорд игрока
-			if(tankLeft>players_tanks[i].getRect().left and currentSide == LEFT_SIDE) {
-				
-				for (int k = 0; k < abs(tankLeft-players_tanks[i].getRect().left)/16; ++k)
-				{	
-					temp = main_map->getElement((players_tanks[i].getRect().left/16+k/16), ((tankTop+8)/16));
-					if (temp != 's' and temp != 'v' and temp != 'i')
-					{
-						noWall = false; 
-						break;
-					} 
-				}
-				
-				if (noWall) {
-					tank::piu_piu();
-				}
-			} else if (currentSide = RIGHT_SIDE) {
-				
-				for (int k = 0; k < abs(tankLeft-players_tanks[i].getRect().left)/16; ++k)
-				{	
-					temp = main_map->getElement((tankLeft/16+k/16), ((tankTop+8)/16));
-					if (temp != 's' and temp != 'v' and temp != 'i')
-					{
-						noWall = false; 
-						break;
-					} 
-				}
-				
-				if (noWall) {
-					tank::piu_piu();
+		
+		if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
+		{	
+			for (int i = 0; i < 4; ++i)
+			{	
+				if (!AIplayer::tankCollision(i*2, tank::getID()))
+				{
+					canMove = tank::move(i*2) or canMove;
 				}
 			}
-			noWall = true;
+			if (!canMove)
+			{	
+				currentSide = (rand()%4)*2;
+				tank::move(currentSide);
+				tank::piu_piu();
+			} else {	
+				currentSide = (rand()%4)*2;
+			}
 		}
-	}*/
-	
-	
-	if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
-	{	
-		for (int i = 0; i < 4; ++i)
-		{	
-			canMove = tank::move(i*2) or canMove;
-		}
-		if (!canMove)
-		{	
-			currentSide = (rand()%4)*2;
-			tank::move(currentSide);
-			tank::piu_piu();
-		} else {	
-			currentSide = (rand()%4)*2;
-		}
-	}
-	//if (true)
-	if (!AIplayer::tankCollision(currentSide, tank::getID())) 
-	{ 
-	tank::move(currentSide); 
-	}
-	tank::update(time);
 
+		if (!AIplayer::tankCollision(currentSide, tank::getID())) 
+		{ 
+		tank::move(currentSide); 
+		}
+		tank::update(time);
+	}
+	if (tank::bulletStatus())
+		bulletCollision();
 }
 
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
-	tank::setLife(3);
-	startPosition.left = x;
-	startPosition.top = y;
-	tank::setPosition(x, y, DOWN_SIDE);
+	if (AIplayers_num > 0)
+	{
+		tank::setLife(3);
+		AIplayers_num--;
+		startPosition.left = x;
+		startPosition.top = y;
+		tank::setPosition(x, y, DOWN_SIDE);
+	}
 }
 
 void AIplayer::bulletDestroy() {
@@ -185,16 +191,18 @@ void AIplayer::bulletDestroy() {
 }
 
 void AIplayer::bax_bax() {
-	if (tank::getLife() > 0)
+	if (tank::getLife() > 0) {
 		tank::setLife(tank::getLife() - 1);
+		if (tank::getLife() == 0) {
+			tank::r_b->setEminems(AIplayers_num);
+			AIplayer::activation(startPosition.left, startPosition.top);
+		}
+	} 
 }
 
 void AIplayer::draw(RenderWindow &window) {
-	if (tank::getLife() == 0)
+	if (tank::getLife()!=0)
 	{
-		AIplayer::activation(startPosition.left, startPosition.top);
-		tank::draw(window);
-	} else {		
 		tank::draw(window);
 	}
 }
