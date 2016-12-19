@@ -305,6 +305,7 @@
 					AIplayers_num,	// Общее кол-во врагов
 					currentSide;	// Направление движения
 
+			void bulletCollision();
 			bool tankCollision(int, int);
 	};
 #endif

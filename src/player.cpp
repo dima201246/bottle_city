@@ -22,22 +22,22 @@ bool player::tankCollision(int side, int id) {
 }
 
 void player::bulletCollision() {
-/*	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с другом
-		if ((players_tanks[i].getLife() > 0) && ((i + 1) != num_of_player) && (tank::bulletComparsion(players_tanks[i].getRect())))
+	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с другом
+		if ((players_tanks[i].getLife() > 0) && ((i + 1) != tank::getID()) && (tank::bulletComparsion(players_tanks[i].getRect())))
 			tank::bulletDestroy();
 
-	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с пулей противника
+	for (int	i	= 0; i < AIplayers_num; i++)	// Обработка столкновений пули с пулей противника
 		if ((AIplayers_tanks[i].getLife() > 0) && (tank::bulletComparsion(AIplayers_tanks[i].getBulletRect()))) {
 			AIplayers_tanks[i].bulletDestroy();
 			tank::bulletDestroy();
 		}
 
-	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с врагом
+	for (int	i	= 0; i < AIplayers_num; i++)	// Обработка столкновений пули с врагом
 		if ((AIplayers_tanks[i].getLife() > 0) && (tank::bulletComparsion(AIplayers_tanks[i].getRect()))) {
 			AIplayers_tanks[i].bax_bax();
 			left_tank--;	
 			tank::r_b->setEminems(left_tank);
-		}*/
+		}
 }
 
 void player::init(Texture &image, player *g_tanks, int l_frend_num, AIplayer *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, right_bar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {

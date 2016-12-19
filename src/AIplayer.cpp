@@ -21,6 +21,27 @@ bool AIplayer::tankCollision(int side, int id) {
 	return false;
 }
 
+void AIplayer::bulletCollision() {
+	for (int	i	= 0; i < AIplayers_num; i++)	// Обработка столкновений пули с другом
+		if ((AIplayers_tanks[i].getLife() > 0) && ((i + 1) != tank::getID()) && (tank::bulletComparsion(AIplayers_tanks[i].getRect())))
+			tank::bulletDestroy();
+
+	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с пулей противника
+		if ((players_tanks[i].getLife() > 0) && (tank::bulletComparsion(players_tanks[i].getBulletRect()))) {
+			players_tanks[i].bulletDestroy();
+			tank::bulletDestroy();
+		}
+
+	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с врагом
+		if ((players_tanks[i].getLife() > 0) && (tank::bulletComparsion(players_tanks[i].getRect()))) {
+			players_tanks[i].bax_bax();
+			if ((i + 1) == 1)
+				tank::r_b->setP1Life(tank::r_b->getP1Life() - 1);
+			else 
+				tank::r_b->setP2Life(tank::r_b->getP2Life() - 1);
+		}
+}
+
 void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, AIplayer *l_frends, int l_frend_num, game_map *l_main_map, right_bar *l_r_b, bool l_active, int l_life, int l_type, int l_id) {
 	tank::init(image, l_main_map, l_r_b);
 	tank::setLife(l_life);
