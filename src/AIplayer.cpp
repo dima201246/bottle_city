@@ -68,107 +68,82 @@ int abs(int x){
 
 void AIplayer::update(float time) {
 	bool 	canMove			= false;
-	bool	wall			= true;
+	bool	noWall			= true;
 	char	temp;
 	int 	tankTop			= tank::getRect().top;
 	int 	tankLeft		= tank::getRect().left;
-	int 	maxX			= main_map->getMaxX();
-	int 	maxY			= main_map->getMaxY();
+	if (currentSide == 8)
+	{
+		currentSide = (rand()%4)*2;
+	}
 	for (int	i	= 0; i < players_num; i++)	{
 		if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
-			if(tankTop<players_tanks[i].getRect().top) {
+			if(tankTop<players_tanks[i].getRect().top and currentSide == DOWN_SIDE) {
 
-					for (int k = 0; k < maxY-tankTop/16; ++k)
-					{	
-						temp = main_map->getElement((tankLeft/16), (tankTop/16+k));
-						if (temp == 's'||temp == 'v'||temp == 'i')
-						{
-							wall = true and wall;
-						} 
-						else
-						{
-							break;
-							wall = false;
-						}
-					}
-				
-				if (wall) {
-					currentSide = DOWN_SIDE;
+				for (int k = 0; k < abs(tankTop-players_tanks[i].getRect().top)/16; ++k)
+				{	
+					temp = main_map->getElement(((tankLeft+8)/16), (tankTop/16+k/16));
+					if (temp != 's' and temp != 'v' and temp != 'i')
+					{
+						noWall = false; 
+						break;
+					} 
+				}
+				if (noWall) {
 					tank::piu_piu();
 				}
-			} else {
+			} else if (currentSide == UP_SIDE) {
 
-					for (int k = 0; k < maxY-players_tanks[i].getRect().top/16; ++k)
-					{	
-						temp = main_map->getElement((tankLeft/16), (players_tanks[i].getRect().top/16+k));
-						if (temp == 's'||temp == 'v'||temp == 'i')
-						{
-							wall = true and wall;
-						} 
-						else
-						{	
-							break;
-							wall = false;
-						}
-					}
+				for (int k = 0; k < abs(tankTop-players_tanks[i].getRect().top)/16; ++k)
+				{	
+					temp = main_map->getElement(((tankLeft+8)/16), (players_tanks[i].getRect().top/16+k/16));
+					if (temp != 's' and temp != 'v' and temp != 'i')
+					{
+						noWall = false; 
+						break;
+					} 
+				}
 
-				if (wall) {
-					currentSide = UP_SIDE;
+				if (noWall) {
 					tank::piu_piu();
 				}
 			}
-			wall = true;
-			if (rand()%players_num == 0) {
-				return;
-			}		
+			noWall = true;
 		}
 		
 		if(abs(tankTop - players_tanks[i].getRect().top)<16){ // совпадает с коорд игрока
-			if(tankLeft>players_tanks[i].getRect().left) {
+			if(tankLeft>players_tanks[i].getRect().left and currentSide == LEFT_SIDE) {
 				
-					for (int k = 0; k < maxX-players_tanks[i].getRect().left/16; ++k)
-					{	
-						temp = main_map->getElement((players_tanks[i].getRect().left/16+k), (tankTop/16));
-						if (temp == 's'||temp == 'v'||temp == 'i')
-						{
-							wall = true and wall;
-						} 
-						else
-						{
-							break;
-							wall = false;
-						}
-					}
+				for (int k = 0; k < abs(tankLeft-players_tanks[i].getRect().left)/16; ++k)
+				{	
+					temp = main_map->getElement((players_tanks[i].getRect().left/16+k/16), ((tankTop+8)/16));
+					if (temp != 's' and temp != 'v' and temp != 'i')
+					{
+						noWall = false; 
+						break;
+					} 
+				}
 				
-				if (wall) {
-					currentSide = LEFT_SIDE;
+				if (noWall) {
 					tank::piu_piu();
 				}
-			} else {
+			} else if (currentSide = RIGHT_SIDE) {
 				
-					for (int k = 0; k < maxX-tankLeft/16; ++k)
-					{	
-						temp = main_map->getElement((tankLeft/16+k), (tankTop/16));
-						if (temp == 's'||temp == 'v'||temp == 'i')
-						{
-							wall = true and wall;
-						} 
-						else
-						{
-							break;
-							wall = false;
-						}
-					}
+				for (int k = 0; k < abs(tankLeft-players_tanks[i].getRect().left)/16; ++k)
+				{	
+					temp = main_map->getElement((tankLeft/16+k/16), ((tankTop+8)/16));
+					if (temp != 's' and temp != 'v' and temp != 'i')
+					{
+						noWall = false; 
+						break;
+					} 
+				}
 				
-				if (wall) {
-					currentSide = RIGHT_SIDE;
+				if (noWall) {
 					tank::piu_piu();
 				}
 			}
-			wall = true;
-			if (rand()%players_num == 0) {
-				return;
-			}
+			noWall = true;
 		}
 	}
 	
@@ -179,15 +154,24 @@ void AIplayer::update(float time) {
 		{	
 			canMove = tank::move(i*2) or canMove;
 		}
-		if (not canMove)
-		{
+		if (!canMove)
+		{	
+			currentSide = (rand()%4)*2;
+			tank::move(currentSide);
 			tank::piu_piu();
 		} else {	
 			currentSide = (rand()%4)*2;
 		}
 	}
-	tank::move(currentSide);
-	tank::update(time);
+	//if (true)
+	if (!AIplayer::tankCollision(currentSide, tank::getID()))
+	{
+		tank::move(currentSide);
+		tank::update(time);
+	} else {
+		currentSide = (rand()%4)*2;
+		AIplayer::update(time);
+	}
 }
 
 
