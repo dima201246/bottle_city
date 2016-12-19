@@ -164,14 +164,12 @@ void AIplayer::update(float time) {
 		}
 	}
 	//if (true)
-	if (!AIplayer::tankCollision(currentSide, tank::getID()))
-	{
-		tank::move(currentSide);
-		tank::update(time);
-	} else {
-		currentSide = (rand()%4)*2;
-		AIplayer::update(time);
+	if (!AIplayer::tankCollision(currentSide, tank::getID())) 
+	{ 
+	tank::move(currentSide); 
 	}
+	tank::update(time);
+
 }
 
 
