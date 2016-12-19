@@ -228,6 +228,10 @@
 		bool bulletStatus();
 		bool move(int);
 		int getSide();
+		void setLife(int);
+		int getLife();
+		void setID(int);
+		int getID();
 		FloatRect getRect();
 		void draw(RenderWindow&);
 
@@ -235,12 +239,15 @@
 
 	private:
 
+		int 		life,
+					id;
+
 		body		*t_body;
 
 		bullet		*t_bullet;
 	};
 
-	class player : protected tank {
+	class player : public tank {
 		public:
 
 			player():tank(){}
@@ -250,8 +257,6 @@
 			void update(float);
 			void draw(RenderWindow&);
 			void bax_bax();
-			int getLife();
-			FloatRect getRect();
 
 		private:
 
@@ -261,32 +266,27 @@
 
 			AIplayer	*AIplayers_tanks;
 
-			int			life,			// Кол-во жизней
-						level,			// Уровень
+			int			level,			// Уровень
 						left_tank,		// Сколько танков осталось
-						num_of_player,	// Номер игрока
 						players_num,	// Общее кол-во игроков
 						AIplayers_num;	// Общее кол-во врагов
 
-			bool tankCollision(int);
 			void bulletCollision();
+			bool tankCollision(int, int);
 	};
 
-	class AIplayer : protected tank {
+	class AIplayer : public tank {
 		public:
 
 			AIplayer():tank(){}
 			~AIplayer(){}
 
-			void init(Texture&, player*, int, game_map*, right_bar*, bool, int, int);
+			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, bool, int, int, int);
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
 			void bulletDestroy();
 			void bax_bax();
-			FloatRect	getBulletRect();
-			FloatRect	getRect();
-			int			getLife();
 
 		private:
 
@@ -300,10 +300,11 @@
 
 			bool	active;			// Активирован ли танк
 
-			int		life,			// Кол-во жизней
-					type,			// Тип танка
+			int		type,			// Тип танка
 					players_num,	// Общее кол-во игроков
 					AIplayers_num,	// Общее кол-во врагов
 					currentSide;	// Направление движения
+
+			bool tankCollision(int, int);
 	};
 #endif

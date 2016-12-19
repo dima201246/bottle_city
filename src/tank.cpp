@@ -87,3 +87,19 @@ void tank::draw(RenderWindow& window) {
 		t_bullet->draw(window);
 	}
 }
+
+void tank::setLife(int l_life) {
+	life	= l_life;
+}
+
+int tank::getLife() {
+	return life;
+}
+
+void tank::setID(int l_id) {
+	id	= l_id;
+}
+
+int tank::getID() {
+	return id;
+}

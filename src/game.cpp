@@ -20,11 +20,11 @@ void game::gameStart() {
 	right_bar	r_b(texture, main_map.getMaxX(), MAX_EMINEMS, 1, 3, 3);
 	g_pause	game_pause(texture, &main_map);
 
-	players[0].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, 20, 1);	// Задача стандартных параметров для игроков
-	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, 20, 2);
+	players[0].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, MAX_EMINEMS, 1);	// Задача стандартных параметров для игроков
+	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, MAX_EMINEMS, 2);
 
 	for (int	i = 0; i < MAX_EMINEMS; ++i) {					// Задача стандартных параметров для врага
-		eminems[i].init(texture, players, MAX_PLAYERS, &main_map, &r_b, false, 1, 1);
+		eminems[i].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, false, 1, 1, i + 1);
 	}
 
 		eminems[0].activation(0, 0);	/// TEST

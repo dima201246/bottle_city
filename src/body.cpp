@@ -18,7 +18,7 @@ void body::update(float time) {
 	rect.left		+= dx * (time / 2.0);	// Собсно, движение
 	rect.top 		+= dy * (time / 2.0);
 
-	main_point::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 16, 16));
+	main_point::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 15, 15));
 
 	if ((dx	!= 0) || (dy != 0)) {
 		currentFrame	!= currentFrame;

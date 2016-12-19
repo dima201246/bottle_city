@@ -1,13 +1,36 @@
 #include "../include/obj.hpp"
 
-void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, right_bar *l_r_b, bool l_active, int l_life, int l_type) {
+bool AIplayer::tankCollision(int side, int id) {
+	FloatRect	tempRect	= tank::getRect();
+
+	switch (side) {
+		case LEFT_SIDE:		tempRect.left--;	break;
+		case RIGHT_SIDE:	tempRect.left++;	break;
+		case UP_SIDE:		tempRect.top--;		break;
+		case DOWN_SIDE:		tempRect.top++;		break;
+	}
+
+	for (int	i	= 0; i < AIplayers_num; i++)	// Столкновение с другом
+		if ((AIplayers_tanks[i].getLife() > 0) && (id != AIplayers_tanks[i].getID()) && (tempRect.intersects(AIplayers_tanks[i].getRect())))
+			return true;
+
+	for (int	i	= 0; i < players_num; i++)	// Столкновение с врагом
+		if ((players_tanks[i].getLife() > 0) && (tempRect.intersects(players_tanks[i].getRect())))
+			return true;
+
+	return false;
+}
+
+void AIplayer::init(Texture &image, player *g_other_tanks, int g_other_tanks_num, AIplayer *l_frends, int l_frend_num, game_map *l_main_map, right_bar *l_r_b, bool l_active, int l_life, int l_type, int l_id) {
 	tank::init(image, l_main_map, l_r_b);
+	tank::setLife(l_life);
+	tank::setID(l_id);
 
 	main_map		= l_main_map;
-
-	life			= l_life;
 	type			= l_type;
 	active			= l_active;
+	AIplayers_tanks	= l_frends;
+	AIplayers_num	= l_frend_num;
 	players_tanks	= g_other_tanks;
 	players_num		= g_other_tanks_num;
 	currentSide		= 8; 
@@ -149,36 +172,24 @@ void AIplayer::update(float time) {
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
 	active	= true;
-	life = 3;
+	tank::setLife(3);
 	startPosition.left = x;
 	startPosition.top = y;
 	tank::setPosition(x, y, DOWN_SIDE);
-}
-
-FloatRect AIplayer::getRect() {
-	return tank::getRect();
-}
-
-int AIplayer::getLife() {
-	return life;
 }
 
 void AIplayer::bulletDestroy() {
 	tank::bulletDestroy();
 }
 
-FloatRect AIplayer::getBulletRect() {
-	return tank::getBulletRect();
-}
-
 void AIplayer::bax_bax() {
-	if (life > 0)
-		life--;
+	if (tank::getLife() > 0)
+		tank::setLife(tank::getLife() - 1);
 }
 
 void AIplayer::draw(RenderWindow &window) {
 	if (active) {
-		if (life == 0)
+		if (tank::getLife() == 0)
 		{
 			AIplayer::activation(startPosition.left, startPosition.top);
 			tank::draw(window);
