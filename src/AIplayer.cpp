@@ -76,7 +76,7 @@ void AIplayer::update(float time) {
 	{
 		currentSide = (rand()%4)*2;
 	}
-	for (int	i	= 0; i < players_num; i++)	{
+	/*for (int	i	= 0; i < players_num; i++)	{
 		if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // совпадает с коорд игрока
 			if(tankTop<players_tanks[i].getRect().top and currentSide == DOWN_SIDE) {
 
@@ -145,7 +145,7 @@ void AIplayer::update(float time) {
 			}
 			noWall = true;
 		}
-	}
+	}*/
 	
 	
 	if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
@@ -174,7 +174,6 @@ void AIplayer::update(float time) {
 
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
-	active	= true;
 	tank::setLife(3);
 	startPosition.left = x;
 	startPosition.top = y;
@@ -191,13 +190,11 @@ void AIplayer::bax_bax() {
 }
 
 void AIplayer::draw(RenderWindow &window) {
-	if (active) {
-		if (tank::getLife() == 0)
-		{
-			AIplayer::activation(startPosition.left, startPosition.top);
-			tank::draw(window);
-		} else {		
-			tank::draw(window);
-		}
+	if (tank::getLife() == 0)
+	{
+		AIplayer::activation(startPosition.left, startPosition.top);
+		tank::draw(window);
+	} else {		
+		tank::draw(window);
 	}
 }
