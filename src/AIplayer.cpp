@@ -176,7 +176,7 @@ void AIplayer::update(float time) {
 
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
-	if (AIplayers_num > 0)
+	if (tank::r_b->getEminems() > 0)
 	{
 		tank::setLife(3);
 		AIplayers_num--;
@@ -190,7 +190,7 @@ void AIplayer::bax_bax() {
 	if (tank::getLife() > 0) {
 		tank::setLife(tank::getLife() - 1);
 		if (tank::getLife() == 0) {
-			tank::r_b->setEminems(AIplayers_num);
+			tank::r_b->setEminems(tank::r_b->getEminems() - 1);
 			AIplayer::activation(startPosition.left, startPosition.top);
 		}
 	} 
