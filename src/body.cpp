@@ -2,6 +2,8 @@
 
 body::body(Texture &image, game_map *l_main_map) {
 	main_point::sprite.setTexture(image);
+	main_point::sprite.scale(SCALE_X, SCALE_Y);
+
 	side			= 0;
 	rect			= FloatRect(0, 0, 16, 16);
 	god_mode		= false;
@@ -37,7 +39,7 @@ void body::update(float time) {
 
 	}
 
-	main_point::sprite.setPosition(rect.left, rect.top);
+	main_point::sprite.setPosition(rect.left * SCALE_X, rect.top * SCALE_Y);
 
 	dx=0;
 	dy=0;

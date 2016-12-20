@@ -2,6 +2,8 @@
 
 right_bar::right_bar(Texture &image, unsigned int maxX, int eminem_num, int l_level, int l_p1_life, int l_p2_life) {
 	sprite.setTexture(image);
+	sprite.scale(SCALE_X, SCALE_Y);
+
 	pos			= maxX * 16;
 	eminems_num	= eminem_num;
 	level		= l_level;
@@ -13,15 +15,15 @@ void right_bar::draw(RenderWindow &window) {
 	unsigned int	j	= 0,
 					k	= 0;
 
-	sprite.setPosition(pos, 0);
+	sprite.setPosition(pos * SCALE_X, 0);
 	sprite.setTextureRect(IntRect(368, 16, 32, 208));
 	window.draw(sprite);
 	sprite.setTextureRect(IntRect(320, 192, 9, 9));
 
 	for (int	i	= 0; i < eminems_num; ++i) {
-		sprite.setPosition(pos + 8 + j, 8 + k);
+		sprite.setPosition((pos + 8 + j) * SCALE_X, (8 * SCALE_Y) + k);
 
-		k	+= 8;
+		k	+= 8 * SCALE_X;
 
 		if ((i >= 9) && (j == 0)) {
 			j	= 8;
@@ -31,7 +33,7 @@ void right_bar::draw(RenderWindow &window) {
 		window.draw(sprite);
 	}
 
-	sprite.setPosition(pos + 16, 128);
+	sprite.setPosition((pos + 16) * SCALE_X, (128 * SCALE_Y));
 
 	if (p1_life == 3) {
 		sprite.setTextureRect(IntRect(352, 183, 9, 9));
@@ -45,7 +47,7 @@ void right_bar::draw(RenderWindow &window) {
 
 	window.draw(sprite);
 
-	sprite.setPosition(pos + 16, 152);
+	sprite.setPosition((pos + 16) * SCALE_X, (152 * SCALE_Y));
 
 	if (p2_life == 3) {
 		sprite.setTextureRect(IntRect(352, 183, 9, 9));

@@ -17,6 +17,9 @@
 	#define DOWN_SIDE	4
 	#define RIGHT_SIDE	6
 
+	#define SCALE_X	2.0f
+	#define SCALE_Y	2.0f
+
 	using namespace sf;
 
 	class AIplayer;

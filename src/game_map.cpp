@@ -3,6 +3,7 @@
 
 game_map::game_map(Texture &image) {
 	sprite.setTexture(image);
+	sprite.scale(SCALE_X, SCALE_Y);
 	maxX	= maxY	= grass_num	= 0;
 }
 
@@ -82,7 +83,7 @@ void game_map::draw(RenderWindow &window) {
 			else
 				continue;
 
-			sprite.setPosition(j * 16, i * 16) ; 
+			sprite.setPosition(j * (16 * SCALE_X), i * (16 * SCALE_Y)) ;
 			window.draw(sprite);
 		}
 	}
@@ -96,7 +97,7 @@ void game_map::drawGrass(RenderWindow &window) {
 	sprite.setTextureRect(IntRect(272, 32, 16, 16));
 
 	for (unsigned int	i	= 0; i < grass_num; ++i) {
-		sprite.setPosition(g_map[i][1] * 16, g_map[i][0] * 16) ; 
+		sprite.setPosition(g_map[i][1] * (16 * SCALE_X), g_map[i][0] * (16 * SCALE_Y)) ; 
 		window.draw(sprite);
 	}
 }

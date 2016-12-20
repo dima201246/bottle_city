@@ -2,17 +2,22 @@
 
 bullet::bullet(Texture &image, game_map *l_main_map) {
 	buffer_shot.loadFromFile("media/sound/shot.ogg");		// Подгрузка звуков
-	sound_shot			= new Sound(buffer_shot);
+	sound_shot				= new Sound(buffer_shot);
 
 	buffer_un_shot.loadFromFile("media/sound/un_shot.ogg");
-	sound_un_shot		= new Sound(buffer_un_shot);
+	sound_un_shot			= new Sound(buffer_un_shot);
 
-	main_point::rect			= FloatRect(0, 0, 8, 8);
+	main_point::rect		= FloatRect(0, 0, 8, 8);
 	main_point::dx	= main_point::dy	= 0.0;
-	bullet_status		= false;
+
+	bullet_status			= false;
+
 	main_point::rect.left	= 0;
-	main_point::rect.top		= 0;
+	main_point::rect.top	= 0;
+
 	main_point::sprite.setTexture(image);
+	main_point::sprite.scale(SCALE_X, SCALE_Y);
+
 	bullet_main_map			= l_main_map;
 }
 
@@ -53,7 +58,7 @@ void bullet::update(float time) {
 		if (bullet_status) {
 			main_point::rect.left	+= main_point::dx * (time * 1.5);
 			main_point::rect.top		+= main_point::dy * (time * 1.5);
-			main_point::sprite.setPosition(main_point::rect.left, main_point::rect.top);
+			main_point::sprite.setPosition(main_point::rect.left * SCALE_X, main_point::rect.top * SCALE_Y);
 		}
 	}
 }
