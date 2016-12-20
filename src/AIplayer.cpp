@@ -121,25 +121,42 @@ void AIplayer::update(float time) {
 			currentSide = (rand()%4)*2;
 		}
 		for (int	i	= 0; i < players_num; i++)	{
-			if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // танк на вертикальной линии с игроком
+			if(abs(tankLeft - players_tanks[i].getRect().left) < 16 and players_tanks[i].getLife()>0){ // танк на вертикальной линии с игроком
 				if(AIplayer::checkWallY(tankTop/16, players_tanks[i].getRect().top/16, (tankLeft)/16)){
-					if((tankTop > players_tanks[i].getRect().top) && (currentSide == UP_SIDE)){ //сверху игрок, танк едет туда же, между ними нет стен
-						tank::piu_piu();
+					if(tankTop < players_tanks[i].getRect().top) {
+						if (currentSide == UP_SIDE){ //сверху игрок, танк едет туда же, между ними нет стен
+							tank::piu_piu();
+						} else if (currentSide == RIGHT_SIDE or currentSide == LEFT_SIDE) {
+							currentSide = UP_SIDE;
+						}
 					}
-					if((tankTop < players_tanks[i].getRect().top) && (currentSide == DOWN_SIDE)){//снизу игрок, танк едет туда же, между ними нет стен
-						tank::piu_piu();
+					if(tankTop < players_tanks[i].getRect().top) {
+						if (currentSide == DOWN_SIDE){ //снизу игрок, танк едет туда же, между ними нет стен
+							tank::piu_piu();
+						} else if (currentSide == RIGHT_SIDE or currentSide == LEFT_SIDE) {
+							currentSide = DOWN_SIDE;
+						}
 					}
 				}
 			}
 			
-			if(abs(tankTop - players_tanks[i].getRect().top)<16){ // танк на горизонтальной линии с игроком
+			if(abs(tankTop - players_tanks[i].getRect().top)<16 and players_tanks[i].getLife()>0){ // танк на горизонтальной линии с игроком
 				if(AIplayer::checkWallY(tankLeft/16, players_tanks[i].getRect().left/16, (tankTop)/16)) { 
-					if((tankLeft > players_tanks[i].getRect().left) && (currentSide == LEFT_SIDE)){ //слева игрок, танк едет туда же, между ними нет стен
-						tank::piu_piu();
+					if(tankLeft > players_tanks[i].getRect().left) {
+						if (currentSide == LEFT_SIDE){ //слева игрок, танк едет туда же, между ними нет стен
+							tank::piu_piu();
+						} else if (currentSide == UP_SIDE or currentSide == DOWN_SIDE) {
+							currentSide = LEFT_SIDE;
+						}
 					}
-					if((tankLeft < players_tanks[i].getRect().left) && (currentSide == RIGHT_SIDE)){ //справа игрок, танк едет туда же, между ними нет стен
-						tank::piu_piu();
+					if(tankLeft < players_tanks[i].getRect().left) {
+						if (currentSide == RIGHT_SIDE){ //справа игрок, танк едет туда же, между ними нет стен
+							tank::piu_piu();
+						} else if (currentSide == UP_SIDE or currentSide == DOWN_SIDE) {
+							currentSide = RIGHT_SIDE;
+						}
 					}
+
 				}
 			}
 			
