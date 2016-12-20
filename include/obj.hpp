@@ -285,7 +285,6 @@
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
-			void bulletDestroy();
 			void bax_bax();
 
 		private:

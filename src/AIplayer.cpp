@@ -1,5 +1,5 @@
 #include "../include/obj.hpp"
-#include <stdio.h>
+
 bool AIplayer::tankCollision(int side, int id) {
 	FloatRect	tempRect	= tank::getRect();
 
@@ -184,10 +184,6 @@ void AIplayer::activation(unsigned int x, unsigned int y) {
 		startPosition.top = y;
 		tank::setPosition(x, y, DOWN_SIDE);
 	}
-}
-
-void AIplayer::bulletDestroy() {
-	tank::bulletDestroy();
 }
 
 void AIplayer::bax_bax() {
