@@ -1,6 +1,6 @@
 #include "../include/obj.hpp"
 
-body::body(Texture &image, game_map *l_main_map) {
+void body::init(Texture &image, game_map *l_main_map) {
 	main_point::sprite.setTexture(image);
 	main_point::sprite.scale(SCALE_X, SCALE_Y);
 

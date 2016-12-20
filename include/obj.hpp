@@ -22,16 +22,16 @@
 
 	using namespace sf;
 
-	class AIplayer;
-	class player;
-	class tank;
-	class bullet;
-	class body;
-	class game_map;
 	class game;
+	class body;
+	class tank;
+	class player;
+	class bullet;
 	class g_pause;
-	class main_point;
+	class AIplayer;
+	class game_map;
 	class right_bar;
+	class main_point;
 
 	class game {
 	public:
@@ -43,17 +43,17 @@
 
 	private:
 
-		player		*players;
-
-		AIplayer	*eminems;
+		float		time;
 
 		Event 		event;
 
-		Texture 	texture;
-
 		Clock		clock;
 
-		float		time;
+		player		*players;
+
+		Texture 	texture;
+
+		AIplayer	*eminems;
 	};
 
 	class g_pause {
@@ -67,10 +67,9 @@
 
 	private:
 
-		Sprite	p_sprite;
-
 		bool 	status_game;
 
+		Sprite	p_sprite;
 	};
 
 	class game_map {
@@ -89,17 +88,17 @@
 
 	private:
 
-		char	**p_map;				// Вся игровая карта
+		char			**p_map;			// Вся игровая карта
 
-		int		maxX,
-				maxY,
-				grass_num;				// Кол-во травы на карте
+		int				maxX,
+						maxY,
+						grass_num;			// Кол-во травы на карте
 
-		unsigned int	**g_map;		// Координаты травы
+		Sprite			sprite;
 
-		Sprite	sprite;
+		std::string		next_level_path;	// Путь к файлу со следующей картой
 
-		std::string	next_level_path;	// Путь к файлу со следующей картой
+		unsigned int	**g_map;			// Координаты травы
 	};
 
 	class right_bar {
@@ -108,24 +107,24 @@
 		right_bar(Texture&, unsigned int, int, int, int, int);
 		~right_bar(){}
 
-		void draw(RenderWindow&);
-		void setEminems(int);
 		int getEminems();
-		void setP1Life(int);
 		int getP1Life();
-		void setP2Life(int);
 		int getP2Life();
-		void setLevel(int);
 		int getLevel();
+		void setEminems(int);
+		void setP1Life(int);
+		void setP2Life(int);
+		void setLevel(int);
+		void draw(RenderWindow&);
 
 	private:
 
-		int	eminems_num,
-			level,
-			p1_life,
-			p2_life;
+		int				eminems_num,
+						level,
+						p1_life,
+						p2_life;
 
-		Sprite	sprite;
+		Sprite			sprite;
 
 		unsigned int	pos;
 	};
@@ -148,15 +147,18 @@
 	class bullet : public main_point {
 	public:
 
-		bullet(Texture&, game_map*);
+		bullet(){}
 		~bullet();
 
-		void update(float);
-		void shot(int, int, int);
-		bool bulletComparsion(FloatRect);
 		bool active();
-		void destroy();
+		bool bulletStatus();
+		bool bulletComparsion(FloatRect);
+		void update(float);
+		void bulletDestroy();
 		void draw(RenderWindow&);
+		void shot(int, int, int);
+		void init(Texture&, game_map*);
+		FloatRect getBulletRect();
 
 	private:
 
@@ -180,19 +182,20 @@
 	class body : public main_point {
 	public:
 
-		body(Texture&, game_map*);
+		body(){}
 		~body(){}
 
-		void update(float);
+		int getSide();
 		bool moveUp();
 		bool moveDown();
 		bool moveLeft();
 		bool moveRight();
 		bool tankComparsion(FloatRect);
 		bool move(int);
-		void setPosition(unsigned int, unsigned int, int);
-		int getSide();
+		void init(Texture&, game_map*);
+		void update(float);
 		void draw(RenderWindow&) ;
+		void setPosition(unsigned int, unsigned int, int);
 
 	private:
 
@@ -210,33 +213,21 @@
 		bool checkMove();
 	};
 
-	class tank {
+	class tank : public bullet, public body{
 	public:
 
 		tank(){}
-		~tank();
+		~tank(){}
 
-		void init(Texture&, game_map*, right_bar*);
-		void setPosition(unsigned int, unsigned int, int);
-		void update(float);
-		void piu_piu();
-		bool moveUp();
-		bool moveDown();
-		bool moveLeft();
-		bool moveRight();
-		bool tankComparsion(FloatRect);
-		bool bulletComparsion(FloatRect);
-		void bulletDestroy();
-		FloatRect getBulletRect();
-		bool bulletStatus();
-		bool move(int);
-		int getSide();
-		void setLife(int);
-		int getLife();
-		void setID(int);
 		int getID();
-		FloatRect getRect();
+		int getLife();
+		void piu_piu();
+		void setID(int);
+		void setLife(int);
+		void update(float);
 		void draw(RenderWindow&);
+		void init(Texture&, game_map*, right_bar*);
+		FloatRect getRect();
 
 		right_bar	*r_b;
 
@@ -244,22 +235,18 @@
 
 		int 		life,
 					id;
-
-		body		*t_body;
-
-		bullet		*t_bullet;
 	};
 
 	class player : public tank {
 		public:
 
-			player():tank(){}
+			player(){}
 			~player(){}
 
-			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, int, int, int, int);
+			void bax_bax();
 			void update(float);
 			void draw(RenderWindow&);
-			void bax_bax();
+			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, int, int, int, int);
 
 		private:
 
@@ -274,41 +261,42 @@
 						players_num,	// Общее кол-во игроков
 						AIplayers_num;	// Общее кол-во врагов
 
-			void bulletCollision();
 			bool tankCollision(int, int);
+			void bulletCollision();
 	};
 
 	class AIplayer : public tank {
 		public:
 
-			AIplayer():tank(){}
+			AIplayer(){}
 			~AIplayer(){}
 
-			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, int, int, int);
+			void bax_bax();
 			void update(float);
 			void draw(RenderWindow&);
 			void activation(unsigned int, unsigned int);
-			void bax_bax();
+			void init(Texture&, player*, int, AIplayer*, int, game_map*, right_bar*, int, int, int);
 
 		private:
 
-			player	*players_tanks;
+			player		*players_tanks;
 
 			game_map	*main_map;
 
 			AIplayer	*AIplayers_tanks;
 
-			FloatRect	startPosition; // Респаун конкретного танка
+			FloatRect	startPosition;	// Респаун конкретного танка
 
-			bool	active;			// Активирован ли танк
+			bool		active;			// Активирован ли танк
 
-			int		type,			// Тип танка
-					players_num,	// Общее кол-во игроков
-					AIplayers_num,	// Общее кол-во врагов
-					currentSide;	// Направление движения
+			int			type,			// Тип танка
+						players_num,	// Общее кол-во игроков
+						AIplayers_num,	// Общее кол-во танков с ИИ
+						currentSide;	// Направление движения
+
+			bool tankCollision(int, int);
 			bool checkWallX(int, int, int);
 			bool checkWallY(int, int, int);
 			void bulletCollision();
-			bool tankCollision(int, int);
 	};
 #endif

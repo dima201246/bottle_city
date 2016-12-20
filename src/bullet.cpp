@@ -1,6 +1,6 @@
 #include "../include/obj.hpp"
 
-bullet::bullet(Texture &image, game_map *l_main_map) {
+void bullet::init(Texture &image, game_map *l_main_map) {
 	buffer_shot.loadFromFile("media/sound/shot.ogg");		// Подгрузка звуков
 	sound_shot				= new Sound(buffer_shot);
 
@@ -138,11 +138,19 @@ void bullet::collision() {
 	}
 }
 
-void bullet::destroy() {
+void bullet::bulletDestroy() {
 	sound_un_shot->play();
 	bullet_status	= false;
 }
 
 void bullet::draw(RenderWindow& window) {
 	window.draw(main_point::sprite);
+}
+
+bool bullet::bulletStatus() {
+	return bullet_status;
+}
+
+FloatRect bullet::getBulletRect() {
+	return rect;
 }
