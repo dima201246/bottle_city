@@ -11,7 +11,7 @@ void game::gameStart() {
 	players		= new player[MAX_PLAYERS];						// Создание игроков
 	eminems		= new AIplayer[MAX_EMINEMS];					// Создание врагов
 
-	RenderWindow window(VideoMode(512, 480), "Bottle city");	// Создание окна
+	RenderWindow window(VideoMode((16 * 15) * SCALE_X, (16 * 13) * SCALE_Y), "Bottle city");	// Создание окна
 	texture.loadFromFile("media/textures.png");					// Загрузка всех текстур
 
 	game_map main_map(texture);									// Загрузка текстур в карту

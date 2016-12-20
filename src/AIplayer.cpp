@@ -27,7 +27,7 @@ void AIplayer::bulletCollision() {
 			tank::bulletDestroy();
 
 	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с пулей противника
-		if ((players_tanks[i].getLife() > 0) && (tank::bulletComparsion(players_tanks[i].getBulletRect()))) {
+		if ((players_tanks[i].getLife() > 0) && (players_tanks[i].bulletStatus()) && (tank::bulletComparsion(players_tanks[i].getBulletRect()))) {
 			players_tanks[i].bulletDestroy();
 			tank::bulletDestroy();
 		}
@@ -77,7 +77,7 @@ bool AIplayer::checkWallX(int x, int x2, int y) {
 	for (int k = 0; k < x2-x; ++k)
 	{	
 		temp = main_map->getElement(x+k, y);
-		if (temp != 's' and temp != 'v' and temp != 'i')
+		if ((temp != 's') && (temp != 'v') && (temp != 'i'))
 		{
 			noWall = false; 
 			break;
@@ -98,7 +98,7 @@ bool AIplayer::checkWallY(int y, int y2, int x) {
 	for (int k = 0; k < y2-y; ++k)
 	{	
 		temp = main_map->getElement(x, y+k);
-		if (temp != 's' and temp != 'v' and temp != 'i')
+		if ((temp != 's') && (temp != 'v') && (temp != 'i'))
 		{
 			noWall = false; 
 			break;
@@ -121,27 +121,28 @@ void AIplayer::update(float time) {
 			currentSide = (rand()%4)*2;
 		}
 		for (int	i	= 0; i < players_num; i++)	{
-			if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // танк на горизонтальной линии с игроком
+			if(abs(tankLeft - players_tanks[i].getRect().left) < 16){ // танк на вертикальной линии с игроком
 				if(AIplayer::checkWallY(tankTop/16, players_tanks[i].getRect().top/16, (tankLeft)/16)){
-					if(tankTop > players_tanks[i].getRect().top and currentSide == UP_SIDE){ //сверху игрок, танк едет туда же, между ними нет стен
+					if((tankTop > players_tanks[i].getRect().top) && (currentSide == UP_SIDE)){ //сверху игрок, танк едет туда же, между ними нет стен
 						tank::piu_piu();
 					}
-					if(tankTop < players_tanks[i].getRect().top and currentSide == DOWN_SIDE){//снизу игрок, танк едет туда же, между ними нет стен
+					if((tankTop < players_tanks[i].getRect().top) && (currentSide == DOWN_SIDE)){//снизу игрок, танк едет туда же, между ними нет стен
 						tank::piu_piu();
 					}
 				}
 			}
 			
-			if(abs(tankTop - players_tanks[i].getRect().top)<16){ // танк на вертикальной линии с игроком
+			if(abs(tankTop - players_tanks[i].getRect().top)<16){ // танк на горизонтальной линии с игроком
 				if(AIplayer::checkWallY(tankLeft/16, players_tanks[i].getRect().left/16, (tankTop)/16)) { 
-					if(tankLeft > players_tanks[i].getRect().left and currentSide == LEFT_SIDE){ //слева игрок, танк едет туда же, между ними нет стен
+					if((tankLeft > players_tanks[i].getRect().left) && (currentSide == LEFT_SIDE)){ //слева игрок, танк едет туда же, между ними нет стен
 						tank::piu_piu();
 					}
-					if(tankLeft < players_tanks[i].getRect().left and currentSide == RIGHT_SIDE){ //справа игрок, танк едет туда же, между ними нет стен
+					if((tankLeft < players_tanks[i].getRect().left) && (currentSide == RIGHT_SIDE)){ //справа игрок, танк едет туда же, между ними нет стен
 						tank::piu_piu();
 					}
 				}
 			}
+			
 		}
 		
 		
@@ -151,7 +152,7 @@ void AIplayer::update(float time) {
 			{	
 				if (!AIplayer::tankCollision(i*2, tank::getID()))
 				{
-					canMove = tank::move(i*2) or canMove;
+					canMove = tank::move(i*2) || canMove;
 				}
 			}
 			if (!canMove)

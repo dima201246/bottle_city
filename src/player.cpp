@@ -27,7 +27,7 @@ void player::bulletCollision() {
 			tank::bulletDestroy();
 
 	for (int	i	= 0; i < AIplayers_num; i++)	// Обработка столкновений пули с пулей противника
-		if ((AIplayers_tanks[i].getLife() > 0) && (tank::bulletComparsion(AIplayers_tanks[i].getBulletRect()))) {
+		if ((AIplayers_tanks[i].getLife() > 0) && (AIplayers_tanks[i].bulletStatus()) && (tank::bulletComparsion(AIplayers_tanks[i].getBulletRect()))) {
 			AIplayers_tanks[i].bulletDestroy();
 			tank::bulletDestroy();
 		}
