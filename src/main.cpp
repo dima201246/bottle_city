@@ -1,4 +1,4 @@
-#include "include/obj.hpp"
+#include "../include/obj.hpp"
 
 int main() {
 	game	game_now;
