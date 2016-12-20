@@ -66,8 +66,8 @@ void player::update(float time) {
 			k_u		= true,
 			k_r		= true,
 			k_l		= true;
-	if (tank::getLife()>0)
-		{
+
+	if (tank::getLife() > 0) {
 		if (tank::getID() == 2) {
 			/*Защита от диагоналей Начало*/
 			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down))) {
@@ -174,12 +174,16 @@ void player::update(float time) {
 }
 
 void player::draw(RenderWindow &window) {
-	if (tank::getLife()!=0)
-	{
+	if (tank::getLife()!=0)	{
 		tank::draw(window);
 	}
 }
 
 void player::bax_bax() {
+	if (tank::getID() == 1)
+		tank::setPosition(4, 12, UP_SIDE);
+	else
+		tank::setPosition(8, 12, UP_SIDE);
+
 	tank::setLife(tank::getLife() - 1);
 }
