@@ -1,9 +1,9 @@
 #include "../include/obj.hpp"
 #include <cmath>
 
-void body::init(Texture &image, game_map *l_main_map) {
-	main_point::sprite.setTexture(image);
-	main_point::sprite.scale(SCALE_X, SCALE_Y);
+void Body::init(Texture &image, GameMap *l_main_map) {
+	MainPoint::sprite.setTexture(image);
+	MainPoint::sprite.scale(SCALE_X, SCALE_Y);
 
 	side			= 0;
 	rect			= FloatRect(0, 0, 16, 16);
@@ -12,7 +12,7 @@ void body::init(Texture &image, game_map *l_main_map) {
 	main_map		= l_main_map;
 }
 
-void body::update(float time)
+void Body::update(float time)
 {
 	if ((dx != 0) && (dy != 0))			// Сброс, если косое движение
 	{
@@ -25,28 +25,28 @@ void body::update(float time)
 	rect.left	+= dx * (time / 2.0);	// Собсно, движение
 	rect.top 	+= dy * (time / 2.0);
 
-	main_point::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 15, 15));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
+	MainPoint::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 15, 15));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
 
-	main_point::sprite.setPosition(rect.left * SCALE_X, rect.top * SCALE_Y);
+	MainPoint::sprite.setPosition(rect.left * SCALE_X, rect.top * SCALE_Y);
 
 	dx=0;
 	dy=0;
 }
 
 
-bool body::move(int i) {
+bool Body::move(int i) {
 	switch(i) {
 		case 0:
-			return body::moveUp();
+			return Body::moveUp();
 			break;
 		case 2:
-			return body::moveLeft();
+			return Body::moveLeft();
 			break;
 		case 4:
-			return body::moveDown();
+			return Body::moveDown();
 			break;
 		case 6:
-			return body::moveRight();
+			return Body::moveRight();
 			break;
 		case 8:
 			return move(2*(rand()%4));
@@ -54,47 +54,47 @@ bool body::move(int i) {
 	}
 }
 
-bool body::moveUp()
+bool Body::moveUp()
 {
 	dy	= -0.1;
-	return body::checkMove();
+	return Body::checkMove();
 }
 
-bool body::moveDown()
+bool Body::moveDown()
 {
 	dy	= 0.1;
-	return body::checkMove();
+	return Body::checkMove();
 }
 
-bool body::moveLeft() {
+bool Body::moveLeft() {
 	dx	= -0.1;
-	return body::checkMove();
+	return Body::checkMove();
 }
 
-bool body::moveRight()
+bool Body::moveRight()
 {
 	dx	= 0.1;
-	return body::checkMove();
+	return Body::checkMove();
 }
 
-int body::getSide()
+int Body::getSide()
 {
 	return side;
 }
 
-void body::draw(RenderWindow &window)
+void Body::draw(RenderWindow &window)
 {
-	window.draw(main_point::sprite);
+	window.draw(MainPoint::sprite);
 }
 
-void body::setPosition(unsigned int x, unsigned int y, int getted_side)
+void Body::setPosition(unsigned int x, unsigned int y, int getted_side)
 {
 	rect.left		= x * 16;
 	rect.top		= y * 16;
 	side			= getted_side;
 }
 
-bool body::tankComparsion(FloatRect tank_recr)
+bool Body::tankComparsion(FloatRect tank_recr)
 {
 	if (rect.intersects(tank_recr))
 		return true;
@@ -102,7 +102,7 @@ bool body::tankComparsion(FloatRect tank_recr)
 	return false;
 }
 
-bool body::checkMove()
+bool Body::checkMove()
 {
 	char	block_1, block_2;
 

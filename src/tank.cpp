@@ -1,49 +1,49 @@
 #include "../include/obj.hpp"
 
-void tank::init(Texture &image, game_map *l_main_map, right_bar *l_r_b) {
-	bullet::init(image, l_main_map);
-	body::init(image, l_main_map);
+void Tank::init(Texture &image, GameMap *l_main_map, RightBar *l_r_b) {
+	Bullet::init(image, l_main_map);
+	Body::init(image, l_main_map);
 	r_b			= l_r_b;
 }
 
-void tank::update(float time) {
-	body::update(time);
+void Tank::update(float time) {
+	Body::update(time);
 
-	if (bullet::active()) {
-		bullet::update(time);
+	if (Bullet::active()) {
+		Bullet::update(time);
 	}
 }
 
-void tank::piu_piu() {
-	if (!bullet::active()) {
-		bullet::shot(body::getRect().left, body::getRect().top, body::getSide());
+void Tank::piu_piu() {
+	if (!Bullet::active()) {
+		Bullet::shot(Body::getRect().left, Body::getRect().top, Body::getSide());
 	}
 }
 
-FloatRect tank::getRect() {
-	return body::getRect();
+FloatRect Tank::getRect() {
+	return Body::getRect();
 }
 
-void tank::draw(RenderWindow& window) {
-	body::draw(window);
+void Tank::draw(RenderWindow& window) {
+	Body::draw(window);
 
-	if (bullet::active()) {
-		bullet::draw(window);
+	if (Bullet::active()) {
+		Bullet::draw(window);
 	}
 }
 
-void tank::setLife(int l_life) {
+void Tank::setLife(int l_life) {
 	life	= l_life;
 }
 
-int tank::getLife() {
+int Tank::getLife() {
 	return life;
 }
 
-void tank::setID(int l_id) {
+void Tank::setID(int l_id) {
 	id	= l_id;
 }
 
-int tank::getID() {
+int Tank::getID() {
 	return id;
 }

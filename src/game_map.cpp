@@ -1,13 +1,13 @@
 #include "../include/configurator.h"
 #include "../include/obj.hpp"
 
-game_map::game_map(Texture &image) {
+GameMap::GameMap(Texture &image) {
 	sprite.setTexture(image);
 	sprite.scale(SCALE_X, SCALE_Y);
 	maxX	= maxY	= grass_num	= 0;
 }
 
-game_map::~game_map() {
+GameMap::~GameMap() {
 	for (unsigned int	i	= 0; i <= maxX; ++i)
 		delete [] p_map[i];
 
@@ -18,7 +18,7 @@ game_map::~game_map() {
 	delete [] g_map;
 }
 
-bool game_map::loadMap(std::string path) {
+bool GameMap::loadMap(std::string path) {
 	std::string	temp_map;
 
 	unsigned int	count		= 0;
@@ -31,10 +31,6 @@ bool game_map::loadMap(std::string path) {
 	p_map	= new char* [maxX + 1];
 		for (unsigned int	i	= 0; i <= maxX; ++i)
 			p_map[i] = new char [maxY + 1];
-
-	/*t_map	= new game_obj* [maxX + 1];
-		for (unsigned int	i	= 0; i <= maxX; ++i)
-			t_map[i] = new game_obj [maxY + 1];*/
 
 	for (unsigned int	j	= 0; j < maxY; ++j)				// Загрузка карты в массив
 		for (unsigned int	i	= 0; i < maxX; ++i)
@@ -66,11 +62,11 @@ bool game_map::loadMap(std::string path) {
 	return true;
 }
 
-char game_map::getElement(unsigned int x, unsigned int y) {
+char GameMap::getElement(unsigned int x, unsigned int y) {
 	return p_map[x][y];
 }
 
-void game_map::draw(RenderWindow &window) {
+void GameMap::draw(RenderWindow &window) {
 	window.clear(Color(0,0,0));
 
 	for (unsigned int	j	= 0; j < maxY; ++j) {
@@ -94,7 +90,7 @@ void game_map::draw(RenderWindow &window) {
 	}
 }
 
-void game_map::drawGrass(RenderWindow &window) {
+void GameMap::drawGrass(RenderWindow &window) {
 	sprite.setTextureRect(IntRect(272, 32, 16, 16));
 
 	for (unsigned int	i	= 0; i < grass_num; ++i) {
@@ -103,14 +99,14 @@ void game_map::drawGrass(RenderWindow &window) {
 	}
 }
 
-unsigned int game_map::getMaxX() {
+unsigned int GameMap::getMaxX() {
 	return maxX;
 }
 
-unsigned int game_map::getMaxY() {
+unsigned int GameMap::getMaxY() {
 	return maxY;
 }
 
-void game_map::setElement(char l_char, unsigned int x, unsigned int y) {
+void GameMap::setElement(char l_char, unsigned int x, unsigned int y) {
 	p_map[x][y]	= l_char;
 }

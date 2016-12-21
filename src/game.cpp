@@ -1,14 +1,14 @@
 #include "../include/obj.hpp"
 
-game::~game() {
+Game::~Game() {
 	delete [] players;
 	delete [] eminems;
 }
 
-void game::gameStart() {
+void Game::gameStart() {
 	bool first_interapt	= true;
 
-	players		= new player[MAX_PLAYERS];						// Создание игроков
+	players		= new Player[MAX_PLAYERS];						// Создание игроков
 	eminems		= new AIplayer[MAX_EMINEMS];					// Создание врагов
 
 	RenderWindow window(VideoMode((16 * 15) * SCALE_X, (16 * 13) * SCALE_Y), "Bottle city");	// Создание окна
@@ -17,11 +17,11 @@ void game::gameStart() {
 
 	texture.loadFromFile("media/textures.png");					// Загрузка всех текстур
 
-	game_map main_map(texture);									// Загрузка текстур в карту
+	GameMap main_map(texture);									// Загрузка текстур в карту
 	main_map.loadMap("media/maps/level1.map");					// Загрузка карты из файла
 
-	right_bar	r_b(texture, main_map.getMaxX(), MAX_EMINEMS, 1, 3, 3);
-	g_pause	game_pause(texture, &main_map);
+	RightBar	r_b(texture, main_map.getMaxX(), MAX_EMINEMS, 1, 3, 3);
+	GPause	game_pause(texture, &main_map);
 
 	players[0].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, MAX_EMINEMS, 1);	// Задача стандартных параметров для игроков
 	players[1].init(texture, players, MAX_PLAYERS, eminems, MAX_EMINEMS, &main_map, &r_b, 3, 1, MAX_EMINEMS, 2);

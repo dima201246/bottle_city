@@ -1,17 +1,17 @@
 #include "../include/obj.hpp"
 
-right_bar::right_bar(Texture &image, unsigned int maxX, int eminem_num, int l_level, int l_p1_life, int l_p2_life) {
+RightBar::RightBar(Texture &image, unsigned int maxX, int intNEminems, int l_level, int l_p1_life, int l_p2_life) {
 	sprite.setTexture(image);
 	sprite.scale(SCALE_X, SCALE_Y);
 
 	pos			= maxX * 16;
-	eminems_num	= eminem_num;
+	nEminems	= intNEminems;
 	level		= l_level;
 	p1_life		= l_p1_life;
 	p2_life		= l_p2_life;
 }
 
-void right_bar::draw(RenderWindow &window) {
+void RightBar::draw(RenderWindow &window) {
 	unsigned int	j	= 0,
 					k	= 0;
 
@@ -20,12 +20,14 @@ void right_bar::draw(RenderWindow &window) {
 	window.draw(sprite);
 	sprite.setTextureRect(IntRect(320, 192, 9, 9));
 
-	for (int	i	= 0; i < eminems_num; ++i) {
+	for (int	i	= 0; i < nEminems; ++i)
+	{
 		sprite.setPosition((pos + 8 + j) * SCALE_X, (8 * SCALE_Y) + k);
 
 		k	+= 8 * SCALE_X;
 
-		if ((i >= 9) && (j == 0)) {
+		if ((i >= 9) && (j == 0))
+		{
 			j	= 8;
 			k	= 0;
 		}
@@ -37,11 +39,17 @@ void right_bar::draw(RenderWindow &window) {
 
 	if (p1_life == 3) {
 		sprite.setTextureRect(IntRect(352, 183, 9, 9));
-	} else if (p1_life == 2) {
+	}
+	else if (p1_life == 2)
+	{
 		sprite.setTextureRect(IntRect(344, 183, 9, 9));
-	} else if (p1_life == 1) {
+	}
+	else if (p1_life == 1)
+	{
 		sprite.setTextureRect(IntRect(336, 183, 9, 9));
-	} else if (p1_life >= 0) {
+	}
+	else if (p1_life >= 0)
+	{
 		sprite.setTextureRect(IntRect(328, 183, 9, 9));
 	}
 
@@ -49,13 +57,20 @@ void right_bar::draw(RenderWindow &window) {
 
 	sprite.setPosition((pos + 16) * SCALE_X, (152 * SCALE_Y));
 
-	if (p2_life == 3) {
+	if (p2_life == 3)
+	{
 		sprite.setTextureRect(IntRect(352, 183, 9, 9));
-	} else if (p2_life == 2) {
+	}
+	else if (p2_life == 2)
+	{
 		sprite.setTextureRect(IntRect(344, 183, 9, 9));
-	} else if (p2_life == 1) {
+	}
+	else if (p2_life == 1)
+	{
 		sprite.setTextureRect(IntRect(336, 183, 9, 9));
-	} else if (p2_life >= 0) {
+	}
+	else if (p2_life >= 0)
+	{
 		sprite.setTextureRect(IntRect(328, 183, 9, 9));
 	}
 
@@ -63,34 +78,34 @@ void right_bar::draw(RenderWindow &window) {
 
 }
 
-void right_bar::setEminems(int c) {
-	eminems_num	= c;
+void RightBar::setEminems(int c) {
+	nEminems	= c;
 }
 
-int right_bar::getEminems() {
-	return eminems_num;
+int RightBar::getEminems() {
+	return nEminems;
 }
 
-void right_bar::setP1Life(int c) {
+void RightBar::setP1Life(int c) {
 	p1_life	= c;
 }
 
-int right_bar::getP1Life() {
+int RightBar::getP1Life() {
 	return p1_life;
 }
 
-void right_bar::setP2Life(int c) {
+void RightBar::setP2Life(int c) {
 	p2_life	= c;
 }
 
-int right_bar::getP2Life() {
+int RightBar::getP2Life() {
 	return p2_life;
 }
 
-void right_bar::setLevel(int c) {
+void RightBar::setLevel(int c) {
 	level	= c;
 }
 
-int right_bar::getLevel() {
+int RightBar::getLevel() {
 	return level;
 }

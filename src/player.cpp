@@ -1,7 +1,7 @@
 #include "../include/obj.hpp"
 
-bool player::tankCollision(int side, int id) {
-	FloatRect	tempRect	= tank::getRect();
+bool Player::tankCollision(int side, int id) {
+	FloatRect	tempRect	= Tank::getRect();
 
 	switch (side) {
 		case LEFT_SIDE:		tempRect.left--;	break;
@@ -10,180 +10,198 @@ bool player::tankCollision(int side, int id) {
 		case DOWN_SIDE:		tempRect.top++;		break;
 	}
 
-	for (int	i	= 0; i < players_num; i++)	// Столкновение с другом
+	for (int	i	= 0; i < nPlayers; i++)		// Столкновение с другом
 		if ((players_tanks[i].getLife() > 0) && (id != players_tanks[i].getID()) && (tempRect.intersects(players_tanks[i].getRect())))
 			return true;
 
-	for (int	i	= 0; i < AIplayers_num; i++)	// Столкновение с врагом
+	for (int	i	= 0; i < nAIPlayers; i++)	// Столкновение с врагом
 		if ((AIplayers_tanks[i].getLife() > 0) && (tempRect.intersects(AIplayers_tanks[i].getRect())))
 			return true;
 
 	return false;
 }
 
-void player::bulletCollision() {
-	for (int	i	= 0; i < players_num; i++)	// Обработка столкновений пули с другом
-		if ((players_tanks[i].getLife() > 0) && ((i + 1) != tank::getID()) && (tank::bulletComparsion(players_tanks[i].getRect())))
-			tank::bulletDestroy();
+void Player::bulletCollision() {
+	for (int	i	= 0; i < nPlayers; i++)		// Обработка столкновений пули с другом
+		if ((players_tanks[i].getLife() > 0) && ((i + 1) != Tank::getID()) && (Tank::bulletComparsion(players_tanks[i].getRect())))
+			Tank::bulletDestroy();
 
-	for (int	i	= 0; i < AIplayers_num; i++)	// Обработка столкновений пули с пулей противника
-		if ((AIplayers_tanks[i].getLife() > 0) && (AIplayers_tanks[i].bulletStatus()) && (tank::bulletComparsion(AIplayers_tanks[i].getBulletRect()))) {
+	for (int	i	= 0; i < nAIPlayers; i++)	// Обработка столкновений пули с пулей противника
+		if ((AIplayers_tanks[i].getLife() > 0) && (AIplayers_tanks[i].bulletStatus()) && (Tank::bulletComparsion(AIplayers_tanks[i].getBulletRect())))
+		{
+			Tank::bulletDestroy();
 			AIplayers_tanks[i].bulletDestroy();
-			tank::bulletDestroy();
 		}
 
-	for (int	i	= 0; i < AIplayers_num; i++)	// Обработка столкновений пули с врагом
-		if ((AIplayers_tanks[i].getLife() > 0) && (tank::bulletComparsion(AIplayers_tanks[i].getRect()))) {
+	for (int	i	= 0; i < nAIPlayers; i++)	// Обработка столкновений пули с врагом
+		if ((AIplayers_tanks[i].getLife() > 0) && (Tank::bulletComparsion(AIplayers_tanks[i].getRect())))
+		{
+			Tank::bulletDestroy();	
 			AIplayers_tanks[i].bax_bax();
-			tank::bulletDestroy();	
 		}
 }
 
-void player::init(Texture &image, player *g_tanks, int l_frend_num, AIplayer *g_other_tanks, int g_other_tanks_num, game_map *l_main_map, right_bar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
-	tank::init(image, l_main_map, l_r_b);
+void Player::init(Texture &image, Player *players, int intNPlayer, AIplayer *AI_player, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
+	Tank::init(image, l_main_map, l_r_b);
 
-	main_map		= l_main_map;
 
-	tank::setLife(l_life);
+	Tank::setLife(l_life);
+	Tank::setID(l_num_of_player);
+
 	level			= l_level;
+	nPlayers		= intNPlayer;
+	main_map		= l_main_map;
 	left_tank		= l_left_tank;
-	tank::setID(l_num_of_player);
+	nAIPlayers		= intNAIplayer;
+	players_tanks	= players;
+	AIplayers_tanks	= AI_player;
 
-	players_tanks	= g_tanks;
-	players_num		= l_frend_num;
-	AIplayers_tanks	= g_other_tanks;
-	AIplayers_num	= g_other_tanks_num;
-
-	if (tank::getID() == 1) {
-		tank::setPosition(4, 12, UP_SIDE);
-	} else {
-		tank::setPosition(8, 12, UP_SIDE);
-	}
+	if (Tank::getID() == 1)
+		Tank::setPosition(4, 12, UP_SIDE);
+	else
+		Tank::setPosition(8, 12, UP_SIDE);
 }
 
-void player::update(float time) {
+void Player::update(float time) {
 	bool	k_d		= true,
 			k_u		= true,
 			k_r		= true,
 			k_l		= true;
 
-	if (tank::getLife() > 0) {
-		if (tank::getID() == 2) {
+	if (Tank::getLife() > 0)
+	{
+		if (Tank::getID() == 2)
+		{
 			/*Защита от диагоналей Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down))) {
-				if (tank::getSide() == LEFT_SIDE)	k_d	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down)))
+			{
+				if (Tank::getSide() == LEFT_SIDE)	k_d	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Up)))	{
-				if (tank::getSide() == LEFT_SIDE)	k_u	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Up)))
+			{
+				if (Tank::getSide() == LEFT_SIDE)	k_u	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Down))) {
-				if (tank::getSide() == RIGHT_SIDE)	k_d	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Down)))
+			{
+				if (Tank::getSide() == RIGHT_SIDE)	k_d	= false;
 				else k_r	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Up))) {
-				if (tank::getSide() == RIGHT_SIDE)	k_u	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Up)))
+			{
+				if (Tank::getSide() == RIGHT_SIDE)	k_u	= false;
 				else k_r	= false;
 			}
 			/*Защита от диагоналей Конец*/
 
 			/*Обработка кнопок Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (k_l)) {
-				if (!tankCollision(LEFT_SIDE, tank::getID()))
-					tank::moveLeft();
+			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (k_l))
+			{
+				if (!tankCollision(LEFT_SIDE, Tank::getID()))
+					Tank::moveLeft();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (k_r)) {
-				if (!tankCollision(RIGHT_SIDE, tank::getID()))
-					tank::moveRight();
+			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (k_r))
+			{
+				if (!tankCollision(RIGHT_SIDE, Tank::getID()))
+					Tank::moveRight();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Up)) && (k_u)) {
-				if (!tankCollision(UP_SIDE, tank::getID()))
-					tank::moveUp();
+			if ((Keyboard::isKeyPressed(Keyboard::Up)) && (k_u))
+			{
+				if (!tankCollision(UP_SIDE, Tank::getID()))
+					Tank::moveUp();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Down)) && (k_d)) {
-				if (!tankCollision(DOWN_SIDE, tank::getID()))
-					tank::moveDown();
+			if ((Keyboard::isKeyPressed(Keyboard::Down)) && (k_d))
+			{
+				if (!tankCollision(DOWN_SIDE, Tank::getID()))
+					Tank::moveDown();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::Period)) {
-				tank::piu_piu();
-			}
+			if (Keyboard::isKeyPressed(Keyboard::Period))
+				Tank::piu_piu();
 			/*Обработка кнопок Конец*/
-		} else if (tank::getID() == 1) {
+		}
+		else if (Tank::getID() == 1)
+		{
 			/*Защита от диагоналей Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::S))) {
-				if (tank::getSide() == LEFT_SIDE)	k_d	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::S)))
+			{
+				if (Tank::getSide() == LEFT_SIDE)	k_d	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::W)))	{
-				if (tank::getSide() == LEFT_SIDE)	k_u	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::W)))
+			{
+				if (Tank::getSide() == LEFT_SIDE)	k_u	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::D)) && (Keyboard::isKeyPressed(Keyboard::S))) {
-				if (tank::getSide() == RIGHT_SIDE)	k_d	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::D)) && (Keyboard::isKeyPressed(Keyboard::S)))
+			{
+				if (Tank::getSide() == RIGHT_SIDE)	k_d	= false;
 				else k_r	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::D)) && (Keyboard::isKeyPressed(Keyboard::W))) {
-				if (tank::getSide() == RIGHT_SIDE)	k_u	= false;
+			if ((Keyboard::isKeyPressed(Keyboard::D)) && (Keyboard::isKeyPressed(Keyboard::W)))
+			{
+				if (Tank::getSide() == RIGHT_SIDE)	k_u	= false;
 				else k_r	= false;
 			}
 			/*Защита от диагоналей Конец*/
 
 			/*Обработка кнопок Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::A)) && (k_l)) {
-				if (!tankCollision(LEFT_SIDE, tank::getID()))
-					tank::moveLeft();
+			if ((Keyboard::isKeyPressed(Keyboard::A)) && (k_l))
+			{
+				if (!tankCollision(LEFT_SIDE, Tank::getID()))
+					Tank::moveLeft();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::D)) && (k_r)) {
-				if (!tankCollision(RIGHT_SIDE, tank::getID()))
-					tank::moveRight();
+			if ((Keyboard::isKeyPressed(Keyboard::D)) && (k_r))
+			{
+				if (!tankCollision(RIGHT_SIDE, Tank::getID()))
+					Tank::moveRight();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::W)) && (k_u)) {
-				if (!tankCollision(UP_SIDE, tank::getID()))
-					tank::moveUp();
+			if ((Keyboard::isKeyPressed(Keyboard::W)) && (k_u))
+			{
+				if (!tankCollision(UP_SIDE, Tank::getID()))
+					Tank::moveUp();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::S)) && (k_d)) {
-				if (!tankCollision(DOWN_SIDE, tank::getID()))
-					tank::moveDown();
+			if ((Keyboard::isKeyPressed(Keyboard::S)) && (k_d))
+			{
+				if (!tankCollision(DOWN_SIDE, Tank::getID()))
+					Tank::moveDown();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::Z)) {
-				tank::piu_piu();
-			}
+			if (Keyboard::isKeyPressed(Keyboard::Z))
+				Tank::piu_piu();
 			/*Обработка кнопок Конец*/
 		}
 
-		tank::update(time);
+		Tank::update(time);
 
-		if (tank::bulletStatus())
+		if (Tank::bulletStatus())
 			bulletCollision();
 	}
 }
 
-void player::draw(RenderWindow &window) {
-	if (tank::getLife()!=0)	{
-		tank::draw(window);
-	}
+void Player::draw(RenderWindow &window) {
+	if (Tank::getLife()!=0)
+		Tank::draw(window);
 }
 
-void player::bax_bax() {
-/*	if (tank::getID() == 1)
-		tank::setPosition(4, 12, UP_SIDE);
+void Player::bax_bax() {
+	if (Tank::getID() == 1)
+		Tank::setPosition(4, 12, UP_SIDE);
 	else
-		tank::setPosition(8, 12, UP_SIDE);
+		Tank::setPosition(8, 12, UP_SIDE);
 
-	tank::setLife(tank::getLife() - 1);*/
+	Tank::setLife(Tank::getLife() - 1);
 }

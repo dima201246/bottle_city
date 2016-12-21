@@ -1,6 +1,6 @@
 #include "../include/obj.hpp"
 
-g_pause::g_pause(Texture &image, game_map *main_map) {
+GPause::GPause(Texture &image, GameMap *main_map) {
 	p_sprite.setTexture(image);
 	p_sprite.scale(SCALE_X, SCALE_Y);
 	p_sprite.setTextureRect(IntRect(288, 175, 40, 8));
@@ -8,7 +8,7 @@ g_pause::g_pause(Texture &image, game_map *main_map) {
 	status_game	= false;
 }
 
-void g_pause::paused(RenderWindow &window) {
+void GPause::paused(RenderWindow &window) {
 	if (!status_game) {
 		window.draw(p_sprite);
         window.display();
@@ -18,6 +18,6 @@ void g_pause::paused(RenderWindow &window) {
 	}
 }
 
-bool g_pause::status() {
+bool GPause::status() {
 	return status_game;
 }
