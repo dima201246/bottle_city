@@ -32,8 +32,9 @@ bool game_map::loadMap(std::string path) {
 		for (unsigned int	i	= 0; i <= maxX; ++i)
 			p_map[i] = new char [maxY + 1];
 
-	for (unsigned int	i	= 0; i < maxX; ++i)				// Загрузка карты в массив
-		for (unsigned int	j	= 0; j < maxY; ++j) {
+	for (unsigned int	j	= 0; j < maxY; ++j)				// Загрузка карты в массив
+		for (unsigned int	i	= 0; i < maxX; ++i)
+		{
 			while ((temp_map[count] < 'a') || (temp_map[count] > 'z'))	// Чтобы не влезла разная кака на карту
 				count++;
 
@@ -68,8 +69,8 @@ char game_map::getElement(unsigned int x, unsigned int y) {
 void game_map::draw(RenderWindow &window) {
 	window.clear(Color(0,0,0));
 
-		for (unsigned int	j	= 0; j < maxY; ++j) {
-	for (unsigned int	i	= 0; i < maxX; ++i) {
+	for (unsigned int	j	= 0; j < maxY; ++j) {
+		for (unsigned int	i	= 0; i < maxX; ++i) {
 			if (p_map[i][j] == 'w')							// Кирпичная стена
 				sprite.setTextureRect(IntRect(256, 0, 16, 16));
 			else if (p_map[i][j] == 'a')					// Бронь
@@ -83,21 +84,17 @@ void game_map::draw(RenderWindow &window) {
 			else
 				continue;
 
-			sprite.setPosition(j * (16 * SCALE_X), i * (16 * SCALE_Y)) ;
+			sprite.setPosition(i * (16 * SCALE_X), j * (16 * SCALE_Y)) ;
 			window.draw(sprite);
 		}
 	}
-
-	/*sprite.setTextureRect(IntRect(368, 16, 32, 192));
-	sprite.setPosition(208, 0) ;*/
-
 }
 
 void game_map::drawGrass(RenderWindow &window) {
 	sprite.setTextureRect(IntRect(272, 32, 16, 16));
 
 	for (unsigned int	i	= 0; i < grass_num; ++i) {
-		sprite.setPosition(g_map[i][1] * (16 * SCALE_X), g_map[i][0] * (16 * SCALE_Y)) ; 
+		sprite.setPosition(g_map[i][0] * (16 * SCALE_X), g_map[i][1] * (16 * SCALE_Y)) ; 
 		window.draw(sprite);
 	}
 }
