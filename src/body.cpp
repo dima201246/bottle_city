@@ -1,6 +1,5 @@
 #include "../include/obj.hpp"
 #include <cmath>
-#include <iostream>
 
 void Body::init(Texture &image, GameMap *l_main_map) {
 	MainPoint::sprite.setTexture(image);
