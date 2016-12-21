@@ -159,7 +159,7 @@ bool Body::checkMove()
 	{
 		dx	= 0;
 		dy	= 0;
-		return true;
+		return false;
 	}
 
 	return true;
