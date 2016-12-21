@@ -114,7 +114,7 @@ void AIplayer::update(float time) {
 	char	temp;
 	int 	tankTop			= tank::getRect().top;
 	int 	tankLeft		= tank::getRect().left;
-	if (tank::getLife()>0)
+/*	if (tank::getLife()>0)
 	{
 		if (currentSide == 8)
 		{
@@ -160,10 +160,10 @@ void AIplayer::update(float time) {
 				}
 			}
 			
-		}
+		}*/
 		
 		
-		if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
+/*		if (not tank::move(currentSide)) //если в сторону, в которую хотим ехать, нельзя проехать
 		{	
 			for (int i = 0; i < 4; ++i)
 			{	
@@ -180,14 +180,14 @@ void AIplayer::update(float time) {
 			} else {	
 				currentSide = (rand()%4)*2;
 			}
-		}
+		}*/
 
-		if (!AIplayer::tankCollision(currentSide, tank::getID())) 
-		{ 
-		tank::move(currentSide); 
-		}
+		// if (!AIplayer::tankCollision(currentSide, tank::getID())) 
+		// { 
+		// tank::move(currentSide); 
+		// }
 		tank::update(time);
-	}
+	// }
 	if (tank::bulletStatus())
 		bulletCollision();
 }

@@ -2,8 +2,9 @@
 
 g_pause::g_pause(Texture &image, game_map *main_map) {
 	p_sprite.setTexture(image);
+	p_sprite.scale(SCALE_X, SCALE_Y);
 	p_sprite.setTextureRect(IntRect(288, 175, 40, 8));
-	p_sprite.setPosition(((main_map->getMaxX() * 16) / 2) - 20, ((main_map->getMaxY() * 16) / 2) - 4);
+	p_sprite.setPosition((((main_map->getMaxX() / 2) * (16 * SCALE_X))) - (12 * SCALE_X), (((main_map->getMaxY() / 2) * (16 * SCALE_Y))) - (2 * SCALE_Y));
 	status_game	= false;
 }
 

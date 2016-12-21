@@ -1,4 +1,5 @@
 #include "../include/obj.hpp"
+#include <cmath>
 
 void body::init(Texture &image, game_map *l_main_map) {
 	main_point::sprite.setTexture(image);
@@ -7,37 +8,24 @@ void body::init(Texture &image, game_map *l_main_map) {
 	side			= 0;
 	rect			= FloatRect(0, 0, 16, 16);
 	god_mode		= false;
-	currentFrame	= 0;
 	dx	= dy		= 0.0;
 	main_map		= l_main_map;
 }
 
-void body::update(float time) {
-	l_time	= time;
+void body::update(float time)
+{
+	if ((dx != 0) && (dy != 0))			// Сброс, если косое движение
+	{
+		dx	= 0;
+		dy	= 0;
+	}
 
 	checkMove();
 
-	rect.left		+= dx * (time / 2.0);	// Собсно, движение
-	rect.top 		+= dy * (time / 2.0);
+	rect.left	+= dx * (time / 2.0);	// Собсно, движение
+	rect.top 	+= dy * (time / 2.0);
 
-	main_point::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 15, 15));
-
-	if ((dx	!= 0) || (dy != 0)) {
-		currentFrame	!= currentFrame;
-
-		if (dy < 0)
-			side	= 0 + currentFrame;
-
-		if (dx < 0)
-			side	= 2 + currentFrame;
-
-		if (dy > 0)
-			side	= 4 + currentFrame;
-		
-		if (dx > 0)
-			side	= 6 + currentFrame;
-
-	}
+	main_point::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 15, 15));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
 
 	main_point::sprite.setPosition(rect.left * SCALE_X, rect.top * SCALE_Y);
 
@@ -52,7 +40,7 @@ bool body::move(int i) {
 			return body::moveUp();
 			break;
 		case 2:
-			return body::moveLeft();			
+			return body::moveLeft();
 			break;
 		case 4:
 			return body::moveDown();
@@ -65,12 +53,15 @@ bool body::move(int i) {
 			break;
 	}
 }
-bool body::moveUp() {
+
+bool body::moveUp()
+{
 	dy	= -0.1;
 	return body::checkMove();
 }
 
-bool body::moveDown() {
+bool body::moveDown()
+{
 	dy	= 0.1;
 	return body::checkMove();
 }
@@ -80,78 +71,82 @@ bool body::moveLeft() {
 	return body::checkMove();
 }
 
-bool body::moveRight() {
+bool body::moveRight()
+{
 	dx	= 0.1;
 	return body::checkMove();
 }
 
-int body::getSide() {
+int body::getSide()
+{
 	return side;
 }
 
-void body::draw(RenderWindow &window) {
+void body::draw(RenderWindow &window)
+{
 	window.draw(main_point::sprite);
 }
 
-void body::setPosition(unsigned int x, unsigned int y, int getted_side) {
+void body::setPosition(unsigned int x, unsigned int y, int getted_side)
+{
 	rect.left		= x * 16;
 	rect.top		= y * 16;
 	side			= getted_side;
 }
 
-bool body::tankComparsion(FloatRect tank_recr) {
+bool body::tankComparsion(FloatRect tank_recr)
+{
 	if (rect.intersects(tank_recr))
 		return true;
 
 	return false;
 }
 
-bool body::checkMove() {
+void body::checkMove()
+{
 	char	block_1, block_2;
 
-	if (dx < 0) {
-		block_1	= main_map->getElement((int)((rect.top + 1) / 16), (int)((rect.left - 1) / 16));
-		block_2	= main_map->getElement((int)((rect.top + 15) / 16), (int)((rect.left - 1) / 16));
+	if (dx < 0)
+	{
+		block_1	= main_map->getElement((int)floor((rect.left - 1) / 16), (int)floor(rect.top / 16));
+		block_2	= main_map->getElement((int)floor((rect.left - 1) / 16), (int)floor((rect.top + rect.height - 1) / 16));
 		side	= 2;
-	} else  if (dx > 0) {
-		block_1	= main_map->getElement((int)(rect.top / 16), (int)((rect.left + 16) / 16));
-		block_2	= main_map->getElement((int)((rect.top + 15) / 16), (int)((rect.left + 16) / 16));
+	}
+	else if (dx > 0)
+	{
+		block_1	= main_map->getElement((int)floor(((rect.left) + rect.width) / 16), (int)floor(rect.top / 16));
+		block_2	= main_map->getElement((int)floor(((rect.left) + rect.width) / 16), (int)floor((rect.top + rect.height - 1) / 16));
 		side	= 6;
-	} else if (dy < 0) {
-		block_1	= main_map->getElement((int)((rect.top - 1) / 16), (int)((rect.left + 1) / 16));
-		block_2	= main_map->getElement((int)((rect.top - 1) / 16), (int)((rect.left + 15) / 16));
+	}
+	else if (dy < 0)
+	{
+		block_1	= main_map->getElement((int)floor((rect.left) / 16), (int)floor((rect.top - 1) / 16));
+		block_2	= main_map->getElement((int)floor((rect.left + rect.width - 1) / 16), (int)floor((rect.top - 1) / 16));
 		side	= 0;
-	} else if (dy > 0) {
-		block_1	= main_map->getElement((int)((rect.top + 16) / 16), (int)(rect.left / 16));
-		block_2	= main_map->getElement((int)((rect.top + 16) / 16), (int)((rect.left + 15) / 16));
+	}
+	else if (dy > 0)
+	{
+		block_1	= main_map->getElement((int)floor(rect.left / 16), (int)floor((rect.top + rect.height) / 16));
+		block_2	= main_map->getElement((int)floor((rect.left + rect.width - 1) / 16), (int)floor((rect.top + rect.height) / 16));
 		side	= 4;
 	}
 
-	if ((dx > 0) && (((rect.left + rect.width) / 16) >= main_map->getMaxX())) {		// Выход за границу справа
+	if ((dx > 0) && (((rect.left + rect.width) / 16) >= main_map->getMaxX()))		// Выход за границу справа
 		dx	= 0;
-		return false;
-	} 
 
-	if ((dy > 0) && (((rect.top + rect.height) / 16) >= main_map->getMaxY())) {		// Выход за границу снизу
+	if ((dy > 0) && (((rect.top + rect.height) / 16) >= main_map->getMaxY()))		// Выход за границу снизу
 		dy	= 0;
-		return false;
-	}
 
-	if ((dx < 0) && (rect.left <= 1)) {												// Выход за границу слева
+	if ((dx < 0) && (rect.left <= 1))												// Выход за границу слева
 		dx	= 0;
-		return false;
-	}
 
-	if ((dy < 0) && (rect.top <= 1)) {												// Выход за границу сверху
+	if ((dy < 0) && (rect.top <= 1))												// Выход за границу сверху
 		dy	= 0;
-		return false;
-	}
 
-	if (((block_1	== 'w') || (block_2 == 'w')) || ((block_1	== 'a') || (block_2 == 'a')) || ((block_1	== 'v') || (block_2 == 'v'))) {
+	if (((block_1	== 'w') || (block_2 == 'w')) || ((block_1	== 'a') || (block_2 == 'a')) || ((block_1	== 'v') || (block_2 == 'v')))
+	{
 		dx	= 0;
 		dy	= 0;
-		return false;
 	}
 
-	return true;
 }

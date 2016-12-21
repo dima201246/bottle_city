@@ -180,10 +180,10 @@ void player::draw(RenderWindow &window) {
 }
 
 void player::bax_bax() {
-	if (tank::getID() == 1)
+/*	if (tank::getID() == 1)
 		tank::setPosition(4, 12, UP_SIDE);
 	else
 		tank::setPosition(8, 12, UP_SIDE);
 
-	tank::setLife(tank::getLife() - 1);
+	tank::setLife(tank::getLife() - 1);*/
 }

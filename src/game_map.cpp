@@ -32,6 +32,10 @@ bool game_map::loadMap(std::string path) {
 		for (unsigned int	i	= 0; i <= maxX; ++i)
 			p_map[i] = new char [maxY + 1];
 
+	/*t_map	= new game_obj* [maxX + 1];
+		for (unsigned int	i	= 0; i <= maxX; ++i)
+			t_map[i] = new game_obj [maxY + 1];*/
+
 	for (unsigned int	j	= 0; j < maxY; ++j)				// Загрузка карты в массив
 		for (unsigned int	i	= 0; i < maxX; ++i)
 		{
