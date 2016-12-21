@@ -206,6 +206,10 @@ void AIplayer::update(float time) {
 				currentSide = (rand()%4)*2;
 			}
 		}
+		if ((rand()%500) == 0) // с шансом ~3% стреляет просто так
+		{
+			Tank::piu_piu();
+		}
 
 		if (!AIplayer::tankCollision(currentSide, Tank::getID())) 
 		{ 
