@@ -100,38 +100,38 @@ bool bullet::bulletComparsion(FloatRect other_recr) {
 
 void bullet::collision() {
 	if (main_point::dx != 0) {
-		if (bullet_main_map->getElement(int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16)) == 'w') {
-			bullet_main_map->setElement(' ', int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16));
+		if (bullet_main_map->getElement(int((main_point::rect.left + 3) / 16), int(main_point::rect.top / 16)) == 'w') {
+			bullet_main_map->setElement(' ', int((main_point::rect.left + 3) / 16), int(main_point::rect.top / 16));
 			main_point::dx	= 0;
 			bullet_status	= false;
 		}
 
-		if (bullet_main_map->getElement(int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16)) == 'a') {
+		if (bullet_main_map->getElement(int((main_point::rect.left + 3) / 16), int(main_point::rect.top / 16)) == 'a') {
 			main_point::dx	= 0;
 			bullet_status	= false;
 		}
 
-		if (bullet_main_map->getElement(int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16)) == 'e') {
-			bullet_main_map->setElement(' ', int((main_point::rect.top + 3) / 16), int(main_point::rect.left / 16));
+		if (bullet_main_map->getElement(int((main_point::rect.left + 3) / 16), int(main_point::rect.top / 16)) == 'e') {
+			bullet_main_map->setElement(' ', int((main_point::rect.left + 3) / 16), int(main_point::rect.top / 16));
 			main_point::dx	= 0;
 			bullet_status	= false;
 		}
 	}
 
 	if (main_point::dy != 0) {
-		if (bullet_main_map->getElement(int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16)) == 'w') {
-			bullet_main_map->setElement(' ', int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16));
+		if (bullet_main_map->getElement(int(main_point::rect.left / 16), int((main_point::rect.top + 3) / 16)) == 'w') {
+			bullet_main_map->setElement(' ', int(main_point::rect.left / 16), int((main_point::rect.top + 3) / 16));
 			main_point::dy	= 0;
 			bullet_status	= false;
 		}
 
-		if (bullet_main_map->getElement(int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16)) == 'a') {
+		if (bullet_main_map->getElement(int(main_point::rect.left / 16), int((main_point::rect.top + 3) / 16)) == 'a') {
 			main_point::dy	= 0;
 			bullet_status	= false;
 		}
 
-		if (bullet_main_map->getElement(int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16)) == 'e') {
-			bullet_main_map->setElement(' ', int(main_point::rect.top / 16), int((main_point::rect.left + 3) / 16));
+		if (bullet_main_map->getElement(int(main_point::rect.left / 16), int((main_point::rect.top + 3) / 16)) == 'e') {
+			bullet_main_map->setElement(' ', int(main_point::rect.left / 16), int((main_point::rect.top + 3) / 16));
 			main_point::dy	= 0;
 			bullet_status	= false;
 		}
