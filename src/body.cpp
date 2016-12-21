@@ -102,7 +102,7 @@ bool body::tankComparsion(FloatRect tank_recr)
 	return false;
 }
 
-void body::checkMove()
+bool body::checkMove()
 {
 	char	block_1, block_2;
 
@@ -132,21 +132,35 @@ void body::checkMove()
 	}
 
 	if ((dx > 0) && (((rect.left + rect.width) / 16) >= main_map->getMaxX()))		// Выход за границу справа
+	{
 		dx	= 0;
+		return false;
+	}
 
 	if ((dy > 0) && (((rect.top + rect.height) / 16) >= main_map->getMaxY()))		// Выход за границу снизу
+	{
 		dy	= 0;
+		return false;
+	}
 
 	if ((dx < 0) && (rect.left <= 1))												// Выход за границу слева
+	{
 		dx	= 0;
+		return false;
+	}
 
 	if ((dy < 0) && (rect.top <= 1))												// Выход за границу сверху
+	{
 		dy	= 0;
+		return false;
+	}
 
 	if (((block_1	== 'w') || (block_2 == 'w')) || ((block_1	== 'a') || (block_2 == 'a')) || ((block_1	== 'v') || (block_2 == 'v')))
 	{
 		dx	= 0;
 		dy	= 0;
+		return true;
 	}
 
+	return true;
 }
