@@ -243,6 +243,7 @@ void AIplayer::bax_bax() {
 		if (Tank::getLife() == 0) {
 			Tank::r_b->setEminems(Tank::r_b->getEminems() - 1);
 			AIplayer::activation(startPosition_.left, startPosition_.top);
+			GameMap::randomMap();
 		}
 	} 
 }

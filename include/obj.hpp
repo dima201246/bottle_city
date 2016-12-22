@@ -82,6 +82,7 @@
 		char getElement(unsigned int, unsigned int);
 		void draw(RenderWindow &);
 		void drawGrass(RenderWindow &);
+		void randomMap();
 		void setElement(char, unsigned int, unsigned int);
 		unsigned int getMaxX();
 		unsigned int getMaxY();

@@ -98,7 +98,75 @@ void GameMap::drawGrass(RenderWindow &window) {
 		window.draw(sprite);
 	}
 }
-
+void GameMap::randomMap(){
+	char block;
+	int arm 	= 5;
+	int grass 	= 10;
+	int wall	= 30;
+	int ice 	= 10;
+	int water	= 10;
+	int eagle	= 1;
+	bool temp;
+	int rnd;
+	for (int j = 0; j < maxY; ++j)
+	{
+		for (int i = 0; i < maxX; ++i)
+		{
+			temp = true;
+			if (((j == 0) && (i==0)) || ((j == 0) && (i==6)) || ((j == 0) && (i == 12)) || ((j == 12) && (i == 4)) || ((j == 12) && (i == 8)))
+			{
+				block = 's';
+			} else {
+				while(temp) {
+					rnd = rand()%5;
+					switch(rnd){
+						case 0:
+						if (arm >0)
+						{
+							arm--;
+							block = 'a';
+						}
+						temp = false;
+						break;
+						case 1:
+						if (grass >0)
+						{
+							grass--;
+							block = 'g';
+						}
+						temp = false;
+						break;
+						case 2:
+						if (wall >0)
+						{
+							wall--;
+							block = 'w';
+						}
+						temp = false;
+						break;
+						case 3:
+						if (ice >0)
+						{
+							ice--;
+							block = 'i';
+						}
+						temp = false;
+						break;
+						case 4:
+						if (water >0)
+						{
+							water--;
+							block = 'w';
+						}
+						temp = false;
+						break;
+					}
+				}
+			}
+			GameMap::setElement(block, j, i);
+		}
+	}
+}
 unsigned int GameMap::getMaxX() {
 	return maxX;
 }
