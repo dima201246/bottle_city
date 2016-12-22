@@ -93,7 +93,7 @@ void Game::gameStart() {
 			for (int	i	= 0; i < maxEminems_; ++i)			// Отрисовка врагов
 				eminems_[i].draw(window);
 
-			if (wacher.wach())
+			if ((wacher.wach() == WIN_PLAYER) || (wacher.wach() == WIN_EMINEM))
 				return;
 
 			main_map.drawGrass(window);							// Отрисовка травы
