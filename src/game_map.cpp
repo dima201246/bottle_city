@@ -116,19 +116,25 @@ void GameMap::drawGrass(RenderWindow &window)
 
 void GameMap::randomMap(){
 	char block;
-	int arm 	= 3;
+	int arm 	= 5; 
 	int grass 	= 7;
-	int wall	= 10;
-	int ice 	= 6;
-	int water	= 5;
+	int wall	= 50;
+	int ice 	= 10;
+	int water	= 10;
 	int eagle	= 1;
 	bool temp;
 	int rnd;
+	gMap_	= new unsigned int* [grass + 1];
+
+	for (unsigned int	i	= 0; i <= grass; ++i)
+		gMap_[i] = new unsigned int [2];
+
+
 	for (int j = 0; j < maxY_; ++j)
 	{
 		for (int i = 0; i < maxX_; ++i)
 		{
-			GameMap::setElement('s', j, i);
+			GameMap::setElement('s', j, i); // очистка карты
 		}
 	}
 	for (int j = 0; j < maxY_; ++j)
@@ -136,51 +142,55 @@ void GameMap::randomMap(){
 		for (int i = 0; i < maxX_; ++i)
 		{
 			temp = true;
-			if (((j == 0) && (i==0)) || ((j == 0) && (i==6)) || ((j == 0) && (i == 12)) || ((j == 12) && (i == 4)) || ((j == 12) && (i == 8)))
+			if (((j == 0) && (i==0)) || ((j == 6) && (i==0)) || ((j == 12) && (i == 0)) || ((j == 4) && (i == 12)) || ((j == 8) && (i == 12))) // точки респа стандартно пусты
 			{
 				block = 's';
 			} else {
-				while(temp) {
-					rnd = rand()%5;
-					switch(rnd){
+				while(temp) { // пока чем-то не заполним (если рандом выпал, а блоков этого типа уже не надо)
+					rnd = rand()%6;
+					switch(rnd){ // рандомно заполняем карту
 						case 0:
 						if (arm >0)
-						{
+						{	
 							arm--;
 							block = 'a';
+							temp = false;
 						}
-						temp = false;
 						break;
 						case 1:
 						if (grass >0)
 						{
 							grass--;
 							block = 'g';
+							temp = false;
 						}
-						temp = false;
 						break;
 						case 2:
 						if (wall >0)
 						{
 							wall--;
 							block = 'w';
+							temp = false;
 						}
-						temp = false;
 						break;
 						case 3:
 						if (ice >0)
 						{
 							ice--;
 							block = 'i';
+							temp = false;
 						}
-						temp = false;
 						break;
 						case 4:
 						if (water >0)
 						{
 							water--;
 							block = 'w';
+							temp = false;
 						}
+						break;
+						case 5:
+						block = 's';
 						temp = false;
 						break;
 					}
@@ -189,8 +199,19 @@ void GameMap::randomMap(){
 			GameMap::setElement(block, j, i);
 		}
 	}
-}
+	GameMap::setElement('e', (rand()%(maxY_-2)+1), (rand()%maxX_)); // спавн орла, верняя и нижняя линии не используются чтоб не пересекться с спавнами остальных
 
+	rnd	= 0;
+
+	for (unsigned int	i	= 0; i < maxX_; ++i)
+		for (unsigned int	j	= 0; j < maxY_; ++j)
+			if (pMap_[i][j] == 'g')
+			{
+				gMap_[rnd][0]	= i;
+				gMap_[rnd][1]	= j;
+				rnd++;
+			}
+}
 
 unsigned int GameMap::getMaxX()
 {
