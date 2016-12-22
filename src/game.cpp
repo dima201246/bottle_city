@@ -1,5 +1,4 @@
 #include "../include/obj.hpp"
-#include <iostream>
 
 Game::~Game() {
 	if (maxPlayers_ != 0)
