@@ -33,6 +33,8 @@ void Game::gameStart() {
 	players_		= new Player[maxPlayers_];					// Создание игроков
 	eminems_		= new AIplayer[maxEminems_];				// Создание врагов
 
+	WachDog		wacher(&main_map, &players_[0]);				// Объявление следилки
+
 	RightBar	r_b(texture_, main_map.getMaxX(), maxEminems_, 1, 3, 3);	// Объявление правого бара
 	GPause		game_pause(texture_, &main_map);				// Объявление паузы
 
@@ -91,12 +93,16 @@ void Game::gameStart() {
 			for (int	i	= 0; i < maxEminems_; ++i)			// Отрисовка врагов
 				eminems_[i].draw(window);
 
+			if (wacher.wach())
+				return;
+
 			main_map.drawGrass(window);							// Отрисовка травы
 
 			r_b.draw(window);
 
-			window.display();
 			/*Отрисовка объектов Конец*/
 		}
+
+		window.display();
 	}
 }

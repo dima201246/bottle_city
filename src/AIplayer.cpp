@@ -11,11 +11,11 @@ bool AIplayer::tankCollision_(int side, int id) {
 	}
 
 	for (int	i	= 0; i < nAIPlayers_; i++)	// Столкновение с другом
-		if ((AIplayers_tanks_[i].getLife() > 0) && (id != AIplayers_tanks_[i].getID()) && (tempRect.intersects(AIplayers_tanks_[i].getRect())))
+		if ((AIplayersTanks_[i].getLife() > 0) && (id != AIplayersTanks_[i].getID()) && (tempRect.intersects(AIplayersTanks_[i].getRect())))
 			return true;
 
 	for (int	i	= 0; i < nPlayers_; i++)	// Столкновение с врагом
-		if ((players_tanks_[i].getLife() > 0) && (tempRect.intersects(players_tanks_[i].getRect())))
+		if ((playersTanks_[i].getLife() > 0) && (tempRect.intersects(playersTanks_[i].getRect())))
 			return true;
 
 	return false;
@@ -23,21 +23,21 @@ bool AIplayer::tankCollision_(int side, int id) {
 
 void AIplayer::bulletCollision_() {
 	for (int	i	= 0; i < nAIPlayers_; i++)	// Обработка столкновений пули с другом
-		if ((AIplayers_tanks_[i].getLife() > 0) && ((i + 1) != Tank::getID()) && (Tank::bulletComparsion(AIplayers_tanks_[i].getRect())))
+		if ((AIplayersTanks_[i].getLife() > 0) && ((i + 1) != Tank::getID()) && (Tank::bulletComparsion(AIplayersTanks_[i].getRect())))
 			Tank::bulletDestroy();
 
 	for (int	i	= 0; i < nPlayers_; i++)	// Обработка столкновений пули с пулей противника
-		if ((players_tanks_[i].getLife() > 0) && (players_tanks_[i].bulletStatus()) && (Tank::bulletComparsion(players_tanks_[i].getBulletRect())))
+		if ((playersTanks_[i].getLife() > 0) && (playersTanks_[i].bulletStatus()) && (Tank::bulletComparsion(playersTanks_[i].getBulletRect())))
 		{
-			players_tanks_[i].bulletDestroy();
+			playersTanks_[i].bulletDestroy();
 			Tank::bulletDestroy();
 		}
 
 	for (int	i	= 0; i < nPlayers_; i++)	// Обработка столкновений пули с врагом
-		if ((players_tanks_[i].getLife() > 0) && (Tank::bulletComparsion(players_tanks_[i].getRect())))
+		if ((playersTanks_[i].getLife() > 0) && (Tank::bulletComparsion(playersTanks_[i].getRect())))
 		{
 			Tank::bulletDestroy();
-			players_tanks_[i].bax_bax();
+			playersTanks_[i].bax_bax();
 
 			if ((i + 1) == 1)
 				Tank::r_b->setP1Life(Tank::r_b->getP1Life() - 1);
@@ -51,11 +51,11 @@ void AIplayer::init(Texture &image, Player *players, int intNPlayer, AIplayer *l
 	Tank::setLife(0);
 	Tank::setID(l_id);
 
-	main_map_		= l_main_map;
+	mainMap_		= l_main_map;
 	type_			= l_type;
-	AIplayers_tanks_	= l_frends;
+	AIplayersTanks_	= l_frends;
 	nAIPlayers_		= intNAIplayer;
-	players_tanks_	= players;
+	playersTanks_	= players;
 	nPlayers_		= intNPlayer;
 	currentSide_		= 8; 
 }
@@ -78,7 +78,7 @@ bool AIplayer::checkWallX_(int x, int x2, int y) {
 	} 
 	for (int k = 0; k < x2-x; ++k)
 	{	
-		temp = main_map_->getElement(x+k, y);
+		temp = mainMap_->getElement(x+k, y);
 		if ((temp != 's') && (temp != 'v') && (temp != 'i'))
 		{
 			noWall = false; 
@@ -99,7 +99,7 @@ bool AIplayer::checkWallY_(int y, int y2, int x) {
 	} 
 	for (int k = 0; k < y2-y; ++k)
 	{	
-		temp = main_map_->getElement(x, y+k);
+		temp = mainMap_->getElement(x, y+k);
 		if ((temp != 's') && (temp != 'v') && (temp != 'i'))
 		{
 			noWall = false; 
@@ -126,11 +126,11 @@ void AIplayer::update(float time) {
 		}
 
 		for (int	i	= 0; i < nPlayers_; i++)	{
-			if(abs(tankLeft - players_tanks_[i].getRect().left) < 16 and players_tanks_[i].getLife()>0)	// танк на вертикальной линии с игроком
+			if(abs(tankLeft - playersTanks_[i].getRect().left) < 16 and playersTanks_[i].getLife()>0)	// танк на вертикальной линии с игроком
 			{
-				if(AIplayer::checkWallY_(tankTop/16, players_tanks_[i].getRect().top/16, (tankLeft)/16))
+				if(AIplayer::checkWallY_(tankTop/16, playersTanks_[i].getRect().top/16, (tankLeft)/16))
 				{
-					if(tankTop < players_tanks_[i].getRect().top)
+					if(tankTop < playersTanks_[i].getRect().top)
 					{
 						if (currentSide_ == UP_SIDE){ //сверху игрок, танк едет туда же, между ними нет стен
 							Tank::piu_piu();
@@ -141,7 +141,7 @@ void AIplayer::update(float time) {
 						}
 					}
 
-					if(tankTop < players_tanks_[i].getRect().top)	//снизу игрок, танк едет туда же, между ними нет стен
+					if(tankTop < playersTanks_[i].getRect().top)	//снизу игрок, танк едет туда же, между ними нет стен
 					{
 						if (currentSide_ == DOWN_SIDE)
 						{
@@ -155,11 +155,11 @@ void AIplayer::update(float time) {
 				}
 			}
 
-			if(abs(tankTop - players_tanks_[i].getRect().top)<16 and players_tanks_[i].getLife()>0)	// танк на горизонтальной линии с игроком
+			if(abs(tankTop - playersTanks_[i].getRect().top)<16 and playersTanks_[i].getLife()>0)	// танк на горизонтальной линии с игроком
 			{
-				if(AIplayer::checkWallY_(tankLeft/16, players_tanks_[i].getRect().left/16, (tankTop)/16))
+				if(AIplayer::checkWallY_(tankLeft/16, playersTanks_[i].getRect().left/16, (tankTop)/16))
 				{
-					if(tankLeft > players_tanks_[i].getRect().left)
+					if(tankLeft > playersTanks_[i].getRect().left)
 					{
 						if (currentSide_ == LEFT_SIDE)	//слева игрок, танк едет туда же, между ними нет стен
 						{
@@ -171,7 +171,7 @@ void AIplayer::update(float time) {
 						}
 					}
 
-					if(tankLeft < players_tanks_[i].getRect().left)
+					if(tankLeft < playersTanks_[i].getRect().left)
 					{
 						if (currentSide_ == RIGHT_SIDE)	//справа игрок, танк едет туда же, между ними нет стен
 						{
@@ -227,7 +227,7 @@ void AIplayer::update(float time) {
 
 
 void AIplayer::activation(unsigned int x, unsigned int y) {
-	if (Tank::r_b->getEminems() > 0)
+	if ((Tank::r_b->getEminems() - 2) > 0)
 	{
 		Tank::setLife(3);
 		nAIPlayers_--;
@@ -237,19 +237,32 @@ void AIplayer::activation(unsigned int x, unsigned int y) {
 	}
 }
 
-void AIplayer::bax_bax() {
-	if (Tank::getLife() > 0) {
+int AIplayer::bax_bax()
+{
+	if (Tank::getLife() > 0)
+	{
 		Tank::setLife(Tank::getLife() - 1);
-		if (Tank::getLife() == 0) {
+
+		if (Tank::getLife() == 0)
+		{
 			Tank::r_b->setEminems(Tank::r_b->getEminems() - 1);
 			AIplayer::activation(startPosition_.left, startPosition_.top);
+
 			GameMap::randomMap();
+
+			return TANK_KILL;
+
 		}
-	} 
+
+		return TANK_WOUND;
+	}
+
+	return TANK_NONE;
 }
 
-void AIplayer::draw(RenderWindow &window) {
-	if (Tank::getLife()!=0)
+void AIplayer::draw(RenderWindow &window)
+{
+	if (Tank::getLife() != 0)
 	{
 		Tank::draw(window);
 	}

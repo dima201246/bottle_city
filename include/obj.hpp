@@ -14,6 +14,14 @@
 	#define DOWN_SIDE	4
 	#define RIGHT_SIDE	6
 
+	#define TANK_KILL	0
+	#define TANK_WOUND	1
+	#define TANK_NONE	2
+
+	#define WIN_NONE	0
+	#define WIN_PLAYER	1
+	#define WIN_EMINEM	2
+
 	#define SCALE_X	2.0f
 	#define SCALE_Y	2.0f
 
@@ -30,6 +38,12 @@
 	class GameMap;
 	class RightBar;
 	class MainPoint;
+
+	struct coordinate
+	{
+		unsigned int	posX,
+						posY;
+	};
 
 	class Game
 	{
@@ -84,21 +98,25 @@
 		void drawGrass(RenderWindow &);
 		void randomMap();
 		void setElement(char, unsigned int, unsigned int);
+		coordinate getEaglePos();
 		unsigned int getMaxX();
 		unsigned int getMaxY();
 
 	private:
-		char			**p_map;			// Вся игровая карта
+		char			**pMap_;			// Вся игровая карта
 
-		int				maxX,
-						maxY,
-						grass_num;			// Кол-во травы на карте
+		Sprite			sprite_;
 
-		Sprite			sprite;
+		coordinate		eaglePos_,			// Координаты орла
+						pSpawn_[2],			// Координаты спавна игроков
+						eSpawn_[3];			// Координаты спавна врагов
 
-		std::string		next_level_path;	// Путь к файлу со следующей картой
+		std::string		nextLevelPath_;		// Путь к файлу со следующей картой
 
-		unsigned int	**g_map;			// Координаты травы
+		unsigned int	maxX_,
+						maxY_,
+						**gMap_,			// Координаты травы
+						grassNum_;			// Кол-во травы на карте
 	};
 
 	class RightBar
@@ -111,10 +129,10 @@
 		int getP1Life();
 		int getP2Life();
 		int getLevel();
-		void setEminems(int);
+		void setLevel(int);
 		void setP1Life(int);
 		void setP2Life(int);
-		void setLevel(int);
+		void setEminems(int);
 		void draw(RenderWindow&);
 
 	private:
@@ -192,7 +210,7 @@
 		bool tankComparsion(FloatRect);
 		void setSide(int);
 		void update(float);
-		void draw(RenderWindow&) ;
+		void draw(RenderWindow&);
 		void init(Texture&, GameMap*);
 		void setPosition(unsigned int, unsigned int, int);
 
@@ -236,13 +254,14 @@
 		Player(){}
 		~Player(){}
 
+		int getLeftTank();
 		void bax_bax();
 		void update(float);
 		void draw(RenderWindow&);
 		void init(Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int, int);
 
 	private:
-		GameMap	*main_map;
+		GameMap		*main_map;
 
 		Player		*players_tanks;
 
@@ -254,6 +273,7 @@
 					nAIPlayers;	// Общее кол-во врагов
 
 		bool tankCollision(int, int);
+		void killAI();
 		void bulletCollision();
 	};
 
@@ -263,18 +283,18 @@
 		AIplayer(){}
 		~AIplayer(){}
 
-		void bax_bax();
+		int bax_bax();			// Если вернул true - танк убит
 		void update(float);
 		void draw(RenderWindow&);
 		void activation(unsigned int, unsigned int);
 		void init(Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int);
 
 	private:
-		Player		*players_tanks_;
+		Player		*playersTanks_;
 
-		GameMap		*main_map_;
+		GameMap		*mainMap_;
 
-		AIplayer	*AIplayers_tanks_;
+		AIplayer	*AIplayersTanks_;
 
 		FloatRect	startPosition_;	// Респаун конкретного танка
 
@@ -310,5 +330,21 @@
 
 		Sound		*sound_shot_,
 					*sound_un_shot_;
+	};
+
+	class WachDog
+	{
+	public:
+		WachDog(GameMap*, Player*);
+		~WachDog(){}
+
+		int wach();				// Если вернёт true - значит вы проиграли/выиграли
+
+	private:
+		Player		*player_;
+
+		GameMap		*mainMap_;
+
+		coordinate	eaglePos_;
 	};
 #endif

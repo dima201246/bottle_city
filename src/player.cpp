@@ -38,8 +38,15 @@ void Player::bulletCollision() {
 	for (int	i	= 0; i < nAIPlayers; i++)	// Обработка столкновений пули с врагом
 		if ((AIplayers_tanks[i].getLife() > 0) && (Tank::bulletComparsion(AIplayers_tanks[i].getRect())))
 		{
-			Tank::bulletDestroy();	
-			AIplayers_tanks[i].bax_bax();
+			Tank::bulletDestroy();
+
+			if (AIplayers_tanks[i].bax_bax() == TANK_KILL)
+			{
+				Player::killAI();
+
+				if (nPlayers != 1)
+					players_tanks[(Tank::getID() == 1 ? 1 : 0)].killAI();	// Сообщение напарнику, об убийстве врага
+			}
 		}
 }
 
@@ -200,10 +207,21 @@ void Player::draw(RenderWindow &window) {
 }
 
 void Player::bax_bax() {
-/*	if (Tank::getID() == 1)
+	if (Tank::getID() == 1)
 		Tank::setPosition(8, 12, UP_SIDE);
 	else
 		Tank::setPosition(4, 12, UP_SIDE);
 
-	Tank::setLife(Tank::getLife() - 1);*/
+	Tank::setLife(Tank::getLife() - 1);
+}
+
+int Player::getLeftTank()
+{
+	return Player::left_tank;
+}
+
+void Player::killAI()
+{
+	if (Player::left_tank != 0)
+		Player::left_tank--;
 }
