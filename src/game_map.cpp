@@ -124,9 +124,9 @@ void GameMap::randomMap(){
 	int eagle	= 1;
 	bool temp;
 	int rnd;
-	for (int j = 0; j < maxY; ++j)
+	for (int j = 0; j < maxY_; ++j)
 	{
-		for (int i = 0; i < maxX; ++i)
+		for (int i = 0; i < maxX_; ++i)
 		{
 			temp = true;
 			if (((j == 0) && (i==0)) || ((j == 0) && (i==6)) || ((j == 0) && (i == 12)) || ((j == 12) && (i == 4)) || ((j == 12) && (i == 8)))
