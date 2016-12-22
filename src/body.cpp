@@ -165,3 +165,7 @@ bool Body::checkMove()
 
 	return true;
 }
+
+void Body::setSide(int int_Side) {
+	side	= int_Side;
+}

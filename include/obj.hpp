@@ -7,9 +7,6 @@
 	#include <SFML/Graphics.hpp>
 	#include <SFML/Audio.hpp>
 
-	#define MAX_PLAYERS	2
-	#define MAX_EMINEMS	20
-
 	#define GAME_SPEED	900
 
 	#define UP_SIDE		0
@@ -25,6 +22,7 @@
 	class Game;
 	class Body;
 	class Tank;
+	class Menu;
 	class Player;
 	class Bullet;
 	class GPause;
@@ -36,25 +34,26 @@
 	class Game
 	{
 	public:
-
 		Game(){}
 		~Game();
 
 		void gameStart();
 
 	private:
+		int			maxPlayers_,
+					maxEminems_;
 
-		float		time;
+		float		time_;
 
-		Event 		event;
+		Event 		event_;
 
-		Clock		clock;
+		Clock		clock_;
 
-		Player		*players;
+		Player		*players_;
 
-		Texture 	texture;
+		Texture 	texture_;
 
-		AIplayer	*eminems;
+		AIplayer	*eminems_;
 	};
 
 	class GPause
@@ -68,7 +67,6 @@
 		bool status();
 
 	private:
-
 		bool 	status_game;
 
 		Sprite	p_sprite;
@@ -77,7 +75,6 @@
 	class GameMap
 	{
 	public:
-
 		GameMap(Texture&);
 		~GameMap();
 
@@ -90,7 +87,6 @@
 		unsigned int getMaxY();
 
 	private:
-
 		char			**p_map;			// Вся игровая карта
 
 		int				maxX,
@@ -107,7 +103,6 @@
 	class RightBar
 	{
 	public:
-
 		RightBar(Texture&, unsigned int, int, int, int, int);
 		~RightBar(){}
 
@@ -122,7 +117,6 @@
 		void draw(RenderWindow&);
 
 	private:
-
 		int				nEminems,
 						level,
 						p1_life,
@@ -136,7 +130,6 @@
 	class MainPoint
 	{
 	public:
-
 		FloatRect getRect()
 		{
 			return rect;
@@ -153,7 +146,6 @@
 	class Bullet : public MainPoint
 	{
 	public:
-
 		Bullet(){}
 		~Bullet();
 
@@ -168,7 +160,6 @@
 		FloatRect getBulletRect();
 
 	private:
-
 		int			bullet_side;	// Сторона в которую летит пуля
 
 		bool		bullet_status;
@@ -182,31 +173,29 @@
 		GameMap	*bullet_main_map;
 
 	protected:
-
 		void collision();
 	};
 
 	class Body : public MainPoint
 	{
 	public:
-
 		Body(){}
 		~Body(){}
 
 		int getSide();
 		bool moveUp();
+		bool move(int);
 		bool moveDown();
 		bool moveLeft();
 		bool moveRight();
 		bool tankComparsion(FloatRect);
-		bool move(int);
-		void init(Texture&, GameMap*);
+		void setSide(int);
 		void update(float);
 		void draw(RenderWindow&) ;
+		void init(Texture&, GameMap*);
 		void setPosition(unsigned int, unsigned int, int);
 
 	private:
-
 		int			side;
 
 		bool		god_mode;
@@ -214,14 +203,12 @@
 		GameMap	*main_map;
 
 	protected:
-
 		bool checkMove();
 	};
 
 	class Tank : public Bullet, public Body
 	{
 	public:
-
 		Tank(){}
 		~Tank(){}
 
@@ -238,7 +225,6 @@
 		RightBar	*r_b;
 
 	private:
-
 		int 		life,
 					id;
 	};
@@ -246,7 +232,6 @@
 	class Player : public Tank
 	{
 	public:
-
 		Player(){}
 		~Player(){}
 
@@ -256,7 +241,6 @@
 		void init(Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int, int);
 
 	private:
-
 		GameMap	*main_map;
 
 		Player		*players_tanks;
@@ -275,7 +259,6 @@
 	class AIplayer : public Tank
 	{
 	public:
-
 		AIplayer(){}
 		~AIplayer(){}
 
@@ -286,25 +269,45 @@
 		void init(Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int);
 
 	private:
+		Player		*players_tanks_;
 
-		Player		*players_tanks;
+		GameMap		*main_map_;
 
-		GameMap		*main_map;
+		AIplayer	*AIplayers_tanks_;
 
-		AIplayer	*AIplayers_tanks;
+		FloatRect	startPosition_;	// Респаун конкретного танка
 
-		FloatRect	startPosition;	// Респаун конкретного танка
+		bool		active_;		// Активирован ли танк
 
-		bool		active;			// Активирован ли танк
+		int			type_,			// Тип танка
+					nPlayers_,		// Общее кол-во игроков
+					nAIPlayers_,	// Общее кол-во танков с ИИ
+					currentSide_;	// Направление движения
 
-		int			type,			// Тип танка
-					nPlayers,	// Общее кол-во игроков
-					nAIPlayers,	// Общее кол-во танков с ИИ
-					currentSide;	// Направление движения
+		bool tankCollision_(int, int);
+		bool checkWallX_(int, int, int);
+		bool checkWallY_(int, int, int);
+		void bulletCollision_();
+	};
 
-		bool tankCollision(int, int);
-		bool checkWallX(int, int, int);
-		bool checkWallY(int, int, int);
-		void bulletCollision();
+	class Menu
+	{
+	public:
+		Menu();
+		~Menu();
+
+		int draw(RenderWindow&, Event&, Texture&);
+
+	private:
+		Texture		texture_;
+
+		Sprite		sprite_,
+					spriteTank_;
+
+		SoundBuffer	buffer_shot_,
+					buffer_un_shot_;
+
+		Sound		*sound_shot_,
+					*sound_un_shot_;
 	};
 #endif

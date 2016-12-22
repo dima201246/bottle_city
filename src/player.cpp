@@ -10,6 +10,8 @@ bool Player::tankCollision(int side, int id) {
 		case DOWN_SIDE:		tempRect.top++;		break;
 	}
 
+	Tank::setSide(side);
+
 	for (int	i	= 0; i < nPlayers; i++)		// Столкновение с другом
 		if ((players_tanks[i].getLife() > 0) && (id != players_tanks[i].getID()) && (tempRect.intersects(players_tanks[i].getRect())))
 			return true;
@@ -57,9 +59,9 @@ void Player::init(Texture &image, Player *players, int intNPlayer, AIplayer *AI_
 	AIplayers_tanks	= AI_player;
 
 	if (Tank::getID() == 1)
-		Tank::setPosition(4, 12, UP_SIDE);
-	else
 		Tank::setPosition(8, 12, UP_SIDE);
+	else
+		Tank::setPosition(4, 12, UP_SIDE);
 }
 
 void Player::update(float time) {
@@ -70,7 +72,7 @@ void Player::update(float time) {
 
 	if (Tank::getLife() > 0)
 	{
-		if (Tank::getID() == 2)
+		if (Tank::getID() == 1)
 		{
 			/*Защита от диагоналей Начало*/
 			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down)))
@@ -127,7 +129,7 @@ void Player::update(float time) {
 				Tank::piu_piu();
 			/*Обработка кнопок Конец*/
 		}
-		else if (Tank::getID() == 1)
+		else if (Tank::getID() == 2)
 		{
 			/*Защита от диагоналей Начало*/
 			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::S)))
@@ -198,10 +200,10 @@ void Player::draw(RenderWindow &window) {
 }
 
 void Player::bax_bax() {
-	if (Tank::getID() == 1)
-		Tank::setPosition(4, 12, UP_SIDE);
-	else
+/*	if (Tank::getID() == 1)
 		Tank::setPosition(8, 12, UP_SIDE);
+	else
+		Tank::setPosition(4, 12, UP_SIDE);
 
-	Tank::setLife(Tank::getLife() - 1);
+	Tank::setLife(Tank::getLife() - 1);*/
 }
