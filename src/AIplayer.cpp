@@ -10,8 +10,6 @@ bool AIplayer::tankCollision_(int side, int id) {
 		case DOWN_SIDE:		tempRect.top++;		break;
 	}
 
-	Tank::setSide(side);
-
 	for (int	i	= 0; i < nAIPlayers_; i++)	// Столкновение с другом
 		if ((AIplayers_tanks_[i].getLife() > 0) && (id != AIplayers_tanks_[i].getID()) && (tempRect.intersects(AIplayers_tanks_[i].getRect())))
 			return true;
@@ -113,12 +111,14 @@ bool AIplayer::checkWallY_(int y, int y2, int x) {
 }
 
 void AIplayer::update(float time) {
-	bool 	canMove			= false;
+	bool 	canMove		= false;
 
 	char	temp;
-	int 	tankTop			= Tank::getRect().top;
-	int 	tankLeft		= Tank::getRect().left;
-	if (Tank::getLife()>0)
+
+	int 	tankTop		= Tank::getRect().top,
+			tankLeft	= Tank::getRect().left;
+
+	if (Tank::getLife() > 0)
 	{
 		if (currentSide_ == 8)
 		{
@@ -185,9 +185,8 @@ void AIplayer::update(float time) {
 				}
 			}
 		}
-		
-		
-		if (not Tank::move(currentSide_)) //если в сторону, в которую хотим ехать, нельзя проехать
+
+		if ((!Tank::move(currentSide_)) || (AIplayer::tankCollision_(currentSide_, Tank::getID()))) //если в сторону, в которую хотим ехать, нельзя проехать
 		{	
 			for (int i = 0; i < 4; ++i)
 			{	
@@ -208,6 +207,7 @@ void AIplayer::update(float time) {
 				currentSide_ = (rand()%4)*2;
 			}
 		}
+
 		if ((rand()%500) == 0) // с шансом ~3% стреляет просто так
 		{
 			Tank::piu_piu();
@@ -215,8 +215,9 @@ void AIplayer::update(float time) {
 
 		if (!AIplayer::tankCollision_(currentSide_, Tank::getID())) 
 		{ 
-		Tank::move(currentSide_); 
+			Tank::move(currentSide_); 
 		}
+
 		Tank::update(time);
 	}
 
