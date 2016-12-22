@@ -116,14 +116,21 @@ void GameMap::drawGrass(RenderWindow &window)
 
 void GameMap::randomMap(){
 	char block;
-	int arm 	= 5;
-	int grass 	= 10;
-	int wall	= 30;
-	int ice 	= 10;
-	int water	= 10;
+	int arm 	= 3;
+	int grass 	= 7;
+	int wall	= 10;
+	int ice 	= 6;
+	int water	= 5;
 	int eagle	= 1;
 	bool temp;
 	int rnd;
+	for (int j = 0; j < maxY_; ++j)
+	{
+		for (int i = 0; i < maxX_; ++i)
+		{
+			GameMap::setElement('s', j, i);
+		}
+	}
 	for (int j = 0; j < maxY_; ++j)
 	{
 		for (int i = 0; i < maxX_; ++i)
