@@ -22,6 +22,8 @@
 	#define WIN_PLAYER	1
 	#define WIN_EMINEM	2
 
+	#define MAIN_PATH_MAP	"./media/maps/"
+
 	#define SCALE_X	2.0f
 	#define SCALE_Y	2.0f
 
@@ -90,15 +92,19 @@
 	{
 	public:
 		GameMap(sf::Texture&);
+		GameMap(const GameMap &oGameMap);
 		~GameMap();
 
-		bool loadMap(std::string);
+		bool loadMap(std::string, int&);
 		char getElement(unsigned int, unsigned int);
 		void randomMap();
+		void nextLevel(int&);
 		void draw(sf::RenderWindow &);
 		void drawGrass(sf::RenderWindow &);
 		void setElement(char, unsigned int, unsigned int);
 		coordinate getEaglePos();
+		coordinate getEminemsPos();
+		coordinate getPlayersPos();
 		unsigned int getMaxX();
 		unsigned int getMaxY();
 

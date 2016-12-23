@@ -1,11 +1,19 @@
 #include "../include/configurator.h"
 #include "../include/obj.hpp"
 
-GameMap::GameMap(sf::Texture &image) {
+GameMap::GameMap(sf::Texture &image)
+{
 	sprite_.setTexture(image);
 	sprite_.scale(SCALE_X, SCALE_Y);
 	maxX_	= maxY_	= grassNum_	= 0;
 }
+
+/*GameMap::GameMap(sf::Texture &image)
+{
+	sprite_.setTexture(image);
+	sprite_.scale(SCALE_X, SCALE_Y);
+	maxX_	= maxY_	= grassNum_	= 0;
+}*/
 
 GameMap::~GameMap() {
 	for (unsigned int	i	= 0; i <= maxX_; ++i)
@@ -18,11 +26,15 @@ GameMap::~GameMap() {
 	delete [] gMap_;
 }
 
-bool GameMap::loadMap(std::string path) {
+bool GameMap::loadMap(std::string path, int &nEminems)
+{
 	std::string	tempMap_;
+
+	path			= MAIN_PATH_MAP + path;
 
 	unsigned int	count		= 0;
 
+	nEminems		= 20;
 	maxX_			= atoi(configurator(path, "max_x", "", false).c_str());
 	maxY_			= atoi(configurator(path, "max_y", "", false).c_str());
 	nextLevelPath_	= configurator(path, "next_level", "", false);
@@ -94,6 +106,8 @@ void GameMap::draw(sf::RenderWindow &window)
 				sprite_.setTextureRect(sf::IntRect(288, 32, 16, 16));
 			else if (pMap_[i][j] == 'e')					// Орёл
 				sprite_.setTextureRect(sf::IntRect(304, 32, 16, 16));
+			else if (pMap_[i][j] == 'd')					// Мёртвый орёл
+				sprite_.setTextureRect(sf::IntRect(320, 32, 16, 16));
 			else
 				continue;
 
@@ -211,6 +225,23 @@ void GameMap::randomMap(){
 				gMap_[rnd][1]	= j;
 				rnd++;
 			}
+}
+
+void GameMap::nextLevel(int &nEminems)
+{
+	for (unsigned int	i	= 0; i <= maxX_; ++i)		// Очистка перед загрузкой новой карты
+		delete [] pMap_[i];
+
+	for (unsigned int	i	= 0; i <= grassNum_; ++i)
+		delete [] gMap_[i];
+
+	delete [] pMap_;
+	delete [] gMap_;
+
+	if (nextLevelPath_ != "none")
+		loadMap(nextLevelPath_, nEminems);
+	else
+		randomMap();
 }
 
 unsigned int GameMap::getMaxX()

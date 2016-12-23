@@ -69,7 +69,7 @@ void RightBar::draw(sf::RenderWindow &window) {
 	{
 		sprite.setTextureRect(sf::IntRect(336, 183, 9, 9));
 	}
-	else if
+	else
 	{
 		sprite.setTextureRect(sf::IntRect(328, 183, 9, 9));
 	}
