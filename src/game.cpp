@@ -29,12 +29,12 @@ void Game::gameStart() {
 	window.setVerticalSyncEnabled(true);						// Вертикальная синхронизация
 	texture_.loadFromFile("media/textures.png");				// Загрузка всех текстур
 
-	GameMap main_map(texture_);									// Загрузка текстур в карту
-
 	maxPlayers_	= menu.draw(window, event_, texture_);			// Открытие меню и получение колличества игроков
 
 	if (maxPlayers_ == 0)										// Выход из игры, если окно было закрыто
 		return;
+
+	GameMap main_map(texture_);									// Загрузка текстур в карту
 
 	main_map.loadMap("level1.map", maxEminems_);				// Загрузка карты из файла
 
