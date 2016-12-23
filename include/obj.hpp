@@ -25,8 +25,6 @@
 	#define SCALE_X	2.0f
 	#define SCALE_Y	2.0f
 
-	using namespace sf;
-
 	class Game;
 	class Body;
 	class Tank;
@@ -34,8 +32,9 @@
 	class Player;
 	class Bullet;
 	class GPause;
-	class AIplayer;
+	class WachDog;
 	class GameMap;
+	class AIplayer;
 	class RightBar;
 	class MainPoint;
 
@@ -59,44 +58,44 @@
 
 		float		time_;
 
-		Event 		event_;
-
-		Clock		clock_;
-
 		Player		*players_;
 
-		Texture 	texture_;
-
 		AIplayer	*eminems_;
+
+		sf::Clock	clock_;
+
+		sf::Event	event_;
+
+		sf::Texture texture_;
 	};
 
 	class GPause
 	{
 	public:
 
-		GPause(Texture&, GameMap*);
+		GPause(sf::Texture&, GameMap*);
 		~GPause(){}
 
-		void paused(RenderWindow&);
 		bool status();
+		void paused(sf::RenderWindow&);
 
 	private:
 		bool 	status_game;
 
-		Sprite	p_sprite;
+		sf::Sprite	p_sprite;
 	};
 
 	class GameMap
 	{
 	public:
-		GameMap(Texture&);
+		GameMap(sf::Texture&);
 		~GameMap();
 
 		bool loadMap(std::string);
 		char getElement(unsigned int, unsigned int);
-		void draw(RenderWindow &);
-		void drawGrass(RenderWindow &);
 		void randomMap();
+		void draw(sf::RenderWindow &);
+		void drawGrass(sf::RenderWindow &);
 		void setElement(char, unsigned int, unsigned int);
 		coordinate getEaglePos();
 		unsigned int getMaxX();
@@ -105,7 +104,7 @@
 	private:
 		char			**pMap_;			// Вся игровая карта
 
-		Sprite			sprite_;
+		sf::Sprite		sprite_;
 
 		coordinate		eaglePos_,			// Координаты орла
 						pSpawn_[2],			// Координаты спавна игроков
@@ -122,7 +121,7 @@
 	class RightBar
 	{
 	public:
-		RightBar(Texture&, unsigned int, int, int, int, int);
+		RightBar(sf::Texture&, unsigned int, int, int, int, int);
 		~RightBar(){}
 
 		int getEminems();
@@ -133,7 +132,7 @@
 		void setP1Life(int);
 		void setP2Life(int);
 		void setEminems(int);
-		void draw(RenderWindow&);
+		void draw(sf::RenderWindow&);
 
 	private:
 		int				nEminems,
@@ -141,7 +140,7 @@
 						p1_life,
 						p2_life;
 
-		Sprite			sprite;
+		sf::Sprite		sprite;
 
 		unsigned int	pos;
 	};
@@ -149,7 +148,7 @@
 	class MainPoint
 	{
 	public:
-		FloatRect getRect()
+		sf::FloatRect getRect()
 		{
 			return rect;
 		}
@@ -157,9 +156,9 @@
 		float		dx,
 					dy;
 
-		Sprite		sprite;
+		sf::Sprite	sprite;
 
-		FloatRect	rect;
+		sf::FloatRect	rect;
 	};
 
 	class Bullet : public MainPoint
@@ -170,24 +169,24 @@
 
 		bool active();
 		bool bulletStatus();
-		bool bulletComparsion(FloatRect);
+		bool bulletComparsion(sf::FloatRect);
 		void update(float);
 		void bulletDestroy();
-		void draw(RenderWindow&);
 		void shot(int, int, int);
-		void init(Texture&, GameMap*);
-		FloatRect getBulletRect();
+		void draw(sf::RenderWindow&);
+		void init(sf::Texture&, GameMap*);
+		sf::FloatRect getBulletRect();
 
 	private:
 		int			bullet_side;	// Сторона в которую летит пуля
 
 		bool		bullet_status;
 
-		SoundBuffer	buffer_shot,
-					buffer_un_shot;
-
-		Sound 		*sound_shot,
+		sf::Sound 	*sound_shot,
 					*sound_un_shot;
+
+		sf::SoundBuffer	buffer_shot,
+						buffer_un_shot;
 
 		GameMap	*bullet_main_map;
 
@@ -207,11 +206,11 @@
 		bool moveDown();
 		bool moveLeft();
 		bool moveRight();
-		bool tankComparsion(FloatRect);
+		bool tankComparsion(sf::FloatRect);
 		void setSide(int);
 		void update(float);
-		void draw(RenderWindow&);
-		void init(Texture&, GameMap*);
+		void draw(sf::RenderWindow&);
+		void init(sf::Texture&, GameMap*);
 		void setPosition(unsigned int, unsigned int, int);
 
 	private:
@@ -237,9 +236,9 @@
 		void setID(int);
 		void setLife(int);
 		void update(float);
-		void draw(RenderWindow&);
-		void init(Texture&, GameMap*, RightBar*);
-		FloatRect getRect();
+		void draw(sf::RenderWindow&);
+		void init(sf::Texture&, GameMap*, RightBar*);
+		sf::FloatRect getRect();
 
 		RightBar	*r_b;
 
@@ -257,8 +256,8 @@
 		int getLeftTank();
 		void bax_bax();
 		void update(float);
-		void draw(RenderWindow&);
-		void init(Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int, int);
+		void draw(sf::RenderWindow&);
+		void init(sf::Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int, int);
 
 	private:
 		GameMap		*main_map;
@@ -285,25 +284,25 @@
 
 		int bax_bax();			// Если вернул true - танк убит
 		void update(float);
-		void draw(RenderWindow&);
+		void draw(sf::RenderWindow&);
 		void activation(unsigned int, unsigned int);
-		void init(Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int);
+		void init(sf::Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int);
 
 	private:
+		// bool		active_;		// Активирован ли танк
+
+		int			type_,			// Тип танка
+					nPlayers_,		// Общее кол-во игроков
+					nAIPlayers_,	// Общее кол-во танков с ИИ
+					currentSide_;	// Направление движения
+
 		Player		*playersTanks_;
 
 		GameMap		*mainMap_;
 
 		AIplayer	*AIplayersTanks_;
 
-		FloatRect	startPosition_;	// Респаун конкретного танка
-
-		bool		active_;		// Активирован ли танк
-
-		int			type_,			// Тип танка
-					nPlayers_,		// Общее кол-во игроков
-					nAIPlayers_,	// Общее кол-во танков с ИИ
-					currentSide_;	// Направление движения
+		sf::FloatRect	startPosition_;	// Респаун конкретного танка
 
 		bool tankCollision_(int, int);
 		bool checkWallX_(int, int, int);
@@ -317,19 +316,20 @@
 		Menu();
 		~Menu();
 
-		int draw(RenderWindow&, Event&, Texture&);
+		int draw(sf::RenderWindow&, sf::Event&, sf::Texture&);
 
 	private:
-		Texture		texture_;
 
-		Sprite		sprite_,
+		sf::Sound	*sound_shot_,
+					*sound_un_shot_;
+
+		sf::Sprite	sprite_,
 					spriteTank_;
 
-		SoundBuffer	buffer_shot_,
-					buffer_un_shot_;
+		sf::Texture	texture_;
 
-		Sound		*sound_shot_,
-					*sound_un_shot_;
+		sf::SoundBuffer	buffer_shot_,
+						buffer_un_shot_;
 	};
 
 	class WachDog

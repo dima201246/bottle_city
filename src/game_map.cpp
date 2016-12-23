@@ -1,7 +1,7 @@
 #include "../include/configurator.h"
 #include "../include/obj.hpp"
 
-GameMap::GameMap(Texture &image) {
+GameMap::GameMap(sf::Texture &image) {
 	sprite_.setTexture(image);
 	sprite_.scale(SCALE_X, SCALE_Y);
 	maxX_	= maxY_	= grassNum_	= 0;
@@ -76,24 +76,24 @@ char GameMap::getElement(unsigned int x, unsigned int y)
 	return pMap_[x][y];
 }
 
-void GameMap::draw(RenderWindow &window)
+void GameMap::draw(sf::RenderWindow &window)
 {
-	window.clear(Color(0,0,0));
+	window.clear(sf::Color(0,0,0));
 
 	for (unsigned int	j	= 0; j < maxY_; ++j)
 	{
 		for (unsigned int	i	= 0; i < maxX_; ++i)
 		{
 			if (pMap_[i][j] == 'w')							// Кирпичная стена
-				sprite_.setTextureRect(IntRect(256, 0, 16, 16));
+				sprite_.setTextureRect(sf::IntRect(256, 0, 16, 16));
 			else if (pMap_[i][j] == 'a')					// Бронь
-				sprite_.setTextureRect(IntRect(256, 16, 16, 16));
+				sprite_.setTextureRect(sf::IntRect(256, 16, 16, 16));
 			else if (pMap_[i][j] == 'v')					// Вода
-				sprite_.setTextureRect(IntRect(256, 32, 16, 16));
+				sprite_.setTextureRect(sf::IntRect(256, 32, 16, 16));
 			else if (pMap_[i][j] == 'i')					// Лёд, я полагаю...
-				sprite_.setTextureRect(IntRect(288, 32, 16, 16));
+				sprite_.setTextureRect(sf::IntRect(288, 32, 16, 16));
 			else if (pMap_[i][j] == 'e')					// Орёл
-				sprite_.setTextureRect(IntRect(304, 32, 16, 16));
+				sprite_.setTextureRect(sf::IntRect(304, 32, 16, 16));
 			else
 				continue;
 
@@ -103,9 +103,9 @@ void GameMap::draw(RenderWindow &window)
 	}
 }
 
-void GameMap::drawGrass(RenderWindow &window)
+void GameMap::drawGrass(sf::RenderWindow &window)
 {
-	sprite_.setTextureRect(IntRect(272, 32, 16, 16));
+	sprite_.setTextureRect(sf::IntRect(272, 32, 16, 16));
 
 	for (unsigned int	i	= 0; i < grassNum_; ++i)
 	{

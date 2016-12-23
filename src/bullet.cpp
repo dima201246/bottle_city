@@ -1,19 +1,19 @@
 #include "../include/obj.hpp"
 
-void Bullet::init(Texture &image, GameMap *l_main_map) {
+void Bullet::init(sf::Texture &image, GameMap *l_main_map) {
 	buffer_shot.loadFromFile("media/sound/shot.ogg");		// Подгрузка звуков
-	sound_shot				= new Sound(buffer_shot);
+	sound_shot				= new sf::Sound(buffer_shot);
 
 	buffer_un_shot.loadFromFile("media/sound/un_shot.ogg");
-	sound_un_shot			= new Sound(buffer_un_shot);
+	sound_un_shot			= new sf::Sound(buffer_un_shot);
 
-	MainPoint::rect		= FloatRect(0, 0, 8, 8);
-	MainPoint::dx	= MainPoint::dy	= 0.0;
+	MainPoint::rect			= sf::FloatRect(0, 0, 8, 8);
+	MainPoint::dx			= MainPoint::dy	= 0.0;
 
 	bullet_status			= false;
 
 	MainPoint::rect.left	= 0;
-	MainPoint::rect.top	= 0;
+	MainPoint::rect.top		= 0;
 
 	MainPoint::sprite.setTexture(image);
 	MainPoint::sprite.scale(SCALE_X, SCALE_Y);
@@ -65,7 +65,7 @@ void Bullet::update(float time) {
 
 void Bullet::shot(int posX, int posY, int bullet_side) {
 	sound_shot->play();										// Воспроизведение звука выстрела
-	MainPoint::sprite.setTextureRect(IntRect(320 + ((bullet_side / 2) * 8), 100, 8, 8));
+	MainPoint::sprite.setTextureRect(sf::IntRect(320 + ((bullet_side / 2) * 8), 100, 8, 8));
 	if (bullet_side == 0) {
 		MainPoint::rect.left	= posX + 3,
 		MainPoint::rect.top		= posY - 4;
@@ -91,7 +91,7 @@ bool Bullet::active() {
 	return bullet_status;
 }
 
-bool Bullet::bulletComparsion(FloatRect other_recr) {
+bool Bullet::bulletComparsion(sf::FloatRect other_recr) {
 	if ((bullet_status) && (MainPoint::rect.intersects(other_recr)))
 		return true;
 
@@ -143,7 +143,7 @@ void Bullet::bulletDestroy() {
 	bullet_status	= false;
 }
 
-void Bullet::draw(RenderWindow& window) {
+void Bullet::draw(sf::RenderWindow& window) {
 	window.draw(MainPoint::sprite);
 }
 
@@ -151,6 +151,6 @@ bool Bullet::bulletStatus() {
 	return bullet_status;
 }
 
-FloatRect Bullet::getBulletRect() {
+sf::FloatRect Bullet::getBulletRect() {
 	return rect;
 }

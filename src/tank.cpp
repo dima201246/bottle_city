@@ -1,6 +1,6 @@
 #include "../include/obj.hpp"
 
-void Tank::init(Texture &image, GameMap *l_main_map, RightBar *l_r_b) {
+void Tank::init(sf::Texture &image, GameMap *l_main_map, RightBar *l_r_b) {
 	Bullet::init(image, l_main_map);
 	Body::init(image, l_main_map);
 	r_b			= l_r_b;
@@ -20,11 +20,11 @@ void Tank::piu_piu() {
 	}
 }
 
-FloatRect Tank::getRect() {
+sf::FloatRect Tank::getRect() {
 	return Body::getRect();
 }
 
-void Tank::draw(RenderWindow& window) {
+void Tank::draw(sf::RenderWindow& window) {
 	Body::draw(window);
 
 	if (Bullet::active()) {

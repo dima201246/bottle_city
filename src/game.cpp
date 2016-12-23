@@ -14,7 +14,7 @@ void Game::gameStart() {
 
 	bool first_interapt	= true;
 
-	RenderWindow window(VideoMode(400, 359), "Bottle city");	// Создание окна
+	sf::RenderWindow window(sf::VideoMode(400, 359), "Bottle city");	// Создание окна
 
 	window.setVerticalSyncEnabled(true);						// Вертикальная синхронизация
 
@@ -65,14 +65,14 @@ void Game::gameStart() {
 
 		while (window.pollEvent(event_))						// Отслеживание события закрытия окна
 		{
-			if (event_.type == Event::Closed)
+			if (event_.type == sf::Event::Closed)
 				window.close();
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::P)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
 			game_pause.paused(window);
 
-			while (Keyboard::isKeyPressed(Keyboard::P));
+			while (sf::Keyboard::isKeyPressed(sf::Keyboard::P));
 		}
 
 		if (!game_pause.status())

@@ -1,7 +1,7 @@
 #include "../include/obj.hpp"
 
 bool AIplayer::tankCollision_(int side, int id) {
-	FloatRect	tempRect	= Tank::getRect();
+	sf::FloatRect	tempRect	= Tank::getRect();
 
 	switch (side) {
 		case LEFT_SIDE:		tempRect.left--;	break;
@@ -46,7 +46,7 @@ void AIplayer::bulletCollision_() {
 		}
 }
 
-void AIplayer::init(Texture &image, Player *players, int intNPlayer, AIplayer *l_frends, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_type, int l_id) {
+void AIplayer::init(sf::Texture &image, Player *players, int intNPlayer, AIplayer *l_frends, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_type, int l_id) {
 	Tank::init(image, l_main_map, l_r_b);
 	Tank::setLife(0);
 	Tank::setID(l_id);
@@ -258,7 +258,7 @@ int AIplayer::bax_bax()
 	return TANK_NONE;
 }
 
-void AIplayer::draw(RenderWindow &window)
+void AIplayer::draw(sf::RenderWindow &window)
 {
 	if (Tank::getLife() != 0)
 	{

@@ -1,12 +1,12 @@
 #include "../include/obj.hpp"
 #include <cmath>
 
-void Body::init(Texture &image, GameMap *l_main_map) {
+void Body::init(sf::Texture &image, GameMap *l_main_map) {
 	MainPoint::sprite.setTexture(image);
 	MainPoint::sprite.scale(SCALE_X, SCALE_Y);
 
 	side			= 0;
-	rect			= FloatRect(0, 0, 16, 16);
+	rect			= sf::FloatRect(0, 0, 16, 16);
 	god_mode		= false;
 	dx	= dy		= 0.0;
 	main_map		= l_main_map;
@@ -25,7 +25,7 @@ void Body::update(float time)
 	rect.left	+= dx * (time / 2.0);	// Собсно, движение
 	rect.top 	+= dy * (time / 2.0);
 
-	MainPoint::sprite.setTextureRect(IntRect(0 + (side * 16), 0, 15, 15));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
+	MainPoint::sprite.setTextureRect(sf::IntRect(0 + (side * 16), 0, 15, 15));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
 
 	MainPoint::sprite.setPosition(rect.left * SCALE_X, rect.top * SCALE_Y);
 
@@ -82,7 +82,7 @@ int Body::getSide()
 	return side;
 }
 
-void Body::draw(RenderWindow &window)
+void Body::draw(sf::RenderWindow &window)
 {
 	window.draw(MainPoint::sprite);
 }
@@ -94,7 +94,7 @@ void Body::setPosition(unsigned int x, unsigned int y, int getted_side)
 	side			= getted_side;
 }
 
-bool Body::tankComparsion(FloatRect tank_recr)
+bool Body::tankComparsion(sf::FloatRect tank_recr)
 {
 	if (rect.intersects(tank_recr))
 		return true;

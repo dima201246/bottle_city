@@ -1,7 +1,7 @@
 #include "../include/obj.hpp"
 
 bool Player::tankCollision(int side, int id) {
-	FloatRect	tempRect	= Tank::getRect();
+	sf::FloatRect	tempRect	= Tank::getRect();
 
 	switch (side) {
 		case LEFT_SIDE:		tempRect.left--;	break;
@@ -50,7 +50,7 @@ void Player::bulletCollision() {
 		}
 }
 
-void Player::init(Texture &image, Player *players, int intNPlayer, AIplayer *AI_player, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
+void Player::init(sf::Texture &image, Player *players, int intNPlayer, AIplayer *AI_player, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
 	Tank::init(image, l_main_map, l_r_b);
 
 
@@ -82,25 +82,25 @@ void Player::update(float time) {
 		if (Tank::getID() == 1)
 		{
 			/*Защита от диагоналей Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Down)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
 			{
 				if (Tank::getSide() == LEFT_SIDE)	k_d	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (Keyboard::isKeyPressed(Keyboard::Up)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
 			{
 				if (Tank::getSide() == LEFT_SIDE)	k_u	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Down)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
 			{
 				if (Tank::getSide() == RIGHT_SIDE)	k_d	= false;
 				else k_r	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (Keyboard::isKeyPressed(Keyboard::Up)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
 			{
 				if (Tank::getSide() == RIGHT_SIDE)	k_u	= false;
 				else k_r	= false;
@@ -108,56 +108,56 @@ void Player::update(float time) {
 			/*Защита от диагоналей Конец*/
 
 			/*Обработка кнопок Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::Left)) && (k_l))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && (k_l))
 			{
 				if (!tankCollision(LEFT_SIDE, Tank::getID()))
 					Tank::moveLeft();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Right)) && (k_r))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && (k_r))
 			{
 				if (!tankCollision(RIGHT_SIDE, Tank::getID()))
 					Tank::moveRight();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Up)) && (k_u))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (k_u))
 			{
 				if (!tankCollision(UP_SIDE, Tank::getID()))
 					Tank::moveUp();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::Down)) && (k_d))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) && (k_d))
 			{
 				if (!tankCollision(DOWN_SIDE, Tank::getID()))
 					Tank::moveDown();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::Period))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Period))
 				Tank::piu_piu();
 			/*Обработка кнопок Конец*/
 		}
 		else if (Tank::getID() == 2)
 		{
 			/*Защита от диагоналей Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::S)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
 			{
 				if (Tank::getSide() == LEFT_SIDE)	k_d	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::A)) && (Keyboard::isKeyPressed(Keyboard::W)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
 			{
 				if (Tank::getSide() == LEFT_SIDE)	k_u	= false;
 				else k_l	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::D)) && (Keyboard::isKeyPressed(Keyboard::S)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
 			{
 				if (Tank::getSide() == RIGHT_SIDE)	k_d	= false;
 				else k_r	= false;
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::D)) && (Keyboard::isKeyPressed(Keyboard::W)))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && (sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
 			{
 				if (Tank::getSide() == RIGHT_SIDE)	k_u	= false;
 				else k_r	= false;
@@ -165,31 +165,31 @@ void Player::update(float time) {
 			/*Защита от диагоналей Конец*/
 
 			/*Обработка кнопок Начало*/
-			if ((Keyboard::isKeyPressed(Keyboard::A)) && (k_l))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A)) && (k_l))
 			{
 				if (!tankCollision(LEFT_SIDE, Tank::getID()))
 					Tank::moveLeft();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::D)) && (k_r))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && (k_r))
 			{
 				if (!tankCollision(RIGHT_SIDE, Tank::getID()))
 					Tank::moveRight();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::W)) && (k_u))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) && (k_u))
 			{
 				if (!tankCollision(UP_SIDE, Tank::getID()))
 					Tank::moveUp();
 			}
 
-			if ((Keyboard::isKeyPressed(Keyboard::S)) && (k_d))
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && (k_d))
 			{
 				if (!tankCollision(DOWN_SIDE, Tank::getID()))
 					Tank::moveDown();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::Z))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 				Tank::piu_piu();
 			/*Обработка кнопок Конец*/
 		}
@@ -201,7 +201,7 @@ void Player::update(float time) {
 	}
 }
 
-void Player::draw(RenderWindow &window) {
+void Player::draw(sf::RenderWindow &window) {
 	if (Tank::getLife()!=0)
 		Tank::draw(window);
 }

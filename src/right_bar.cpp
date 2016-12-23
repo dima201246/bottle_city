@@ -1,6 +1,6 @@
 #include "../include/obj.hpp"
 
-RightBar::RightBar(Texture &image, unsigned int maxX, int intNEminems, int l_level, int l_p1_life, int l_p2_life) {
+RightBar::RightBar(sf::Texture &image, unsigned int maxX, int intNEminems, int l_level, int l_p1_life, int l_p2_life) {
 	sprite.setTexture(image);
 	sprite.scale(SCALE_X, SCALE_Y);
 
@@ -11,14 +11,14 @@ RightBar::RightBar(Texture &image, unsigned int maxX, int intNEminems, int l_lev
 	p2_life		= l_p2_life;
 }
 
-void RightBar::draw(RenderWindow &window) {
+void RightBar::draw(sf::RenderWindow &window) {
 	unsigned int	j	= 0,
 					k	= 0;
 
 	sprite.setPosition(pos * SCALE_X, 0);
-	sprite.setTextureRect(IntRect(368, 16, 32, 208));
+	sprite.setTextureRect(sf::IntRect(368, 16, 32, 208));
 	window.draw(sprite);
-	sprite.setTextureRect(IntRect(320, 192, 9, 9));
+	sprite.setTextureRect(sf::IntRect(320, 192, 9, 9));
 
 	for (int	i	= 0; i < nEminems; ++i)
 	{
@@ -38,19 +38,19 @@ void RightBar::draw(RenderWindow &window) {
 	sprite.setPosition((pos + 16) * SCALE_X, (128 * SCALE_Y));
 
 	if (p1_life == 3) {
-		sprite.setTextureRect(IntRect(352, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(352, 183, 9, 9));
 	}
 	else if (p1_life == 2)
 	{
-		sprite.setTextureRect(IntRect(344, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(344, 183, 9, 9));
 	}
 	else if (p1_life == 1)
 	{
-		sprite.setTextureRect(IntRect(336, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(336, 183, 9, 9));
 	}
 	else if (p1_life >= 0)
 	{
-		sprite.setTextureRect(IntRect(328, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(328, 183, 9, 9));
 	}
 
 	window.draw(sprite);
@@ -59,19 +59,19 @@ void RightBar::draw(RenderWindow &window) {
 
 	if (p2_life == 3)
 	{
-		sprite.setTextureRect(IntRect(352, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(352, 183, 9, 9));
 	}
 	else if (p2_life == 2)
 	{
-		sprite.setTextureRect(IntRect(344, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(344, 183, 9, 9));
 	}
 	else if (p2_life == 1)
 	{
-		sprite.setTextureRect(IntRect(336, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(336, 183, 9, 9));
 	}
 	else if (p2_life >= 0)
 	{
-		sprite.setTextureRect(IntRect(328, 183, 9, 9));
+		sprite.setTextureRect(sf::IntRect(328, 183, 9, 9));
 	}
 
 	window.draw(sprite);
