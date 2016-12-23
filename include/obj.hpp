@@ -48,6 +48,7 @@
 	{
 	public:
 		Game(){}
+		Game(const Game &oGame);
 		~Game();
 
 		void gameStart();
@@ -260,16 +261,18 @@
 		void init(sf::Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int, int);
 
 	private:
-		GameMap		*main_map;
-
-		Player		*players_tanks;
-
-		AIplayer	*AIplayers_tanks;
-
 		int			level,		// Уровень
 					left_tank,	// Сколько танков осталось
 					nPlayers,	// Общее кол-во игроков
 					nAIPlayers;	// Общее кол-во врагов
+
+		Player		*players_tanks;
+
+		GameMap		*main_map;
+
+		AIplayer	*AIplayers_tanks;
+
+		unsigned int	score;
 
 		bool tankCollision(int, int);
 		void killAI();

@@ -1,5 +1,17 @@
 #include "../include/obj.hpp"
 
+Game::Game(const Game &oGame)	// Копиконструктор
+{
+	players_	= new Player[oGame.maxPlayers_];					// Создание игроков
+	eminems_	= new AIplayer[oGame.maxEminems_];				// Создание врагов
+
+	for (int	i	= 0; i < oGame.maxPlayers_; ++i)
+		players_[i]	= oGame.players_[i];
+
+	for (int	i	= 0; i < oGame.maxEminems_; ++i)
+		eminems_[i]	= oGame.eminems_[i];
+}
+
 Game::~Game() {
 	if (maxPlayers_ != 0)
 	{
