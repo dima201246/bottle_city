@@ -112,7 +112,7 @@ void Bullet::collision() {
 		}
 
 		if (bullet_main_map->getElement(int((MainPoint::rect.left + 3) / 16), int(MainPoint::rect.top / 16)) == 'e') {
-			bullet_main_map->setElement(' ', int((MainPoint::rect.left + 3) / 16), int(MainPoint::rect.top / 16));
+			bullet_main_map->setElement('d', int((MainPoint::rect.left + 3) / 16), int(MainPoint::rect.top / 16));
 			MainPoint::dx	= 0;
 			bullet_status	= false;
 		}
@@ -131,7 +131,7 @@ void Bullet::collision() {
 		}
 
 		if (bullet_main_map->getElement(int(MainPoint::rect.left / 16), int((MainPoint::rect.top + 3) / 16)) == 'e') {
-			bullet_main_map->setElement(' ', int(MainPoint::rect.left / 16), int((MainPoint::rect.top + 3) / 16));
+			bullet_main_map->setElement('d', int(MainPoint::rect.left / 16), int((MainPoint::rect.top + 3) / 16));
 			MainPoint::dy	= 0;
 			bullet_status	= false;
 		}
