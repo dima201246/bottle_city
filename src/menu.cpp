@@ -34,6 +34,12 @@ int Menu::draw(sf::RenderWindow &window, sf::Event &event, sf::Texture &local_te
 			}
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			window.close();
+			return 0;
+		}
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 			return pos + 1;
 
