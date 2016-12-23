@@ -23,7 +23,7 @@ Game::~Game() {
 void Game::gameStart() {
 	Menu menu;													// Объявление главного меню
 
-	bool	gameContinue	= true;
+	int typeEnd	= 0;
 
 	sf::RenderWindow window(sf::VideoMode(400, 359), "Bottle city");	// Создание окна
 	window.setVerticalSyncEnabled(true);						// Вертикальная синхронизация
@@ -34,9 +34,15 @@ void Game::gameStart() {
 	if (maxPlayers_ == 0)										// Выход из игры, если окно было закрыто
 		return;
 
+	sf::Time timePerFrame			= sf::seconds(1.f / 60.f);	// Длительность кадра (Честно стырено у Вити)
+	sf::Time timeSinceLastUpdate	= sf::Time::Zero;
+	sf::Clock clock2;
+
 	GameMap main_map(texture_);									// Загрузка текстур в карту
 
 	main_map.loadMap("level1.map", maxEminems_);				// Загрузка карты из файла
+
+	GameOver gOver(texture_, &main_map);						// Штука для вывода надписи о конце игры
 
 	window.create(sf::VideoMode((16 * (main_map.getMaxX() + 2)) * SCALE_X, (16 * main_map.getMaxY()) * SCALE_Y), "Bootle city");	// Создание нового окна для начала игры
 
@@ -63,10 +69,12 @@ void Game::gameStart() {
 	eminems_[2].activation(12, 0);
 
 
-	while ((window.isOpen()) && (gameContinue))
+	while (window.isOpen())
 	{
 		while (window.isOpen())
 		{
+			timeSinceLastUpdate += clock2.restart();
+
 			time_ = clock_.getElapsedTime().asMicroseconds();		// Получение времени
 			clock_.restart();										// Сброс часиков
 
@@ -81,16 +89,20 @@ void Game::gameStart() {
 					window.close();
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+			if (((sf::Keyboard::isKeyPressed(sf::Keyboard::P)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))) && (!gOver.getStatus()))
+			{
 				game_pause.paused(window);
 
-				while (sf::Keyboard::isKeyPressed(sf::Keyboard::P));
+				while ((sf::Keyboard::isKeyPressed(sf::Keyboard::P)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)));
 			}
 
 			if (!game_pause.status())
 			{
-				for (int	i	= 0; i < maxPlayers_; ++i)			// Обновление игроков
-					players_[i].update(time_);
+				if (!gOver.getStatus())								// Если не конец игры - обновлять игрока
+				{
+					for (int	i	= 0; i < maxPlayers_; ++i)		// Обновление игроков
+						players_[i].update(time_);
+				}
 
 				for (int	i	= 0; i < maxEminems_; ++i)			// Обновление врагов
 					eminems_[i].update(time_);
@@ -99,26 +111,41 @@ void Game::gameStart() {
 
 				main_map.draw(window);								// Отрисовка карты
 
-				for (int	i	= 0; i < maxPlayers_; ++i)			// Отрисовка игроков
-					players_[i].draw(window);
-
-				for (int	i	= 0; i < maxEminems_; ++i)			// Отрисовка врагов
-					eminems_[i].draw(window);
-
-				main_map.drawGrass(window);							// Отрисовка травы
-
-				r_b.draw(window);
-
-				if ((wacher.wach() == WIN_PLAYER) || (wacher.wach() == WIN_EMINEM))
+				while (timeSinceLastUpdate > timePerFrame)
 				{
-					gameContinue	= false;
-					break;
+					timeSinceLastUpdate -= timePerFrame;
+
+					for (int	i	= 0; i < maxPlayers_; ++i)			// Отрисовка игроков
+						players_[i].draw(window);
+
+					for (int	i	= 0; i < maxEminems_; ++i)			// Отрисовка врагов
+						eminems_[i].draw(window);
+
+					main_map.drawGrass(window);							// Отрисовка травы
+
+					r_b.draw(window);
+
+					if (gOver.getStatus())
+					{
+						gOver.draw(window, time_);
+
+						if (!gOver.getStatus())
+							break;
+					} else {
+						typeEnd	= wacher.wach();
+					}
+
+					if ((typeEnd == WIN_PLAYER) || (typeEnd == WIN_EMINEM))
+					{
+						gOver.gameEnd();
+					}
+
+					window.display();
 				}
 
 				/*Отрисовка объектов Конец*/
 			}
 
-			window.display();
 		}
 	}
 }

@@ -19,8 +19,6 @@ int Menu::draw(sf::RenderWindow &window, sf::Event &event, sf::Texture &local_te
 	Menu::spriteTank_.setTexture(local_texture_);
 	Menu::spriteTank_.setTextureRect(sf::IntRect(96, 0, 16, 16));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
 
-	// window.setSize(Vector2u(400, 359));
-
 	while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return));
 
 	while (window.isOpen())

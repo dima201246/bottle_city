@@ -213,6 +213,9 @@ void Player::bax_bax() {
 		Tank::setPosition(4, 12, UP_SIDE);
 
 	Tank::setLife(Tank::getLife() - 1);
+
+	if (Tank::getLife() == 0)
+		Tank::bulletDestroy();
 }
 
 int Player::getLeftTank()

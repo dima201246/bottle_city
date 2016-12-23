@@ -36,6 +36,7 @@
 	class GPause;
 	class WachDog;
 	class GameMap;
+	class GameOver;
 	class AIplayer;
 	class RightBar;
 	class MainPoint;
@@ -357,5 +358,26 @@
 		GameMap		*mainMap_;
 
 		coordinate	eaglePos_;
+	};
+
+	class GameOver
+	{
+	public:
+		GameOver(sf::Texture&, GameMap*);
+		~GameOver(){};
+
+		void draw(sf::RenderWindow&, float);
+		void gameEnd();
+		bool getStatus();
+
+	private:
+		bool			status_;
+
+		sf::Sprite		sprite_;
+
+		unsigned int	dx_,
+						endY_,
+						dy_,
+						countDelay;
 	};
 #endif
