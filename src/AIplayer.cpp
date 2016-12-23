@@ -248,8 +248,6 @@ int AIplayer::bax_bax()
 			Tank::r_b->setEminems(Tank::r_b->getEminems() - 1);
 			AIplayer::activation(startPosition_.left, startPosition_.top);
 
-			mainMap_->randomMap();
-
 			return TANK_KILL;
 
 		}
