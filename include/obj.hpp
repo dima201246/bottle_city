@@ -83,9 +83,9 @@
 		void paused(sf::RenderWindow&);
 
 	private:
-		bool 	status_game;
+		bool 		statusGame_;
 
-		sf::Sprite	p_sprite;
+		sf::Sprite	sprite_;
 	};
 
 	class GameMap
