@@ -33,7 +33,7 @@ void Game::gameStart() {
 	players_		= new Player[maxPlayers_];					// Создание игроков
 	eminems_		= new AIplayer[maxEminems_];				// Создание врагов
 
-	WachDog		wacher(&main_map, &players_[0]);				// Объявление следилки
+	WachDog		wacher(&main_map, players_, maxPlayers_);		// Объявление следилки
 
 	RightBar	r_b(texture_, main_map.getMaxX(), maxEminems_, 1, 3, 3);	// Объявление правого бара
 	GPause		game_pause(texture_, &main_map);				// Объявление паузы

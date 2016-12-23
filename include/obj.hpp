@@ -335,12 +335,14 @@
 	class WachDog
 	{
 	public:
-		WachDog(GameMap*, Player*);
+		WachDog(GameMap*, Player*, int);
 		~WachDog(){}
 
 		int wach();				// Если вернёт true - значит вы проиграли/выиграли
 
 	private:
+		int			nPlayer_;
+
 		Player		*player_;
 
 		GameMap		*mainMap_;
