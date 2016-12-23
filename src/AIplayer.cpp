@@ -135,7 +135,7 @@ void AIplayer::update(float time) {
 						if (currentSide_ == UP_SIDE){ //сверху игрок, танк едет туда же, между ними нет стен
 							Tank::piu_piu();
 						}
-						else if (currentSide_ == RIGHT_SIDE or currentSide_ == LEFT_SIDE)
+						else if ((currentSide_ == RIGHT_SIDE or currentSide_ == LEFT_SIDE) && tankLeft == playersTanks_[i].getRect().left)
 						{
 							currentSide_ = UP_SIDE;
 						}
@@ -147,7 +147,7 @@ void AIplayer::update(float time) {
 						{
 							Tank::piu_piu();
 						}
-						else if (currentSide_ == RIGHT_SIDE or currentSide_ == LEFT_SIDE)
+						else if ((currentSide_ == RIGHT_SIDE or currentSide_ == LEFT_SIDE) && tankLeft - playersTanks_[i].getRect().left)
 						{
 							currentSide_ = DOWN_SIDE;
 						}
@@ -165,7 +165,7 @@ void AIplayer::update(float time) {
 						{
 							Tank::piu_piu();
 						}
-						else if (currentSide_ == UP_SIDE or currentSide_ == DOWN_SIDE)
+						else if ((currentSide_ == UP_SIDE or currentSide_ == DOWN_SIDE) && tankTop == playersTanks_[i].getRect().top)
 						{
 							currentSide_ = LEFT_SIDE;
 						}
@@ -177,7 +177,7 @@ void AIplayer::update(float time) {
 						{
 							Tank::piu_piu();
 						}
-						else if (currentSide_ == UP_SIDE or currentSide_ == DOWN_SIDE)
+						else if ((currentSide_ == UP_SIDE or currentSide_ == DOWN_SIDE) && tankTop == playersTanks_[i].getRect().top)
 						{
 							currentSide_ = RIGHT_SIDE;
 						}
@@ -185,7 +185,62 @@ void AIplayer::update(float time) {
 				}
 			}
 		}
-
+		// Чуйка на орла, ниже, потому что орел приорететнее игрока
+		for (int i = 0; i < mainMap_->getMaxX()-tankLeft/16; ++i) //сканируем карту вправо на наличие орла
+		{
+			temp = mainMap_->getElement(tankLeft/16+i, tankTop/16);
+			if ((temp != 's') && (temp != 'v') && (temp != 'i'))
+			{
+				if (temp == 'e')
+				{
+					currentSide_ = DOWN_SIDE;
+					Tank::piu_piu();
+				}
+				break;
+			} 
+		}
+		for (int i = 0; i < tankLeft/16; ++i)
+		{
+			temp = mainMap_->getElement(tankLeft/16-i, tankTop/16); //сканируем карту влево на наличие орла
+			if ((temp != 's') && (temp != 'v') && (temp != 'i'))
+			{
+				if (temp == 'e')
+				{
+					currentSide_ = DOWN_SIDE;
+					Tank::piu_piu();
+				}
+				break;
+			} 
+		}
+	
+		for (int i = 0; i < mainMap_->getMaxY()-tankTop/16; ++i) 
+		{
+			temp = mainMap_->getElement(tankLeft/16, tankTop/16+i); //сканируем карту вниз на наличие орла
+			if ((temp != 's') && (temp != 'v') && (temp != 'i'))
+			{
+				if (temp == 'e')
+				{
+					currentSide_ = DOWN_SIDE;
+					Tank::piu_piu();
+				}
+				break;
+			} 
+			
+		}		
+		for (int i = 0; i < tankTop/16; ++i)
+		{
+			temp = mainMap_->getElement(tankLeft/16, tankTop/16); //сканируем карту вверх на наличие орла
+			if ((temp != 's') && (temp != 'v') && (temp != 'i'))
+			{
+				if (temp == 'e')
+				{
+					currentSide_ = UP_SIDE;
+					Tank::piu_piu();
+				}
+				break;
+			} 
+		}
+		
 		if ((!Tank::move(currentSide_)) || (AIplayer::tankCollision_(currentSide_, Tank::getID()))) //если в сторону, в которую хотим ехать, нельзя проехать
 		{	
 			for (int i = 0; i < 4; ++i)
