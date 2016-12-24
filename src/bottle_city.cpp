@@ -14,8 +14,8 @@ void BottleCity::gameStart() {
 	sf::Clock clock2;
 
 	sf::RenderWindow window(sf::VideoMode(400, 359), "Bottle city");	// Создание окна
-	window.setVerticalSyncEnabled(true);						// Вертикальная синхронизация
-	texture_.loadFromFile("media/textures.png");				// Загрузка всех текстур
+	window.setVerticalSyncEnabled(true);							// Вертикальная синхронизация
+	texture_.loadFromFile("media/textures.png");					// Загрузка всех текстур
 
 	while (window.isOpen())
 	{
@@ -80,25 +80,25 @@ void BottleCity::gameStart() {
 						mainGame->drawActors(window);
 						mainGame->drawOthers(window);
 
-						if (gOver->getStatus())
+						if (gOver->getStatus())						// Если была вызвана обработка надписи Game Over
 						{
 							gOver->draw(window, time_);
 
-							if (!gOver->getStatus())
-								gamePlay	= false;
+							if (!gOver->getStatus())				// Обрабатывать надпись пока статус не изменится
+								gamePlay	= false;				// Выход из цыкла
 						}
 
 						window.display();
 					}
 					/*Отрисовка объектов Конец*/
 
-					if (!gOver->getStatus())
-						typeEnd	= watcher->wach();
+					if (!gOver->getStatus())						// Если не была вызвана обработка надписи Game Over
+						typeEnd	= watcher->wach();					// Проверка всех составляющих победы
 
-					if (typeEnd == WIN_PLAYER)
+					if (typeEnd == WIN_PLAYER)						// Если выиграл игрок, то сразу сменить уровень
 						gamePlay	= false;
 
-					if (typeEnd == WIN_EMINEM)
+					if (typeEnd == WIN_EMINEM)						// Если выиграл враг, то вызвать обработку надписи Game Over
 						gOver->gameEnd();
 				}
 
@@ -106,7 +106,7 @@ void BottleCity::gameStart() {
 
 			if (typeEnd == WIN_PLAYER)
 			{
-				mainGame->nextMap();
+				mainGame->nextMap();								// Смена карты и уровня
 				gamePlay	= true;
 			}
 			else
