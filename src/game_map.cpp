@@ -28,18 +28,23 @@ GameMap::~GameMap() {
 	delete [] gMap_;
 }
 
-bool GameMap::loadMap(std::string l_path, int &nEminems)
+std::string fixBug(std::string line)
 {
-	std::string	tempMap_,
-				path;
+	std::string temp;
+	temp.clear();
 
-	path.clear();
+	for (int i = 0; i < line.length(); ++i)	// Для того, чтобы случайно не съело каку
+		if (line[i] != 13)
+			temp += line[i];
 
-	for (int i = 0; i < l_path.length(); ++i)	// Для того, чтобы случайно не съело каку
-		if (l_path[i] != 13)
-			path += l_path[i];
+	return	temp;
+}
 
-	path			= MAIN_PATH_MAP + path;
+bool GameMap::loadMap(std::string path, int &nEminems)
+{
+	std::string	tempMap_;
+
+	path			= MAIN_PATH_MAP + fixBug(path);
 
 	unsigned int	count		= 0;
 
@@ -260,6 +265,8 @@ void GameMap::nextLevel(int &nEminems)
 	delete [] pMap_;
 	delete [] gMap_;
 
+
+	nextLevelPath_	= fixBug(nextLevelPath_);
 
 	if (nextLevelPath_ != "none")
 		loadMap(nextLevelPath_, nEminems);
