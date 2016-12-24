@@ -50,6 +50,7 @@ void AIplayer::init(sf::Texture &image, AIplayer *l_frends, int intNAIplayer, Ga
 	Tank::init(image, l_main_map, l_r_b);
 	Tank::setLife(0);
 	Tank::setID(l_id);
+	Tank::setSkin(128, 0);
 
 	mainMap_		= l_main_map;
 	type_			= l_type;

@@ -257,16 +257,19 @@
 		bool tankComparsion(sf::FloatRect);
 		void setSide(int);
 		void update(float);
+		void setSkin(int, int);
 		void draw(sf::RenderWindow&);
 		void init(sf::Texture&, GameMap*);
 		void setPosition(unsigned int, unsigned int, int);
 
 	private:
-		int			side;
+		int			side_,
+					skinX_,
+					skinY_;
 
-		bool		god_mode;
+		bool		godMode_;
 
-		GameMap	*main_map;
+		GameMap		*mainMap_;
 
 	protected:
 		bool checkMove();
