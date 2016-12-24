@@ -194,7 +194,7 @@ void AIplayer::update(float time)
 			}
 		}
 		// Чуйка на орла, ниже, потому что орел приорететнее игрока
-		for (int i = 0; i < mainMap_->getMaxX()-tankLeft/16; ++i) //сканируем карту вправо на наличие орла
+		for (unsigned int i = 0; i < mainMap_->getMaxX()-tankLeft/16; ++i) //сканируем карту вправо на наличие орла
 		{
 			temp = mainMap_->getElement(tankLeft/16+i, tankTop/16);
 			if ((temp != 's') && (temp != 'v') && (temp != 'i'))
@@ -223,7 +223,7 @@ void AIplayer::update(float time)
 			} 
 		}
 	
-		for (int i = 0; i < mainMap_->getMaxY()-tankTop/16; ++i) 
+		for (unsigned int i = 0; i < mainMap_->getMaxY()-tankTop/16; ++i) 
 		{
 			temp = mainMap_->getElement(tankLeft/16, tankTop/16+i); //сканируем карту вниз на наличие орла
 			if ((temp != 's') && (temp != 'v') && (temp != 'i'))

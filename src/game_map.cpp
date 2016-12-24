@@ -33,7 +33,7 @@ std::string fixBug(std::string line)
 	std::string temp;
 	temp.clear();
 
-	for (int i = 0; i < line.length(); ++i)	// Для того, чтобы случайно не съело каку
+	for (unsigned int i = 0; i < line.length(); ++i)	// Для того, чтобы случайно не съело каку
 		if (line[i] != 13)
 			temp += line[i];
 
@@ -47,6 +47,7 @@ bool GameMap::loadMap(std::string path, int &nEminems)
 	path			= MAIN_PATH_MAP + fixBug(path);
 
 	unsigned int	count		= 0;
+	grassNum_					= 0;
 
 	nEminems		= atoi(configurator(path, "nEnemy", "", false).c_str());
 
@@ -112,6 +113,9 @@ bool GameMap::loadMap(std::string path, int &nEminems)
 
 char GameMap::getElement(unsigned int x, unsigned int y)
 {
+	if ((x > maxX_) || (y > maxY_))
+		return ' ';
+
 	return pMap_[x][y];
 }
 
@@ -157,12 +161,13 @@ void GameMap::drawGrass(sf::RenderWindow &window)
 
 void GameMap::randomMap(){
 	char block;
-	int arm 	= 5; 
-	int grass 	= 7;
-	int wall	= 50;
-	int ice 	= 10;
-	int water	= 10;
-	int eagle	= 1;
+	unsigned int	arm 	= 5,
+					grass 	= 7,
+					wall	= 50,
+					ice 	= 10,
+					water	= 10;
+					// eagle	= 1;
+
 	bool temp;
 	int rnd;
 	gMap_	= new unsigned int* [grass + 1];
@@ -171,16 +176,16 @@ void GameMap::randomMap(){
 		gMap_[i] = new unsigned int [2];
 
 
-	for (int j = 0; j < maxY_; ++j)
+	for (unsigned int j = 0; j < maxY_; ++j)
 	{
-		for (int i = 0; i < maxX_; ++i)
+		for (unsigned int i = 0; i < maxX_; ++i)
 		{
 			GameMap::setElement('s', j, i); // очистка карты
 		}
 	}
-	for (int j = 0; j < maxY_; ++j)
+	for (unsigned int j = 0; j < maxY_; ++j)
 	{
-		for (int i = 0; i < maxX_; ++i)
+		for (unsigned int i = 0; i < maxX_; ++i)
 		{
 			temp = true;
 			if (((j == 0) && (i==0)) || ((j == 6) && (i==0)) || ((j == 12) && (i == 0)) || ((j == 4) && (i == 12)) || ((j == 8) && (i == 12))) // точки респа стандартно пусты
@@ -276,8 +281,7 @@ void GameMap::nextLevel(int &nEminems)
 
 void GameMap::levelHeadpiece(int level)	// Это писалось в 7 утра, абсолютный говнокод, НЕ СМОТРЕТЬ!!!
 {
-	unsigned int	countDelay	= 0,
-					i			= 0;
+	unsigned int	i			= 0;
 
 	sf::Sprite		stageSprite;
 
@@ -288,11 +292,10 @@ void GameMap::levelHeadpiece(int level)	// Это писалось в 7 утра
  
  	rectangle.setFillColor (sf::Color(99, 99, 99));
 
-	while (i != (((maxY_) * 16) * SCALE_Y))
+	while (i < (((maxY_) * 16) * SCALE_Y))
 	{
 		rectangle.setSize(sf::Vector2f((((maxX_ + 2) * 16) * SCALE_X), i));
-		i++;
-		usleep(1000);
+		i += 10;
 		window_->draw(rectangle);
 		window_->display();
 	}
@@ -336,8 +339,7 @@ void GameMap::levelHeadpiece(int level)	// Это писалось в 7 утра
 
 	window_->draw(stageSprite);
 	window_->display();
-
-	sleep(1);
+	sleep(2);
 }
 
 unsigned int GameMap::getMaxX()

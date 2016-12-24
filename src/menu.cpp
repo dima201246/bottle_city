@@ -17,6 +17,7 @@ int Menu::draw(sf::RenderWindow &window, sf::Event &event, sf::Texture &local_te
 	int pos	= 0;
 
 	window.create(sf::VideoMode(400, 359), "Bootle city");	// Создание нового окна для начала игры
+	window.setFramerateLimit(60);							// Ограничение частоты кадра
 
 	Menu::spriteTank_.setTexture(local_texture_);
 	Menu::spriteTank_.setTextureRect(sf::IntRect(96, 0, 16, 16));	// Установка текстуры в зависимомти от стороны в которую смотрит танк
@@ -73,4 +74,6 @@ int Menu::draw(sf::RenderWindow &window, sf::Event &event, sf::Texture &local_te
 		window.draw(Menu::spriteTank_);
 		window.display();
 	}
+
+	return 0;
 }

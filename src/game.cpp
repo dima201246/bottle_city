@@ -2,6 +2,8 @@
 
 Game::Game(int int_nPlayers, sf::RenderWindow &window)
 {
+	maxPlayers_	= int_nPlayers;
+
 	texture_.loadFromFile("media/textures.png");	// Загрузка всех текстур
 	bufferStart_.loadFromFile("media/sound/start.ogg");	// Подгрузка звука
 
@@ -18,14 +20,13 @@ Game::Game(int int_nPlayers, sf::RenderWindow &window)
 	pauseMenu_	= new GPause(texture_, mainMap_);	// Объявление паузы
 
 	/*Инициализация действующих лиц Начало*/
-	maxPlayers_	= int_nPlayers;
 	players_	= new Player[int_nPlayers];			// Создание игроков
 	initEminems(false);
 
 	players_[0].init(texture_, players_, maxPlayers_, mainMap_, rightBar_, 3, 1, 1);	// Задача стандартных параметров для игроков
 
 	if (maxPlayers_	== 2)							// Инициализация второго игрока, если он нужен
-		players_[1].init(texture_, players_, maxEminems_, mainMap_, rightBar_, 3, 1, 2);
+		players_[1].init(texture_, players_, maxPlayers_, mainMap_, rightBar_, 3, 1, 2);
 	/*Инициализация действующих лиц Конец*/
 
 	watcher_	= new WatchDog(mainMap_, players_, maxPlayers_);	// Объявление следилки

@@ -7,7 +7,7 @@
 	#include <SFML/Graphics.hpp>
 	#include <SFML/Audio.hpp>
 
-	#define GAME_SPEED	900
+	#define GAME_SPEED	20
 
 	#define UP_SIDE		0
 	#define LEFT_SIDE	2
@@ -283,7 +283,7 @@
 	class Tank : public Bullet, public Body
 	{
 	public:
-		Tank(){}
+		Tank();
 		~Tank(){}
 
 		int getID();

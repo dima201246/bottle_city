@@ -1,9 +1,14 @@
 #include "../include/obj.hpp"
 
+Tank::Tank()
+{
+	life	= 0;
+}
+
 void Tank::init(sf::Texture &image, GameMap *l_main_map, RightBar *l_r_b) {
 	Bullet::init(image, l_main_map);
 	Body::init(image, l_main_map);
-	r_b			= l_r_b;
+	r_b		= l_r_b;
 }
 
 void Tank::update(float time) {

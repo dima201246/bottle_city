@@ -9,10 +9,6 @@ void BottleCity::gameStart() {
 
 	Game	*mainGame;
 
-	sf::Time timePerFrame			= sf::seconds(1.f / 60.f);	// Длительность кадра (Честно стырено у Вити)
-	sf::Time timeSinceLastUpdate	= sf::Time::Zero;
-	sf::Clock clock2;
-
 	sf::RenderWindow window(sf::VideoMode(400, 359), "Bottle city");	// Создание окна
 	window.setVerticalSyncEnabled(true);							// Вертикальная синхронизация
 	texture_.loadFromFile("media/textures.png");					// Загрузка всех текстур
@@ -28,6 +24,7 @@ void BottleCity::gameStart() {
 
 
 		window.create(sf::VideoMode((16 * (mainGame->getMaxX() + 2)) * SCALE_X, (16 * mainGame->getMaxY()) * SCALE_Y), "Bootle city");	// Создание нового окна для начала игры
+		window.setFramerateLimit(60);								// Ограничение частоты кадра
 
 		GPause		*game_pause	= mainGame->getPausePoint();
 		GameOver	*gOver 		= mainGame->getGOPoint();
@@ -39,15 +36,6 @@ void BottleCity::gameStart() {
 
 			while (window.isOpen())
 			{
-				timeSinceLastUpdate += clock2.restart();
-				time_ = clock_.getElapsedTime().asMicroseconds();	// Получение времени
-				time_ = time_ / GAME_SPEED;							// Установка скорости игры
-
-				clock_.restart();									// Сброс часиков
-
-				if (time_ > 20)
-					time_ = 20;
-
 				while (window.pollEvent(event_))					// Отслеживание события закрытия окна
 				{
 					if (event_.type == sf::Event::Closed)
@@ -64,32 +52,26 @@ void BottleCity::gameStart() {
 				if (!game_pause->status())
 				{
 					if (!gOver->getStatus())						// Если не конец игры - обновлять игрока
-						mainGame->updatePlayers(time_);
+						mainGame->updatePlayers(GAME_SPEED);
 
-					mainGame->updateEminems(time_);
+					mainGame->updateEminems(GAME_SPEED);
 
 					if (!gamePlay)
 						break;
 
-					/*Отрисовка объектов Начало*/
-					while (timeSinceLastUpdate > timePerFrame)
+					mainGame->drawMap(window);
+					mainGame->drawActors(window);
+					mainGame->drawOthers(window);
+
+					if (gOver->getStatus())						// Если была вызвана обработка надписи Game Over
 					{
-						timeSinceLastUpdate -= timePerFrame;
+						gOver->draw(window, GAME_SPEED);
 
-						mainGame->drawMap(window);
-						mainGame->drawActors(window);
-						mainGame->drawOthers(window);
-
-						if (gOver->getStatus())						// Если была вызвана обработка надписи Game Over
-						{
-							gOver->draw(window, time_);
-
-							if (!gOver->getStatus())				// Обрабатывать надпись пока статус не изменится
-								gamePlay	= false;				// Выход из цыкла
-						}
-
-						window.display();
+						if (!gOver->getStatus())				// Обрабатывать надпись пока статус не изменится
+							gamePlay	= false;				// Выход из цыкла
 					}
+
+					window.display();
 					/*Отрисовка объектов Конец*/
 
 					if (!gOver->getStatus())						// Если не была вызвана обработка надписи Game Over
@@ -115,6 +97,7 @@ void BottleCity::gameStart() {
 			} 
 		}
 
-		mainGame->~Game();
+		// mainGame->~Game();
+		delete mainGame;
 	}
 }

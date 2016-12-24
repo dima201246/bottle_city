@@ -13,7 +13,7 @@ bool Player::tankCollision(int side, int id) {
 	Tank::setSide(side);
 
 	for (int	i	= 0; i < nPlayers; i++)		// Столкновение с другом
-		if ((playersTanks_[i].getLife() > 0) && (id != playersTanks_[i].getID()) && (tempRect.intersects(playersTanks_[i].getRect())))
+		if ((id != playersTanks_[i].getID()) && (playersTanks_[i].getLife() > 0) && (tempRect.intersects(playersTanks_[i].getRect())))
 			return true;
 
 	for (int	i	= 0; i < nAIPlayers; i++)	// Столкновение с врагом

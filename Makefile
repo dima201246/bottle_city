@@ -1,5 +1,5 @@
 CC				= g++
-FLAGS 			= -c -Wall -g
+CPPFLAGS 		= -c -Wall -g
 OutPut			= bottle_city
 _BTLC_VERSION	= \"0.0.1\"
 

@@ -3,11 +3,11 @@
 
 void Body::init(sf::Texture &image, GameMap *l_main_map)
 {
+	MainPoint::rect	= sf::FloatRect(0, 0, 16, 16);
 	MainPoint::sprite.setTexture(image);
 	MainPoint::sprite.scale(SCALE_X, SCALE_Y);
 
 	side_			= 0;
-	rect			= sf::FloatRect(0, 0, 16, 16);
 	godMode_		= false;
 	dx	= dy		= 0.0;
 	mainMap_		= l_main_map;
@@ -55,6 +55,8 @@ bool Body::move(int i)
 			return move(2*(rand()%4));
 			break;
 	}
+
+	return 0;
 }
 
 bool Body::moveUp()
@@ -107,7 +109,8 @@ bool Body::tankComparsion(sf::FloatRect tank_recr)
 
 bool Body::checkMove()
 {
-	char	block_1, block_2;
+	char	block_1	= ' ',
+			block_2	= ' ';
 
 	if ((dx > 0) && (((rect.left + rect.width) / 16) >= mainMap_->getMaxX()))		// Выход за границу справа
 	{
