@@ -1,9 +1,11 @@
 #include "../include/obj.hpp"
 
-bool AIplayer::tankCollision_(int side, int id) {
+bool AIplayer::tankCollision_(int side, int id)
+{
 	sf::FloatRect	tempRect	= Tank::getRect();
 
-	switch (side) {
+	switch (side)
+	{
 		case LEFT_SIDE:		tempRect.left--;	break;
 		case RIGHT_SIDE:	tempRect.left++;	break;
 		case UP_SIDE:		tempRect.top--;		break;
@@ -21,7 +23,8 @@ bool AIplayer::tankCollision_(int side, int id) {
 	return false;
 }
 
-void AIplayer::bulletCollision_() {
+void AIplayer::bulletCollision_()
+{
 	for (int	i	= 0; i < nAIPlayers_; i++)	// Обработка столкновений пули с другом
 		if ((AIplayersTanks_[i].getLife() > 0) && ((i + 1) != Tank::getID()) && (Tank::bulletComparsion(AIplayersTanks_[i].getRect())))
 			Tank::bulletDestroy();
@@ -46,7 +49,8 @@ void AIplayer::bulletCollision_() {
 		}
 }
 
-void AIplayer::init(sf::Texture &image, AIplayer *l_frends, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_type, int l_id) {
+void AIplayer::init(sf::Texture &image, AIplayer *l_frends, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_type, int l_id)
+{
 	Tank::init(image, l_main_map, l_r_b);
 	Tank::setLife(0);
 	Tank::setID(l_id);
@@ -66,7 +70,8 @@ int abs(int x){
 		return x;
 }
 
-bool AIplayer::checkWallX_(int x, int x2, int y) {
+bool AIplayer::checkWallX_(int x, int x2, int y)
+{
 	bool	noWall			= true;
 	int 	temp;
 	if (x2<x)
@@ -87,7 +92,8 @@ bool AIplayer::checkWallX_(int x, int x2, int y) {
 	return noWall;
 
 }
-bool AIplayer::checkWallY_(int y, int y2, int x) {
+bool AIplayer::checkWallY_(int y, int y2, int x)
+{
 	bool	noWall			= true;
 	int 	temp;
 	if (y2<y)
@@ -96,6 +102,7 @@ bool AIplayer::checkWallY_(int y, int y2, int x) {
 		y2 = x;
 		y = temp;
 	} 
+
 	for (int k = 0; k < y2-y; ++k)
 	{	
 		temp = mainMap_->getElement(x, y+k);
@@ -105,11 +112,12 @@ bool AIplayer::checkWallY_(int y, int y2, int x) {
 			break;
 		} 
 	}
-	return noWall;
 
+	return noWall;
 }
 
-void AIplayer::update(float time) {
+void AIplayer::update(float time)
+{
 	bool 	canMove		= false;
 
 	char	temp;
@@ -131,7 +139,8 @@ void AIplayer::update(float time) {
 				{
 					if(tankTop < playersTanks_[i].getRect().top)
 					{
-						if (currentSide_ == UP_SIDE){ //сверху игрок, танк едет туда же, между ними нет стен
+						if (currentSide_ == UP_SIDE)	//сверху игрок, танк едет туда же, между ними нет стен
+						{
 							Tank::piu_piu();
 						}
 						else if ((currentSide_ == RIGHT_SIDE or currentSide_ == LEFT_SIDE) && tankLeft == playersTanks_[i].getRect().left)
@@ -198,9 +207,11 @@ void AIplayer::update(float time) {
 				break;
 			} 
 		}
+
 		for (int i = 0; i < tankLeft/16; ++i)
 		{
 			temp = mainMap_->getElement(tankLeft/16-i, tankTop/16); //сканируем карту влево на наличие орла
+
 			if ((temp != 's') && (temp != 'v') && (temp != 'i'))
 			{
 				if (temp == 'e')
@@ -226,6 +237,7 @@ void AIplayer::update(float time) {
 			} 
 			
 		}		
+
 		for (int i = 0; i < tankTop/16; ++i)
 		{
 			temp = mainMap_->getElement(tankLeft/16, tankTop/16); //сканируем карту вверх на наличие орла
@@ -280,7 +292,8 @@ void AIplayer::update(float time) {
 }
 
 
-void AIplayer::activation(unsigned int x, unsigned int y) {
+void AIplayer::activation(unsigned int x, unsigned int y)
+{
 	if ((Tank::r_b->getEminems() - 2) > 0)
 	{
 		Tank::setLife(1);
