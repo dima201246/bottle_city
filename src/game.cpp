@@ -1,151 +1,134 @@
 #include "../include/obj.hpp"
 
-Game::Game(const Game &oGame)	// Копиконструктор
+Game::Game(int int_nPlayers)
 {
-	players_	= new Player[oGame.maxPlayers_];		// Создание игроков
-	eminems_	= new AIplayer[oGame.maxEminems_];		// Создание врагов
+	texture_.loadFromFile("media/textures.png");	// Загрузка всех текстур
 
-	for (int	i	= 0; i < oGame.maxPlayers_; ++i)
-		players_[i]	= oGame.players_[i];
+	mainMap_	= new GameMap(texture_);			// Загрузка текстур в карту
 
-	for (int	i	= 0; i < oGame.maxEminems_; ++i)
-		eminems_[i]	= oGame.eminems_[i];
+	mainMap_->loadMap("level1.map", maxEminems_);	// Загрузка карты из файла
+
+	gOver		= new GameOver(texture_, mainMap_);	// Штука для вывода надписи о конце игры
+
+	rightBar_	= new RightBar(texture_, mainMap_->getMaxX(), maxEminems_, 1, 3, (maxPlayers_ == 2 ? 3 : 0));	// Объявление правого бара
+
+	pauseMenu_	= new GPause(texture_, mainMap_);	// Объявление паузы
+
+	/*Инициализация действующих лиц Начало*/
+	maxPlayers_	= int_nPlayers;
+	players_	= new Player[int_nPlayers];			// Создание игроков
+	initEminems(false);
+
+	players_[0].init(texture_, players_, maxPlayers_, mainMap_, rightBar_, 3, 1, maxEminems_, 1);	// Задача стандартных параметров для игроков
+
+	if (maxPlayers_	== 2)							// Инициализация второго игрока, если он нужен
+		players_[1].init(texture_, players_, maxEminems_, mainMap_, rightBar_, 3, 1, maxEminems_, 2);
+	/*Инициализация действующих лиц Конец*/
+
+	watcher_	= new WatchDog(mainMap_, players_, maxPlayers_);	// Объявление следилки
 }
 
-Game::~Game() {
+Game::~Game()
+{
 	if (maxPlayers_ != 0)
 	{
-		delete [] eminems_;
 		delete [] players_;
+		delete [] eminems_;
+		delete mainMap_;
+		delete watcher_;
+		delete pauseMenu_;
+		delete rightBar_;
+		delete gOver;
 	}
 }
 
-void Game::gameStart() {
-	Menu menu;													// Объявление главного меню
-
-	int typeEnd	= 0;
-
-	sf::RenderWindow window(sf::VideoMode(400, 359), "Bottle city");	// Создание окна
-	window.setVerticalSyncEnabled(true);						// Вертикальная синхронизация
-	texture_.loadFromFile("media/textures.png");				// Загрузка всех текстур
-
-	maxPlayers_	= menu.draw(window, event_, texture_);			// Открытие меню и получение колличества игроков
-
-	if (maxPlayers_ == 0)										// Выход из игры, если окно было закрыто
-		return;
-
-	sf::Time timePerFrame			= sf::seconds(1.f / 60.f);	// Длительность кадра (Честно стырено у Вити)
-	sf::Time timeSinceLastUpdate	= sf::Time::Zero;
-	sf::Clock clock2;
-
-	GameMap main_map(texture_);									// Загрузка текстур в карту
-
-	main_map.loadMap("level1.map", maxEminems_);				// Загрузка карты из файла
-
-	GameOver gOver(texture_, &main_map);						// Штука для вывода надписи о конце игры
-
-	window.create(sf::VideoMode((16 * (main_map.getMaxX() + 2)) * SCALE_X, (16 * main_map.getMaxY()) * SCALE_Y), "Bootle city");	// Создание нового окна для начала игры
-
-	players_	= new Player[maxPlayers_];						// Создание игроков
-	eminems_	= new AIplayer[maxEminems_];					// Создание врагов
-
-	WachDog		wacher(&main_map, players_, maxPlayers_);		// Объявление следилки
-
-	RightBar	r_b(texture_, main_map.getMaxX(), maxEminems_, 1, 3, (maxPlayers_ == 2 ? 3 : 0));	// Объявление правого бара
-	GPause		game_pause(texture_, &main_map);				// Объявление паузы
-
-	players_[0].init(texture_, players_, maxPlayers_, eminems_, maxEminems_, &main_map, &r_b, 3, 1, maxEminems_, 1);	// Задача стандартных параметров для игроков
-
-	if (maxPlayers_	== 2)										// Инициализация второго игрока, если он нужен
-		players_[1].init(texture_, players_, maxPlayers_, eminems_, maxEminems_, &main_map, &r_b, 3, 1, maxEminems_, 2);
-
-	for (int	i = 0; i < maxEminems_; ++i)					// Задача стандартных параметров для врага
+void Game::initEminems(bool clearArray)
+{
+	if (clearArray)									// Очистка, если она нужна
 	{
-		eminems_[i].init(texture_, players_, maxPlayers_, eminems_, maxEminems_, &main_map, &r_b, 1, 1, i + 1);
+		delete [] eminems_;
+	}
+
+	eminems_	= new AIplayer[maxEminems_];		// Создание врагов
+
+	for (int	i = 0; i < maxEminems_; ++i)		// Задача стандартных параметров для врага
+	{
+		eminems_[i].init(texture_, eminems_, maxEminems_, mainMap_, rightBar_, 1, 1, i + 1);
+		eminems_[i].setPlayersPoint(players_, maxPlayers_);
 	}
 
 	eminems_[0].activation(0, 0);	/// TEST
 	eminems_[1].activation(6, 0);
 	eminems_[2].activation(12, 0);
 
+	players_[0].setEminemsPoint(eminems_, maxEminems_);
 
-	while (window.isOpen())
-	{
-		while (window.isOpen())
-		{
-			timeSinceLastUpdate += clock2.restart();
+	if (maxPlayers_	== 2)
+		players_[1].setEminemsPoint(eminems_, maxEminems_);
+}
 
-			time_ = clock_.getElapsedTime().asMicroseconds();		// Получение времени
-			clock_.restart();										// Сброс часиков
+void Game::nextMap()
+{
+	mainMap_->nextLevel(maxEminems_);
 
-			time_ = time_ / GAME_SPEED;								// Установка скорости игры
+	initEminems(maxEminems_);
 
-			if (time_ > 20)
-				time_ = 20;
 
-			while (window.pollEvent(event_))						// Отслеживание события закрытия окна
-			{
-				if (event_.type == sf::Event::Closed)
-					window.close();
-			}
+}
 
-			if (((sf::Keyboard::isKeyPressed(sf::Keyboard::P)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))) && (!gOver.getStatus()))
-			{
-				game_pause.paused(window);
+GPause *Game::getPausePoint()
+{
+	return pauseMenu_;
+}
 
-				while ((sf::Keyboard::isKeyPressed(sf::Keyboard::P)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)));
-			}
+void Game::updatePlayers(float time)
+{
+	for (int	i	= 0; i < maxPlayers_; ++i)		// Обновление игроков
+		players_[i].update(time);
+}
 
-			if (!game_pause.status())
-			{
-				if (!gOver.getStatus())								// Если не конец игры - обновлять игрока
-				{
-					for (int	i	= 0; i < maxPlayers_; ++i)		// Обновление игроков
-						players_[i].update(time_);
-				}
+void Game::updateEminems(float time)
+{
+	for (int	i	= 0; i < maxEminems_; ++i)		// Обновление врагов
+		eminems_[i].update(time);
+}
 
-				for (int	i	= 0; i < maxEminems_; ++i)			// Обновление врагов
-					eminems_[i].update(time_);
+void Game::drawActors(sf::RenderWindow& window)
+{
+	for (int	i	= 0; i < maxPlayers_; ++i)		// Отрисовка игроков
+		players_[i].draw(window);
 
-				/*Отрисовка объектов Начало*/
+	for (int	i	= 0; i < maxEminems_; ++i)		// Отрисовка врагов
+		eminems_[i].draw(window);
+}
 
-				main_map.draw(window);								// Отрисовка карты
+void Game::drawOthers(sf::RenderWindow& window)
+{
+	mainMap_->drawGrass(window);					// Отрисовка травы
+	rightBar_->draw(window);						// Отрисовка правой панели
+}
 
-				while (timeSinceLastUpdate > timePerFrame)
-				{
-					timeSinceLastUpdate -= timePerFrame;
+void Game::drawMap(sf::RenderWindow& window)
+{
+	mainMap_->draw(window);							// Отрисовка карты
+}
 
-					for (int	i	= 0; i < maxPlayers_; ++i)			// Отрисовка игроков
-						players_[i].draw(window);
+GameOver *Game::getGOPoint()
+{
+	return gOver;
+}
 
-					for (int	i	= 0; i < maxEminems_; ++i)			// Отрисовка врагов
-						eminems_[i].draw(window);
+WatchDog *Game::getWatchPoint()
+{
+	return watcher_;
+}
 
-					main_map.drawGrass(window);							// Отрисовка травы
+unsigned int Game::getMaxX()
+{
+	return mainMap_->getMaxX();
+}
 
-					r_b.draw(window);
-
-					if (gOver.getStatus())
-					{
-						gOver.draw(window, time_);
-
-						if (!gOver.getStatus())
-							break;
-					} else {
-						typeEnd	= wacher.wach();
-					}
-
-					if ((typeEnd == WIN_PLAYER) || (typeEnd == WIN_EMINEM))
-					{
-						gOver.gameEnd();
-					}
-
-					window.display();
-				}
-
-				/*Отрисовка объектов Конец*/
-			}
-
-		}
-	}
+unsigned int Game::getMaxY()
+{
+	return mainMap_->getMaxY();
 }

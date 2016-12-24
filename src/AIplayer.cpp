@@ -46,7 +46,7 @@ void AIplayer::bulletCollision_() {
 		}
 }
 
-void AIplayer::init(sf::Texture &image, Player *players, int intNPlayer, AIplayer *l_frends, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_type, int l_id) {
+void AIplayer::init(sf::Texture &image, AIplayer *l_frends, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_type, int l_id) {
 	Tank::init(image, l_main_map, l_r_b);
 	Tank::setLife(0);
 	Tank::setID(l_id);
@@ -55,8 +55,6 @@ void AIplayer::init(sf::Texture &image, Player *players, int intNPlayer, AIplaye
 	type_			= l_type;
 	AIplayersTanks_	= l_frends;
 	nAIPlayers_		= intNAIplayer;
-	playersTanks_	= players;
-	nPlayers_		= intNPlayer;
 	currentSide_		= 8; 
 }
 
@@ -229,7 +227,7 @@ void AIplayer::update(float time) {
 void AIplayer::activation(unsigned int x, unsigned int y) {
 	if ((Tank::r_b->getEminems() - 2) > 0)
 	{
-		Tank::setLife(3);
+		Tank::setLife(1);
 		nAIPlayers_--;
 		startPosition_.left = x;
 		startPosition_.top = y;
@@ -265,4 +263,10 @@ void AIplayer::draw(sf::RenderWindow &window)
 	{
 		Tank::draw(window);
 	}
+}
+
+void AIplayer::setPlayersPoint(Player *players, int intNPlayer)
+{
+	playersTanks_	= players;
+	nPlayers_		= intNPlayer;
 }

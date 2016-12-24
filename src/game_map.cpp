@@ -26,15 +26,22 @@ GameMap::~GameMap() {
 	delete [] gMap_;
 }
 
-bool GameMap::loadMap(std::string path, int &nEminems)
+bool GameMap::loadMap(std::string l_path, int &nEminems)
 {
-	std::string	tempMap_;
+	std::string	tempMap_,
+				path;
+
+	path.clear();
+
+	for (int i = 0; i < l_path.length(); ++i)	// Для того, чтобы случайно не съело каку
+		if (l_path[i] != 13)
+			path += l_path[i];
 
 	path			= MAIN_PATH_MAP + path;
 
 	unsigned int	count		= 0;
 
-	nEminems		= 20;
+	nEminems		= 3;
 	maxX_			= atoi(configurator(path, "max_x", "", false).c_str());
 	maxY_			= atoi(configurator(path, "max_y", "", false).c_str());
 	nextLevelPath_	= configurator(path, "next_level", "", false);
@@ -237,6 +244,7 @@ void GameMap::nextLevel(int &nEminems)
 
 	delete [] pMap_;
 	delete [] gMap_;
+
 
 	if (nextLevelPath_ != "none")
 		loadMap(nextLevelPath_, nEminems);

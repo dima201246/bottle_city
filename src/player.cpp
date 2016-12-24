@@ -50,7 +50,7 @@ void Player::bulletCollision() {
 		}
 }
 
-void Player::init(sf::Texture &image, Player *players, int intNPlayer, AIplayer *AI_player, int intNAIplayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
+void Player::init(sf::Texture &image, Player *players, int intNPlayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
 	Tank::init(image, l_main_map, l_r_b);
 
 
@@ -61,9 +61,7 @@ void Player::init(sf::Texture &image, Player *players, int intNPlayer, AIplayer 
 	nPlayers		= intNPlayer;
 	main_map		= l_main_map;
 	left_tank		= l_left_tank;
-	nAIPlayers		= intNAIplayer;
 	players_tanks	= players;
-	AIplayers_tanks	= AI_player;
 
 	if (Tank::getID() == 1)
 		Tank::setPosition(8, 12, UP_SIDE);
@@ -227,4 +225,10 @@ void Player::killAI()
 {
 	if (Player::left_tank != 0)
 		Player::left_tank--;
+}
+
+void Player::setEminemsPoint(AIplayer *AI_player, int intNAIplayer)
+{
+	AIplayers_tanks	= AI_player;
+	nAIPlayers		= intNAIplayer;
 }

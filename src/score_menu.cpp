@@ -9,7 +9,7 @@ WachDog::WachDog(GameMap *GameMap_mainMap, Player *Player_player, int int_nPlaye
 }
 
 int WachDog::wach() {
-	if (mainMap_->getElement(eaglePos_.posX, eaglePos_.posY) == 'd')
+	if (mainMap_->getElement(eaglePos_.posX, eaglePos_.posY) == ' ')
 		return WIN_EMINEM;
 
 	if (nPlayer_ == 2)

@@ -34,12 +34,13 @@
 	class Player;
 	class Bullet;
 	class GPause;
-	class WachDog;
+	class WatchDog;
 	class GameMap;
 	class GameOver;
 	class AIplayer;
 	class RightBar;
 	class MainPoint;
+	class BottleCity;
 
 	struct coordinate
 	{
@@ -50,21 +51,54 @@
 	class Game
 	{
 	public:
-		Game(){}
-		Game(const Game &oGame);
+		Game(int);
 		~Game();
 
-		void gameStart();
+		GPause *getPausePoint();
+		GameOver *getGOPoint();
+		WatchDog *getWatchPoint();
+		void nextMap();
+		void updatePlayers(float);
+		void updateEminems(float);
+		void drawMap(sf::RenderWindow&);
+		void drawOthers(sf::RenderWindow&);
+		void drawActors(sf::RenderWindow&);
+		unsigned int getMaxX();
+		unsigned int getMaxY();
 
 	private:
 		int			maxPlayers_,
 					maxEminems_;
 
-		float		time_;
-
 		Player		*players_;
 
+		GPause		*pauseMenu_;
+
+		GameMap		*mainMap_;
+
+		WatchDog	*watcher_;
+
 		AIplayer	*eminems_;
+
+		GameOver	*gOver;
+
+		RightBar	*rightBar_;
+
+		sf::Texture texture_;
+
+		void initEminems(bool);
+	};
+
+	class BottleCity
+	{
+	public:
+		BottleCity(){}
+		~BottleCity(){}
+
+		void gameStart();
+
+	private:
+		float		time_;
 
 		sf::Clock	clock_;
 
@@ -93,7 +127,7 @@
 	{
 	public:
 		GameMap(sf::Texture&);
-		GameMap(const GameMap &oGameMap);
+		// GameMap(const GameMap &oGameMap);
 		~GameMap();
 
 		bool loadMap(std::string, int&);
@@ -265,7 +299,8 @@
 		void bax_bax();
 		void update(float);
 		void draw(sf::RenderWindow&);
-		void init(sf::Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int, int);
+		void setEminemsPoint(AIplayer*, int);
+		void init(sf::Texture&, Player*, int, GameMap*, RightBar*, int, int, int, int);
 
 	private:
 		int			level,		// Уровень
@@ -295,8 +330,9 @@
 		int bax_bax();			// Если вернул true - танк убит
 		void update(float);
 		void draw(sf::RenderWindow&);
+		void setPlayersPoint(Player*, int);
 		void activation(unsigned int, unsigned int);
-		void init(sf::Texture&, Player*, int, AIplayer*, int, GameMap*, RightBar*, int, int, int);
+		void init(sf::Texture&, AIplayer*, int, GameMap*, RightBar*, int, int, int);
 
 	private:
 		// bool		active_;		// Активирован ли танк
@@ -342,11 +378,11 @@
 						buffer_un_shot_;
 	};
 
-	class WachDog
+	class WatchDog
 	{
 	public:
-		WachDog(GameMap*, Player*, int);
-		~WachDog(){}
+		WatchDog(GameMap*, Player*, int);
+		~WatchDog(){}
 
 		int wach();				// Если вернёт true - значит вы проиграли/выиграли
 
