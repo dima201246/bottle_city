@@ -27,6 +27,8 @@
 	#define SCALE_X	2.0f
 	#define SCALE_Y	2.0f
 
+	// #define CHEAT_MODE
+
 	class Game;
 	class Body;
 	class Tank;
@@ -84,7 +86,11 @@
 
 		RightBar	*rightBar_;
 
+		sf::Sound 	*startSound_;
+
 		sf::Texture texture_;
+
+		sf::SoundBuffer	bufferStart_;
 
 		void initEminems(bool);
 	};
@@ -138,8 +144,8 @@
 		void drawGrass(sf::RenderWindow &);
 		void setElement(char, unsigned int, unsigned int);
 		coordinate getEaglePos();
-		coordinate getEminemsPos();
-		coordinate getPlayersPos();
+		coordinate *getEminemsPos();
+		coordinate *getPlayersPos();
 		unsigned int getMaxX();
 		unsigned int getMaxY();
 
@@ -163,7 +169,7 @@
 	class RightBar
 	{
 	public:
-		RightBar(sf::Texture&, unsigned int, int, int, int, int);
+		RightBar(sf::Texture&, unsigned int, int, int, int);
 		~RightBar(){}
 
 		int getEminems();
@@ -300,7 +306,7 @@
 		void update(float);
 		void draw(sf::RenderWindow&);
 		void setEminemsPoint(AIplayer*, int);
-		void init(sf::Texture&, Player*, int, GameMap*, RightBar*, int, int, int, int);
+		void init(sf::Texture&, Player*, int, GameMap*, RightBar*, int, int, int);
 
 	private:
 		int			level,		// Уровень
@@ -308,9 +314,9 @@
 					nPlayers,	// Общее кол-во игроков
 					nAIPlayers;	// Общее кол-во врагов
 
-		Player		*players_tanks;
+		Player		*playersTanks_;
 
-		GameMap		*main_map;
+		GameMap		*mainMap_;
 
 		AIplayer	*AIplayers_tanks;
 
@@ -335,8 +341,6 @@
 		void init(sf::Texture&, AIplayer*, int, GameMap*, RightBar*, int, int, int);
 
 	private:
-		// bool		active_;		// Активирован ли танк
-
 		int			type_,			// Тип танка
 					nPlayers_,		// Общее кол-во игроков
 					nAIPlayers_,	// Общее кол-во танков с ИИ
@@ -392,8 +396,6 @@
 		Player		*player_;
 
 		GameMap		*mainMap_;
-
-		coordinate	eaglePos_;
 	};
 
 	class GameOver

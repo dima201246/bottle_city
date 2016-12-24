@@ -3,6 +3,9 @@
 Game::Game(int int_nPlayers)
 {
 	texture_.loadFromFile("media/textures.png");	// Загрузка всех текстур
+	bufferStart_.loadFromFile("media/sound/start.ogg");	// Подгрузка звука
+
+	startSound_	= new sf::Sound(bufferStart_);
 
 	mainMap_	= new GameMap(texture_);			// Загрузка текстур в карту
 
@@ -10,7 +13,7 @@ Game::Game(int int_nPlayers)
 
 	gOver		= new GameOver(texture_, mainMap_);	// Штука для вывода надписи о конце игры
 
-	rightBar_	= new RightBar(texture_, mainMap_->getMaxX(), maxEminems_, 1, 3, (maxPlayers_ == 2 ? 3 : 0));	// Объявление правого бара
+	rightBar_	= new RightBar(texture_, mainMap_->getMaxX(), 1, 3, (maxPlayers_ == 2 ? 3 : 0));	// Объявление правого бара
 
 	pauseMenu_	= new GPause(texture_, mainMap_);	// Объявление паузы
 
@@ -19,10 +22,10 @@ Game::Game(int int_nPlayers)
 	players_	= new Player[int_nPlayers];			// Создание игроков
 	initEminems(false);
 
-	players_[0].init(texture_, players_, maxPlayers_, mainMap_, rightBar_, 3, 1, maxEminems_, 1);	// Задача стандартных параметров для игроков
+	players_[0].init(texture_, players_, maxPlayers_, mainMap_, rightBar_, 3, 1, 1);	// Задача стандартных параметров для игроков
 
 	if (maxPlayers_	== 2)							// Инициализация второго игрока, если он нужен
-		players_[1].init(texture_, players_, maxEminems_, mainMap_, rightBar_, 3, 1, maxEminems_, 2);
+		players_[1].init(texture_, players_, maxEminems_, mainMap_, rightBar_, 3, 1, 2);
 	/*Инициализация действующих лиц Конец*/
 
 	watcher_	= new WatchDog(mainMap_, players_, maxPlayers_);	// Объявление следилки
@@ -34,10 +37,11 @@ Game::~Game()
 	{
 		delete [] players_;
 		delete [] eminems_;
-		delete mainMap_;
-		delete watcher_;
+		delete startSound_;
 		delete pauseMenu_;
 		delete rightBar_;
+		delete mainMap_;
+		delete watcher_;
 		delete gOver;
 	}
 }
@@ -57,23 +61,24 @@ void Game::initEminems(bool clearArray)
 		eminems_[i].setPlayersPoint(players_, maxPlayers_);
 	}
 
-	eminems_[0].activation(0, 0);	/// TEST
-	eminems_[1].activation(6, 0);
-	eminems_[2].activation(12, 0);
+	rightBar_->setEminems(maxEminems_);				// Эта штука должна быть именно здесь иначе магия не будет работать!
+
+	eminems_[0].activation(mainMap_->getEminemsPos()[0].posX, mainMap_->getEminemsPos()[0].posY);	// Установка танков на свои места
+	eminems_[1].activation(mainMap_->getEminemsPos()[1].posX, mainMap_->getEminemsPos()[1].posY);
+	eminems_[2].activation(mainMap_->getEminemsPos()[2].posX, mainMap_->getEminemsPos()[2].posY);
 
 	players_[0].setEminemsPoint(eminems_, maxEminems_);
 
 	if (maxPlayers_	== 2)
 		players_[1].setEminemsPoint(eminems_, maxEminems_);
+
+	startSound_->play();
 }
 
 void Game::nextMap()
 {
 	mainMap_->nextLevel(maxEminems_);
-
-	initEminems(maxEminems_);
-
-
+	initEminems(true);
 }
 
 GPause *Game::getPausePoint()

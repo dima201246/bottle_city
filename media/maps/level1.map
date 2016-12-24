@@ -1,6 +1,20 @@
-max_x = 13
-max_y = 13
-next_level = level2.map
+max_x		= 13
+max_y		= 13
+next_level	= level2.map
+
+nEnemy		= 5
+
+enemy1X		= 0
+enemy1Y		= 0
+enemy2X		= 6
+enemy3Y		= 0
+enemy3X		= 12
+enemy3Y		= 0
+
+player1X	= 13
+player1Y	= 10
+player2X	= 13
+player2Y	= 5
 
 # Сама карта, можно в одну линию
 map = "swwwwwswwwwws

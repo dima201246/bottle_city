@@ -1,11 +1,10 @@
 #include "../include/obj.hpp"
 
-RightBar::RightBar(sf::Texture &image, unsigned int maxX, int intNEminems, int l_level, int l_p1_life, int l_p2_life) {
+RightBar::RightBar(sf::Texture &image, unsigned int maxX, int l_level, int l_p1_life, int l_p2_life) {
 	sprite.setTexture(image);
 	sprite.scale(SCALE_X, SCALE_Y);
 
 	pos			= maxX * 16;
-	nEminems	= intNEminems;
 	level		= l_level;
 	p1_life		= l_p1_life;
 	p2_life		= l_p2_life;
@@ -78,12 +77,12 @@ void RightBar::draw(sf::RenderWindow &window) {
 
 }
 
-void RightBar::setEminems(int c) {
-	nEminems	= c;
-}
-
 int RightBar::getEminems() {
 	return nEminems;
+}
+
+void RightBar::setEminems(int int_nEminem) {
+	nEminems	= int_nEminem;
 }
 
 void RightBar::setP1Life(int c) {

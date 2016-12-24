@@ -13,7 +13,7 @@ bool Player::tankCollision(int side, int id) {
 	Tank::setSide(side);
 
 	for (int	i	= 0; i < nPlayers; i++)		// Столкновение с другом
-		if ((players_tanks[i].getLife() > 0) && (id != players_tanks[i].getID()) && (tempRect.intersects(players_tanks[i].getRect())))
+		if ((playersTanks_[i].getLife() > 0) && (id != playersTanks_[i].getID()) && (tempRect.intersects(playersTanks_[i].getRect())))
 			return true;
 
 	for (int	i	= 0; i < nAIPlayers; i++)	// Столкновение с врагом
@@ -25,7 +25,7 @@ bool Player::tankCollision(int side, int id) {
 
 void Player::bulletCollision() {
 	for (int	i	= 0; i < nPlayers; i++)		// Обработка столкновений пули с другом
-		if ((players_tanks[i].getLife() > 0) && ((i + 1) != Tank::getID()) && (Tank::bulletComparsion(players_tanks[i].getRect())))
+		if ((playersTanks_[i].getLife() > 0) && ((i + 1) != Tank::getID()) && (Tank::bulletComparsion(playersTanks_[i].getRect())))
 			Tank::bulletDestroy();
 
 	for (int	i	= 0; i < nAIPlayers; i++)	// Обработка столкновений пули с пулей противника
@@ -45,12 +45,12 @@ void Player::bulletCollision() {
 				Player::killAI();
 
 				if (nPlayers != 1)
-					players_tanks[(Tank::getID() == 1 ? 1 : 0)].killAI();	// Сообщение напарнику, об убийстве врага
+					playersTanks_[(Tank::getID() == 1 ? 1 : 0)].killAI();	// Сообщение напарнику, об убийстве врага
 			}
 		}
 }
 
-void Player::init(sf::Texture &image, Player *players, int intNPlayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_left_tank, int l_num_of_player) {
+void Player::init(sf::Texture &image, Player *players, int intNPlayer, GameMap *l_main_map, RightBar *l_r_b, int l_life, int l_level, int l_num_of_player) {
 	Tank::init(image, l_main_map, l_r_b);
 
 
@@ -59,9 +59,8 @@ void Player::init(sf::Texture &image, Player *players, int intNPlayer, GameMap *
 
 	level			= l_level;
 	nPlayers		= intNPlayer;
-	main_map		= l_main_map;
-	left_tank		= l_left_tank;
-	players_tanks	= players;
+	mainMap_		= l_main_map;
+	playersTanks_	= players;
 
 	if (Tank::getID() == 1)
 		Tank::setPosition(8, 12, UP_SIDE);
@@ -205,6 +204,7 @@ void Player::draw(sf::RenderWindow &window) {
 }
 
 void Player::bax_bax() {
+#ifndef CHEAT_MODE
 	if (Tank::getID() == 1)
 		Tank::setPosition(8, 12, UP_SIDE);
 	else
@@ -214,6 +214,7 @@ void Player::bax_bax() {
 
 	if (Tank::getLife() == 0)
 		Tank::bulletDestroy();
+#endif
 }
 
 int Player::getLeftTank()
@@ -231,4 +232,5 @@ void Player::setEminemsPoint(AIplayer *AI_player, int intNAIplayer)
 {
 	AIplayers_tanks	= AI_player;
 	nAIPlayers		= intNAIplayer;
+	left_tank		= intNAIplayer;
 }

@@ -1,15 +1,18 @@
-max_x = 13
-max_y = 13
-next_level = level3.map
-enemyX1 = 10
-enemyY1 = 4
-enemyX2 = 3
-enemyY2 = 12
-enemyX3 = 8
-enemyY3 = 11
-playerX1 = 13
-playerY1 = 10
-playerX2 = 13
-playerY2 = 5
+max_x		= 13
+max_y		= 13
+next_level	= none
+nEnemy		= 10
+
+enemy1X		= 10
+enemy1Y		= 4
+enemy2X		= 3
+enemy3Y		= 12
+enemy3X		= 8
+enemy3Y		= 11
+
+player1X	= 13
+player1Y	= 10
+player2X	= 13
+player2Y	= 5
 
 map = "igisigsswivsisssisssissiigssgssgiwsggisssssggiwisssggiswwssvvvswisisssiigissvisisssissvssvsvwsswssggswssgssssisssgwwwggsivssvsvwewvsvwisigwiwwwwsswvgsssvsswssswssisigwsgss"

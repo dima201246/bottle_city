@@ -61,7 +61,6 @@ void BottleCity::gameStart() {
 
 				mainGame.updateEminems(time_);
 
-
 				if (!gamePlay)
 					break;
 
@@ -94,13 +93,14 @@ void BottleCity::gameStart() {
 
 				if (typeEnd == WIN_EMINEM)
 					gOver->gameEnd();
-
 			}
 
 		}
-		// return;
+
 		if (typeEnd == WIN_PLAYER)
-			// main_map.nextLevel(maxEminems_);
-						gamePlay	= true;
+		{
+			mainGame.nextMap();
+			gamePlay	= true;
+		}
 	}
 }

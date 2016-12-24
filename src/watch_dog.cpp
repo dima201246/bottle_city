@@ -2,14 +2,14 @@
 
 WatchDog::WatchDog(GameMap *GameMap_mainMap, Player *Player_player, int int_nPlayer)
 {
-	eaglePos_	= GameMap_mainMap->getEaglePos();
 	nPlayer_	= int_nPlayer;
 	mainMap_	= GameMap_mainMap;
 	player_		= Player_player;
 }
 
-int WatchDog::wach() {
-	if (mainMap_->getElement(eaglePos_.posX, eaglePos_.posY) == 'd')
+int WatchDog::wach()
+{
+	if (mainMap_->getElement(mainMap_->getEaglePos().posX, mainMap_->getEaglePos().posY) == 'd')
 		return WIN_EMINEM;
 
 	if (nPlayer_ == 2)

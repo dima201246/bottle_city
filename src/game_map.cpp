@@ -41,7 +41,20 @@ bool GameMap::loadMap(std::string l_path, int &nEminems)
 
 	unsigned int	count		= 0;
 
-	nEminems		= 3;
+	nEminems		= atoi(configurator(path, "nEnemy", "", false).c_str());
+
+	eSpawn_[0].posX	= atoi(configurator(path, "enemy1X", "", false).c_str());
+	eSpawn_[0].posY	= atoi(configurator(path, "enemy1Y", "", false).c_str());
+	eSpawn_[1].posX	= atoi(configurator(path, "enemy2X", "", false).c_str());
+	eSpawn_[1].posY	= atoi(configurator(path, "enemy2Y", "", false).c_str());
+	eSpawn_[2].posX	= atoi(configurator(path, "enemy3X", "", false).c_str());
+	eSpawn_[2].posY	= atoi(configurator(path, "enemy3Y", "", false).c_str());
+
+	pSpawn_[0].posX	= atoi(configurator(path, "player1X", "", false).c_str());
+	pSpawn_[0].posY	= atoi(configurator(path, "player1Y", "", false).c_str());
+	pSpawn_[1].posX	= atoi(configurator(path, "player2X", "", false).c_str());
+	pSpawn_[1].posY	= atoi(configurator(path, "player2Y", "", false).c_str());
+
 	maxX_			= atoi(configurator(path, "max_x", "", false).c_str());
 	maxY_			= atoi(configurator(path, "max_y", "", false).c_str());
 	nextLevelPath_	= configurator(path, "next_level", "", false);
@@ -270,4 +283,14 @@ void GameMap::setElement(char l_char, unsigned int x, unsigned int y)
 coordinate GameMap::getEaglePos()
 {
 	return eaglePos_;
+}
+
+coordinate *GameMap::getEminemsPos()
+{
+	return eSpawn_;
+}
+
+coordinate *GameMap::getPlayersPos()
+{
+	return pSpawn_;
 }
