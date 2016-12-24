@@ -27,7 +27,7 @@
 	#define SCALE_X	2.0f
 	#define SCALE_Y	2.0f
 
-	#define CHEAT_MODE
+	// #define CHEAT_MODE
 
 	class Game;
 	class Body;
