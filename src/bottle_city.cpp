@@ -24,7 +24,7 @@ void BottleCity::gameStart() {
 		if (maxPlayers == 0)										// Выход из игры, если окно было закрыто
 			return;
 
-		mainGame	= new Game(maxPlayers);
+		mainGame	= new Game(maxPlayers, window);
 
 
 		window.create(sf::VideoMode((16 * (mainGame->getMaxX() + 2)) * SCALE_X, (16 * mainGame->getMaxY()) * SCALE_Y), "Bootle city");	// Создание нового окна для начала игры

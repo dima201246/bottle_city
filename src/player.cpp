@@ -234,3 +234,13 @@ void Player::setEminemsPoint(AIplayer *AI_player, int intNAIplayer)
 	nAIPlayers		= intNAIplayer;
 	left_tank		= intNAIplayer;
 }
+
+void Player::levelUp()
+{
+	level++;
+}
+
+int Player::getLevel()
+{
+	return level;
+}

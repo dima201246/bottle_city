@@ -1,8 +1,10 @@
 #include "../include/configurator.h"
 #include "../include/obj.hpp"
 
-GameMap::GameMap(sf::Texture &image)
+GameMap::GameMap(sf::Texture &image, sf::RenderWindow &window)
 {
+	texture_	= &image;
+	window_		= &window;
 	sprite_.setTexture(image);
 	sprite_.scale(SCALE_X, SCALE_Y);
 	maxX_	= maxY_	= grassNum_	= 0;
@@ -263,6 +265,72 @@ void GameMap::nextLevel(int &nEminems)
 		loadMap(nextLevelPath_, nEminems);
 	else
 		randomMap();
+}
+
+void GameMap::levelHeadpiece(int level)	// Это писалось в 7 утра, абсолютный говнокод, НЕ СМОТРЕТЬ!!!
+{
+	unsigned int	countDelay	= 0,
+					i			= 0;
+
+	sf::Sprite		stageSprite;
+
+	stageSprite.setTexture(*texture_);
+	stageSprite.scale(SCALE_X, SCALE_Y) ;
+
+	sf::RectangleShape rectangle(sf::Vector2f((((maxX_ + 2) * 16) * SCALE_X), 10));// определяем прямоугольник размером 120x50
+ 
+ 	rectangle.setFillColor (sf::Color(99, 99, 99));
+
+	while (i != (((maxY_) * 16) * SCALE_Y))
+	{
+		rectangle.setSize(sf::Vector2f((((maxX_ + 2) * 16) * SCALE_X), i));
+		i++;
+		usleep(1000);
+		window_->draw(rectangle);
+		window_->display();
+	}
+
+	stageSprite.setPosition((maxX_ * 16 * SCALE_X) / 2 - (12 * SCALE_X), (maxY_ * 16 * SCALE_Y) / 2 - (4 * SCALE_Y)) ;
+	stageSprite.setTextureRect(sf::IntRect(328, 175, 40, 9));
+
+	window_->draw(stageSprite);
+	stageSprite.setPosition(((maxX_ * 16 * SCALE_X) / 2) + (30 * SCALE_X), (maxY_ * 16 * SCALE_Y) / 2 - (4 * SCALE_Y)) ;
+
+	switch (level / 10)
+	{
+		case 0:	stageSprite.setTextureRect(sf::IntRect(328, 183, 8, 8)); break;
+		case 1:	stageSprite.setTextureRect(sf::IntRect(336, 183, 8, 8)); break;
+		case 2:	stageSprite.setTextureRect(sf::IntRect(344, 183, 8, 8)); break;
+		case 3:	stageSprite.setTextureRect(sf::IntRect(352, 183, 8, 8)); break;
+		case 4:	stageSprite.setTextureRect(sf::IntRect(360, 183, 8, 8)); break;
+		case 5:	stageSprite.setTextureRect(sf::IntRect(328, 191, 8, 8)); break;
+		case 6:	stageSprite.setTextureRect(sf::IntRect(336, 191, 8, 8)); break;
+		case 7:	stageSprite.setTextureRect(sf::IntRect(344, 191, 8, 8)); break;
+		case 8:	stageSprite.setTextureRect(sf::IntRect(352, 191, 8, 8)); break;
+		case 9:	stageSprite.setTextureRect(sf::IntRect(360, 191, 8, 8)); break;
+	}
+
+	window_->draw(stageSprite);
+	stageSprite.setPosition((((maxX_ + 1) * 16 * SCALE_X) / 2) + (30 * SCALE_X), (maxY_ * 16 * SCALE_Y) / 2 - (4 * SCALE_Y)) ;
+
+	switch (level % 10)
+	{
+		case 0:	stageSprite.setTextureRect(sf::IntRect(328, 183, 8, 8)); break;
+		case 1:	stageSprite.setTextureRect(sf::IntRect(336, 183, 8, 8)); break;
+		case 2:	stageSprite.setTextureRect(sf::IntRect(344, 183, 8, 8)); break;
+		case 3:	stageSprite.setTextureRect(sf::IntRect(352, 183, 8, 8)); break;
+		case 4:	stageSprite.setTextureRect(sf::IntRect(360, 183, 8, 8)); break;
+		case 5:	stageSprite.setTextureRect(sf::IntRect(328, 191, 8, 8)); break;
+		case 6:	stageSprite.setTextureRect(sf::IntRect(336, 191, 8, 8)); break;
+		case 7:	stageSprite.setTextureRect(sf::IntRect(344, 191, 8, 8)); break;
+		case 8:	stageSprite.setTextureRect(sf::IntRect(352, 191, 8, 8)); break;
+		case 9:	stageSprite.setTextureRect(sf::IntRect(360, 191, 8, 8)); break;
+	}
+
+	window_->draw(stageSprite);
+	window_->display();
+
+	sleep(1);
 }
 
 unsigned int GameMap::getMaxX()

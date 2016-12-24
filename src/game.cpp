@@ -1,13 +1,13 @@
 #include "../include/obj.hpp"
 
-Game::Game(int int_nPlayers)
+Game::Game(int int_nPlayers, sf::RenderWindow &window)
 {
 	texture_.loadFromFile("media/textures.png");	// Загрузка всех текстур
 	bufferStart_.loadFromFile("media/sound/start.ogg");	// Подгрузка звука
 
 	startSound_	= new sf::Sound(bufferStart_);
 
-	mainMap_	= new GameMap(texture_);			// Загрузка текстур в карту
+	mainMap_	= new GameMap(texture_, window);	// Загрузка текстур в карту
 
 	mainMap_->loadMap("level1.map", maxEminems_);	// Загрузка карты из файла
 
@@ -29,6 +29,7 @@ Game::Game(int int_nPlayers)
 	/*Инициализация действующих лиц Конец*/
 
 	watcher_	= new WatchDog(mainMap_, players_, maxPlayers_);	// Объявление следилки
+	mainMap_->levelHeadpiece(players_[0].getLevel());
 }
 
 Game::~Game()
@@ -77,8 +78,14 @@ void Game::initEminems(bool clearArray)
 
 void Game::nextMap()
 {
+	players_[0].levelUp();
+
+	if (maxPlayers_	== 2)
+		players_[1].levelUp();
+
 	mainMap_->nextLevel(maxEminems_);
 	initEminems(true);
+	mainMap_->levelHeadpiece(players_[0].getLevel());
 }
 
 GPause *Game::getPausePoint()

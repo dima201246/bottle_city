@@ -27,7 +27,7 @@
 	#define SCALE_X	2.0f
 	#define SCALE_Y	2.0f
 
-	// #define CHEAT_MODE
+	#define CHEAT_MODE
 
 	class Game;
 	class Body;
@@ -53,7 +53,7 @@
 	class Game
 	{
 	public:
-		Game(int);
+		Game(int, sf::RenderWindow&);
 		~Game();
 
 		GPause *getPausePoint();
@@ -132,7 +132,7 @@
 	class GameMap
 	{
 	public:
-		GameMap(sf::Texture&);
+		GameMap(sf::Texture&, sf::RenderWindow&);
 		// GameMap(const GameMap &oGameMap);
 		~GameMap();
 
@@ -143,6 +143,7 @@
 		void draw(sf::RenderWindow &);
 		void drawGrass(sf::RenderWindow &);
 		void setElement(char, unsigned int, unsigned int);
+		void levelHeadpiece(int);
 		coordinate getEaglePos();
 		coordinate *getEminemsPos();
 		coordinate *getPlayersPos();
@@ -158,12 +159,16 @@
 						pSpawn_[2],			// Координаты спавна игроков
 						eSpawn_[3];			// Координаты спавна врагов
 
+		sf::Texture		*texture_;
+
 		std::string		nextLevelPath_;		// Путь к файлу со следующей картой
 
 		unsigned int	maxX_,
 						maxY_,
 						**gMap_,			// Координаты травы
 						grassNum_;			// Кол-во травы на карте
+
+		sf::RenderWindow	*window_;
 	};
 
 	class RightBar
@@ -304,8 +309,10 @@
 		Player(){}
 		~Player(){}
 
+		int getLevel();
 		int getLeftTank();
 		void bax_bax();
+		void levelUp();
 		void update(float);
 		void draw(sf::RenderWindow&);
 		void setEminemsPoint(AIplayer*, int);
